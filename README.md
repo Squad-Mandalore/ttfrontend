@@ -82,3 +82,14 @@ if it cant find the avd.ini file set the ANDROID_AVD_HOME variable
 ```
 export ANDROID_AVD_HOME="path/to/.android/avd"
 ```
+
+## Run the application
+Select the build device:
+```
+flutter run
+```
+
+on archlinux with android emulator:
+```
+emulator @avd_name -no-snapshot-load
+```
