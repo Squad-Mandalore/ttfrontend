@@ -100,7 +100,7 @@ export ANDROID_AVD_HOME="/path/to/.android/avd"
 
 ### Setup on Other Distributions and Operating Systems
 
-For non-Arch Linux users, please refer to the [Flutter online documentation](https://docs.flutter.dev/) for setup instructions tailored to your operating system.
+For non-Arch Linux users, please refer to the [Flutter online documentation](https://docs.flutter.dev/) for setup instructions done for your operating system.
 
 ## Running the Application
 
