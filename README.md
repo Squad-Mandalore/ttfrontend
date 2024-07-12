@@ -1,95 +1,118 @@
-# ttfrontend
+# TTFrontend
 
-A new Flutter project.
+Hello and welcome everynyan to our time management application for Android. (Even though it is in Flutter we are to poor for an IOS developer account)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This repository serves as the initial setup for a Flutter application. If this is your first time using Flutter, consider exploring the following resources to get up to speed:
 
-A few resources to get you started if this is your first Flutter project:
+- [Flutter Getting Started Guide](https://docs.flutter.dev/get-started/test-drive) - Step-by-step instructions to test drive Flutter.
+- [Flutter Online Documentation](https://docs.flutter.dev/) - Comprehensive guides, samples, and a full API reference for mobile development.
 
-- [Get Started](https://docs.flutter.dev/get-started/test-drive)
+## Setup Instructions
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Setting up on Arch Linux
 
-## how to setup
+#### Install Required Packages
 
-On Archlinux you have to install:
+Install the necessary packages from the official Arch repositories:
+
 ```
-dart
-google-chrome
-gradle
-android-platform
-android-sdk
-android-sdk-build-tools
-android-sdk-cmdline-tools-latest
-android-sdk-platform-tools
-clang
-cmake
-ninja
-pkg-config
-android-emulator
-libbsd
+dart gradle clang cmake ninja pkgconf libbsd
 ```
 
-for chrome you have to add the variable to your environment:
+Also, install the following from the Arch User Repository (AUR):
+
+```
+flutter google-chrome android-sdk android-sdk-build-tools android-platform android-sdk-platform-tools android-sdk-cmdline-tools-latest android-emulator
+```
+
+#### Environment Configuration
+
+For Chrome support, add the following variable to your environment:
+
 ```
 export CHROME_EXECUTABLE="$(which google-chrome-stable)"
 ```
 
-you have to set the android directory to 777 rights, for example with:
-```
-chmod -R 777 /opt/android
-```
-or create a new usergroup with write rights:
+#### Permissions Setup
+
+Create a new user group with write permissions:
+
 ```
 groupadd android-sdk
 gpasswd -a <user> android-sdk
-
 setfacl -R -m g:android-sdk:rwx /opt/android-sdk
 setfacl -d -m g:android-sdk:rwX /opt/android-sdk
-
 newgrp android-sdk
 ```
 
-to accept all licenses from android with (otherwise they wont get applied):
+Alternatively, set the Android directory to have '777' permissions with:
+
+```
+chmod -R 777 /opt/android
+```
+
+#### License Agreement
+
+Accept all Android licenses:
+
 ```
 yes | flutter doctor --android-licenses
 ```
 
-to install a systemimage you can use sdkmanager
+#### SDK Management
+
+To install a system image using sdkmanager:
+
 ```
 sdkmanager --list
 sdkmanager --install "system-images;android-35;google_apis;x86_64"
 sdkmanager --list_installed
 ```
 
-to create an avd you can use avdmanager
+To create an Android Virtual Device (AVD) using avdmanager:
+
 ```
 avdmanager create avd -n myavd -k "system-images;android-35;google_apis;x86_64"
 avdmanager list avd
 ```
 
-finally to start the emulator
+#### Start the Emulator
+
+To start the emulator:
+
 ```
-cd /opt/android-sdk/tools/
 emulator -avd myavd
 ```
 
-if it cant find the avd.ini file set the ANDROID_AVD_HOME variable
+Or, to start without loading snapshots:
+
 ```
-export ANDROID_AVD_HOME="path/to/.android/avd"
+emulator @myavd -no-snapshot-load
 ```
 
-## Run the application
-Select the build device:
+If the emulator cannot find the `avd.ini` file, set the `ANDROID_AVD_HOME` variable:
+
+```
+export ANDROID_AVD_HOME="/path/to/.android/avd"
+```
+
+### Setup on Other Distributions and Operating Systems
+
+For non-Arch Linux users, please refer to the [Flutter online documentation](https://docs.flutter.dev/) for setup instructions tailored to your operating system.
+
+## Running the Application
+
+To run your Flutter application, select your build device and execute:
+
 ```
 flutter run
 ```
 
-on archlinux with android emulator:
-```
-emulator @avd_name -no-snapshot-load
-```
+## Monitor the application
+After running the application a custom link to the flutter DevTools is provided.
+If followed you can for example access the logs of the application.
+
+### Logging
+Please log with the log_service methods. Those are automatically displayed in the DevTools.
