@@ -115,4 +115,4 @@ After running the application a custom link to the flutter DevTools is provided.
 If followed you can for example access the logs of the application.
 
 ### Logging
-Please log with the log_service methods. Those are automatically displayed in the DevTools.
+Please log with the [log_service](lib/service/log_service.dart) methods. Those are automatically displayed in the DevTools.
