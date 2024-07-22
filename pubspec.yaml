@@ -76,74 +76,74 @@ flutter:
   fonts:
     - family: ntn
       fonts:
-        - asset: lib/fonts/ntn-Black.ttf
+        - asset: lib/assets/fonts/ntn-Black.ttf
           style: normal
           weight: 900
 
-        - asset: lib/fonts/ntn-BlackItalic.ttf
+        - asset: lib/assets/fonts/ntn-BlackItalic.ttf
           style: italic
           weight: 900
 
-        - asset: lib/fonts/ntn-ExtraBold.ttf
+        - asset: lib/assets/fonts/ntn-ExtraBold.ttf
           style: normal
           weight: 800
 
-        - asset: lib/fonts/ntn-ExtraBoldItalic.ttf
+        - asset: lib/assets/fonts/ntn-ExtraBoldItalic.ttf
           style: italic
           weight: 800
 
-        - asset: lib/fonts/ntn-Bold.ttf
+        - asset: lib/assets/fonts/ntn-Bold.ttf
           style: normal
           weight: 700
 
-        - asset: lib/fonts/ntn-BoldItalic.ttf
+        - asset: lib/assets/fonts/ntn-BoldItalic.ttf
           style: italic
           weight: 700
 
-        - asset: lib/fonts/ntn-SemiBold.ttf
+        - asset: lib/assets/fonts/ntn-SemiBold.ttf
           style: normal
           weight: 600
 
-        - asset: lib/fonts/ntn-SemiBoldItalic.ttf
+        - asset: lib/assets/fonts/ntn-SemiBoldItalic.ttf
           style: italic
           weight: 600
 
-        - asset: lib/fonts/ntn-Medium.ttf
+        - asset: lib/assets/fonts/ntn-Medium.ttf
           style: normal
           weight: 500
 
-        - asset: lib/fonts/ntn-MediumItalic.ttf
+        - asset: lib/assets/fonts/ntn-MediumItalic.ttf
           style: italic
           weight: 500
 
-        - asset: lib/fonts/ntn-Regular.ttf
+        - asset: lib/assets/fonts/ntn-Regular.ttf
           style: normal
           weight: 400
 
-        - asset: lib/fonts/ntn-RegularItalic.ttf
+        - asset: lib/assets/fonts/ntn-RegularItalic.ttf
           style: italic
           weight: 400
 
-        - asset: lib/fonts/ntn-Light.ttf
+        - asset: lib/assets/fonts/ntn-Light.ttf
           style: normal
           weight: 300
 
-        - asset: lib/fonts/ntn-LightItalic.ttf
+        - asset: lib/assets/fonts/ntn-LightItalic.ttf
           style: italic
           weight: 300
 
-        - asset: lib/fonts/ntn-ExtraLight.ttf
+        - asset: lib/assets/fonts/ntn-ExtraLight.ttf
           style: normal
           weight: 200
 
-        - asset: lib/fonts/ntn-ExtraLightItalic.ttf
+        - asset: lib/assets/fonts/ntn-ExtraLightItalic.ttf
           style: italic
           weight: 200
 
-        - asset: lib/fonts/ntn-Thin.ttf
+        - asset: lib/assets/fonts/ntn-Thin.ttf
           style: normal
           weight: 100
 
-        - asset: lib/fonts/ntn-ThinItalic.ttf
+        - asset: lib/assets/fonts/ntn-ThinItalic.ttf
           style: italic
           weight: 100
