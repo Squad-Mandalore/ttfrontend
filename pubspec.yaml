@@ -120,7 +120,7 @@ flutter:
           style: normal
           weight: 400
 
-        - asset: lib/assets/fonts/ntn-RegularItalic.ttf
+        - asset: lib/assets/fonts/ntn-Italic.ttf
           style: italic
           weight: 400
 
