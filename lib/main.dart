@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ttfrontend/assets/colours/colours.dart';
 import 'package:ttfrontend/service/log_service.dart';
+
+import 'common/widgets/custom_button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -118,6 +121,10 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+
+            ButtonWide(buttonText: 'Anmelden', iconData: Icons.login, buttonColour: AppColours.greenPrimary, buttonHeight: 53, buttonWidth: 315, textSize: 24),
+            ButtonWide(iconData: Icons.login, buttonColour: AppColours.darkPrimary, buttonHeight: 53, buttonWidth: 315, textSize: 24),
+            ButtonWide(buttonText: 'Karl', buttonColour: AppColours.greenAccent5, buttonHeight: 40, buttonWidth: 300, textSize: 12),
           ],
         ),
       ),
@@ -125,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

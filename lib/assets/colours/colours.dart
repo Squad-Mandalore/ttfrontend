@@ -27,4 +27,11 @@ class AppColours {
   static const Color darkAccent8 = Color(0xFF333333);
   static const Color darkAccent9 = Color(0xFF363636);
   static const Color darkAccent10 = Color(0xFF383838);
+
+  // Background
+  static const Color bgDark = Color(0xFF1d1b20);
+  static const Color bgLight = Color (0xFFf7f2fa);
+
+  // Magenta
+  static const Color magenta = Color(0xFFe20074);
 }
