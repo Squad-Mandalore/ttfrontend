@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ttfrontend/service/log_service.dart';
+import 'package:ttfrontend/service/request_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     http.Response meow = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
     trace(meow.body);
     trace("hello world", error: meow.body);
+    sendRequest();
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
