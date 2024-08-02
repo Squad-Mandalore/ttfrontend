@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
-class ButtonWide extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final String? buttonText;
   final Color buttonColour;
   final IconData? iconData;
   final double buttonHeight;
-  final double buttonWidth;
+  final double? buttonWidth;
   final double textSize;
+  final Color? borderColor;
 
-  const ButtonWide({
+  const CustomButton({
     Key? key,
     this.buttonText,
     required this.buttonColour,
@@ -16,6 +17,7 @@ class ButtonWide extends StatelessWidget {
     required this.buttonHeight,
     required this.buttonWidth,
     required this.textSize,
+    this.borderColor,
   }) : super(key: key);
 
   @override
@@ -31,6 +33,10 @@ class ButtonWide extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             color: buttonColour,
+            border: Border.all(
+              color: borderColor ?? buttonColour,
+              width: 1.0,
+            ),
           ),
           child: Center(
             child: Row(
@@ -43,7 +49,7 @@ class ButtonWide extends StatelessWidget {
                     color: Colors.white,
                   ),
                 if (iconData != null && buttonText != null)
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                 if (buttonText != null)
                   Text(
                     buttonText!,

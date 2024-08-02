@@ -28,6 +28,10 @@ class AppColours {
   static const Color darkAccent9 = Color(0xFF363636);
   static const Color darkAccent10 = Color(0xFF383838);
 
+  // Others
+  static const Color inputBoxDark = Color(0xFF767676);
+  static const Color borderColourDark = Color(0xFFd9d9d9);
+
   // Background
   static const Color bgDark = Color(0xFF1d1b20);
   static const Color bgLight = Color (0xFFf7f2fa);
