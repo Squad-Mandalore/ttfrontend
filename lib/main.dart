@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/colours.dart';
-import 'package:ttfrontend/pages/login.dart'; // Ensure you import the correct file for LoginPage
+import 'package:ttfrontend/pages/login/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,16 +15,16 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: AppColours.bgDark, // Correct parameter for background color
+        scaffoldBackgroundColor: AppColours.bgDark,
         textTheme: const TextTheme(
           bodyMedium: TextStyle(
             fontFamily: 'ntn',
             fontWeight: FontWeight.w500,
-            color: Colors.white, // Universal text color
+            color: Colors.white,
           ),
         ),
       ),
-      home: const LoginPage(), // Set your initial page
+      home: const LoginPage(), // initial Page
     );
   }
 }

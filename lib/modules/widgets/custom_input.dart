@@ -35,7 +35,7 @@ class CustomInput extends StatelessWidget {
         obscureText: obscureText,
         keyboardType: keyboardType,
         style: TextStyle(
-          color: AppColours.inputBoxDark, // Text colour
+          color: AppColours.borderColourDark, // Text colour
         ),
         decoration: InputDecoration(
           filled: true,
