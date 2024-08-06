@@ -47,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
-    // Determine if the header should be shown based on the height
     bool shouldShowHeader = _showHeader && height >= 800;
 
     return Scaffold(
@@ -65,44 +64,29 @@ class _LoginPageState extends State<LoginPage> {
           ),
           child: Column(
             children: <Widget>[
-              // Space between top and first text
-              SizedBox(height: shouldShowHeader ? 0 : 100), // Adjust as needed
-
-              // Header with animated opacity
+              SizedBox(height: shouldShowHeader ? 0 : 100),
               AnimatedOpacity(
                 opacity: shouldShowHeader ? 1.0 : 0.0,
                 duration: Duration(milliseconds: 300),
                 child: shouldShowHeader ? const Header() : SizedBox.shrink(),
               ),
-
-              // Adjust the spacing based on header presence
               SizedBox(height: shouldShowHeader ? 30 : 0),
-
-              // Email Input Field
               EmailInput(
                 focusNode: _emailFocusNode,
               ),
               const SizedBox(height: 30),
-
-              // Password Input Field
               PasswordInput(
                 focusNode: _passwordFocusNode,
               ),
               const SizedBox(height: 50),
-
-              // Login Button
               LoginButton(
                 onPressed: () {
                   // login logic
                 },
               ),
               const SizedBox(height: 20),
-
-              // Custom Divider
               CustomDivider(),
               const SizedBox(height: 20),
-
-              // Register Button
               RegisterButton(
                 onPressed: () {
                   // registration logic
