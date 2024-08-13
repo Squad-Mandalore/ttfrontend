@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:ttfrontend/assets/colours/theme.dart';
+import 'package:provider/provider.dart';
 import 'package:ttfrontend/pages/login/login.dart';
+import 'package:ttfrontend/pages/theme_selection/theme_provider/theme_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -11,12 +17,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       title: 'Squad Mandalore Zeitmessung',
-      theme: AppTheme.lightBaumarktRot(), // Set light theme
-      darkTheme: AppTheme.lightBaumarktRot(), // Set dark theme
-      themeMode: ThemeMode.system, // Use system theme by default
-      home: const LoginPage(), // Initial Page
+      theme: themeProvider.lightTheme,
+      darkTheme: themeProvider.darkTheme,
+      themeMode: themeProvider.themeMode,
+      home: const LoginPage(),
     );
   }
 }

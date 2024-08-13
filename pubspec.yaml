@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   http: ^1.2.2
   graphql: ^5.2.0-beta.8
+  provider: ^6.0.1
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +63,7 @@ flutter:
 
   assets:
     - lib/assets/images/loginPage_logo.png
+    - lib/assets/images/loginPage_logo_original.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

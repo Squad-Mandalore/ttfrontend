@@ -22,7 +22,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgLight,
       extensions: [
         CustomThemeExtension(
-          primaryColor: AppColours.greenPrimary,
+          headerColor: AppColours.greenPrimary,
           primaryAccent1: AppColours.greenAccent1,
           primaryAccent2: AppColours.greenAccent2,
           primaryAccent3: AppColours.greenAccent3,
@@ -33,18 +33,17 @@ class AppTheme {
           primaryAccent8: AppColours.greenAccent8,
           primaryAccent9: AppColours.greenAccent9,
           primaryAccent10: AppColours.greenAccent10,
-          secondaryColor: AppColours.magenta,
           backgroundColor: AppColours.bgLight,
-          backgroundAccent1: Colors.grey.shade100, // Customize as needed
-          backgroundAccent2: Colors.grey.shade200, // Customize as needed
-          backgroundAccent3: Colors.grey.shade300, // Customize as needed
-          backgroundAccent4: Colors.grey.shade400, // Customize as needed
-          backgroundAccent5: Colors.grey.shade500, // Customize as needed
-          backgroundAccent6: Colors.grey.shade600, // Customize as needed
-          backgroundAccent7: Colors.grey.shade700, // Customize as needed
-          backgroundAccent8: Colors.grey.shade800, // Customize as needed
-          backgroundAccent9: Colors.grey.shade900, // Customize as needed
-          backgroundAccent10: Colors.black, // Customize as needed
+          backgroundAccent1: Colors.grey.shade100, 
+          backgroundAccent2: Colors.grey.shade200, 
+          backgroundAccent3: Colors.grey.shade300, 
+          backgroundAccent4: Colors.grey.shade400, 
+          backgroundAccent5: Colors.grey.shade500, 
+          backgroundAccent6: Colors.grey.shade600, 
+          backgroundAccent7: Colors.grey.shade700, 
+          backgroundAccent8: Colors.grey.shade800, 
+          backgroundAccent9: Colors.grey.shade900, 
+          backgroundAccent10: Colors.black, 
           inputBoxColor: AppColours.inputBoxLight,
           borderColor: AppColours.borderColourLight,
         ),
@@ -55,7 +54,7 @@ class AppTheme {
   static ThemeData darkTelekomFunk() {
     return ThemeData(
       colorScheme: const ColorScheme.dark(
-        primary: AppColours.darkPrimary,
+        primary: AppColours.greenPrimary,
         secondary: AppColours.magenta,
         surface: AppColours.bgDark,
         onSurface: Colors.white,
@@ -71,7 +70,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgDark,
       extensions: [
         CustomThemeExtension(
-            primaryColor: AppColours.greenPrimary,
+            headerColor: AppColours.greenPrimary,
             primaryAccent1: AppColours.greenAccent10,
             primaryAccent2: AppColours.greenAccent9,
             primaryAccent3: AppColours.greenAccent8,
@@ -82,7 +81,6 @@ class AppTheme {
             primaryAccent8: AppColours.greenAccent3,
             primaryAccent9: AppColours.greenAccent2,
             primaryAccent10: AppColours.greenAccent1,
-            secondaryColor: AppColours.magenta,
             backgroundColor: AppColours.bgDark,
             backgroundAccent1: AppColours.darkAccent1,
             backgroundAccent2: AppColours.darkAccent2,
@@ -103,8 +101,8 @@ class AppTheme {
   static ThemeData lightHardworkingBrown() {
     return ThemeData(
       colorScheme: const ColorScheme.light(
-        primary: AppColours.greenPrimary,
-        secondary: AppColours.magenta,
+        primary: Color(0xFF723a11),
+        secondary: Color(0xFFb79987),
         surface: AppColours.bgLight,
         onSurface: Colors.black,
         onPrimary: Colors.white,
@@ -119,7 +117,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgLight,
       extensions: [
         CustomThemeExtension(
-          primaryColor: const Color(0xFF723a11),
+          headerColor: const Color(0xFF723a11),
           primaryAccent1: const Color(0xFF804e29),
           primaryAccent2: const Color(0xFF8e6141),
           primaryAccent3: const Color(0xFF9c7558),
@@ -130,20 +128,19 @@ class AppTheme {
           primaryAccent8: const Color(0xFFe3d8cf),
           primaryAccent9: const Color(0xFFf1ebe7),
           primaryAccent10: const Color(0xFFffffff),
-          secondaryColor: const Color(0xFFb79987),
           backgroundColor: AppColours.bgLight,
-          backgroundAccent1: Colors.grey.shade100, // Customize as needed
-          backgroundAccent2: Colors.grey.shade200, // Customize as needed
-          backgroundAccent3: Colors.grey.shade300, // Customize as needed
-          backgroundAccent4: Colors.grey.shade400, // Customize as needed
-          backgroundAccent5: Colors.grey.shade500, // Customize as needed
-          backgroundAccent6: Colors.grey.shade600, // Customize as needed
-          backgroundAccent7: Colors.grey.shade700, // Customize as needed
-          backgroundAccent8: Colors.grey.shade800, // Customize as needed
-          backgroundAccent9: Colors.grey.shade900, // Customize as needed
-          backgroundAccent10: Colors.black, // Customize as needed
-          inputBoxColor: const Color(0xFF252525),
-          borderColor: const Color(0xFFD9D9D9),
+          backgroundAccent1: Colors.grey.shade100, 
+          backgroundAccent2: Colors.grey.shade200, 
+          backgroundAccent3: Colors.grey.shade300, 
+          backgroundAccent4: Colors.grey.shade400, 
+          backgroundAccent5: Colors.grey.shade500, 
+          backgroundAccent6: Colors.grey.shade600, 
+          backgroundAccent7: Colors.grey.shade700, 
+          backgroundAccent8: Colors.grey.shade800, 
+          backgroundAccent9: Colors.grey.shade900, 
+          backgroundAccent10: Colors.black, 
+          inputBoxColor: AppColours.inputBoxLight,
+          borderColor: AppColours.borderColourLight,
         ),
       ],
     );
@@ -152,8 +149,8 @@ class AppTheme {
   static ThemeData darkHardworkingBrown() {
     return ThemeData(
       colorScheme: const ColorScheme.dark(
-        primary: AppColours.darkPrimary,
-        secondary: AppColours.magenta,
+        primary: Color(0xFF723a11),
+        secondary: Color(0xFF3F2513),
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
@@ -168,7 +165,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgDark,
       extensions: [
         CustomThemeExtension(
-          primaryColor: const Color(0xFF723a11),
+          headerColor: const Color(0xFF723a11),
           primaryAccent1: const Color(0xFF67340f),
           primaryAccent2: const Color(0xFF5b2e0e),
           primaryAccent3: const Color(0xFF50290c),
@@ -179,7 +176,6 @@ class AppTheme {
           primaryAccent8: const Color(0xFF170c03),
           primaryAccent9: const Color(0xFF0b0602),
           primaryAccent10: const Color(0xFF000000),
-          secondaryColor: const Color(0xFF3F2513),
           backgroundColor: AppColours.bgDark,
           backgroundAccent1: AppColours.darkAccent1,
           backgroundAccent2: AppColours.darkAccent2,
@@ -191,8 +187,8 @@ class AppTheme {
           backgroundAccent8: AppColours.darkAccent8,
           backgroundAccent9: AppColours.darkAccent9,
           backgroundAccent10: AppColours.darkAccent10,
-          inputBoxColor: const Color(0xFF252525),
-          borderColor: const Color(0xFFD9D9D9),
+          inputBoxColor: AppColours.inputBoxDark,
+          borderColor: AppColours.borderColourDark,
         ),
       ],
     );
@@ -201,8 +197,8 @@ class AppTheme {
   static ThemeData lightPeasentBlue() {
     return ThemeData(
       colorScheme: const ColorScheme.light(
-        primary: AppColours.greenPrimary,
-        secondary: AppColours.magenta,
+        primary: Color(0xFF247cbc),
+        secondary: Color(0xFF8CBCDC),
         surface: AppColours.bgLight,
         onSurface: Colors.black,
         onPrimary: Colors.white,
@@ -217,29 +213,28 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgLight,
       extensions: [
         CustomThemeExtension(
-          primaryColor: AppColours.greenPrimary,
-          primaryAccent1: AppColours.greenAccent1,
-          primaryAccent2: AppColours.greenAccent2,
-          primaryAccent3: AppColours.greenAccent3,
-          primaryAccent4: AppColours.greenAccent4,
-          primaryAccent5: AppColours.greenAccent5,
-          primaryAccent6: AppColours.greenAccent6,
-          primaryAccent7: AppColours.greenAccent7,
-          primaryAccent8: AppColours.greenAccent8,
-          primaryAccent9: AppColours.greenAccent9,
-          primaryAccent10: AppColours.greenAccent10,
-          secondaryColor: AppColours.magenta,
+          headerColor: const Color(0xFF247cbc),
+          primaryAccent1: const Color(0xFF3a89c3),
+          primaryAccent2: const Color(0xFF5096c9),
+          primaryAccent3: const Color(0xFF66a3d0),
+          primaryAccent4: const Color(0xFF7cb0d7),
+          primaryAccent5: const Color(0xFF92bede),
+          primaryAccent6: const Color(0xFFa7cbe4),
+          primaryAccent7: const Color(0xFFbdd8eb),
+          primaryAccent8: const Color(0xFFd3e5f2),
+          primaryAccent9: const Color(0xFFe9f2f8),
+          primaryAccent10: const Color(0xFFffffff),
           backgroundColor: AppColours.bgLight,
-          backgroundAccent1: Colors.grey.shade100, // Customize as needed
-          backgroundAccent2: Colors.grey.shade200, // Customize as needed
-          backgroundAccent3: Colors.grey.shade300, // Customize as needed
-          backgroundAccent4: Colors.grey.shade400, // Customize as needed
-          backgroundAccent5: Colors.grey.shade500, // Customize as needed
-          backgroundAccent6: Colors.grey.shade600, // Customize as needed
-          backgroundAccent7: Colors.grey.shade700, // Customize as needed
-          backgroundAccent8: Colors.grey.shade800, // Customize as needed
-          backgroundAccent9: Colors.grey.shade900, // Customize as needed
-          backgroundAccent10: Colors.black, // Customize as needed
+          backgroundAccent1: Colors.grey.shade100, 
+          backgroundAccent2: Colors.grey.shade200, 
+          backgroundAccent3: Colors.grey.shade300, 
+          backgroundAccent4: Colors.grey.shade400, 
+          backgroundAccent5: Colors.grey.shade500, 
+          backgroundAccent6: Colors.grey.shade600, 
+          backgroundAccent7: Colors.grey.shade700, 
+          backgroundAccent8: Colors.grey.shade800, 
+          backgroundAccent9: Colors.grey.shade900, 
+          backgroundAccent10: Colors.black, 
           inputBoxColor: AppColours.inputBoxLight,
           borderColor: AppColours.borderColourLight,
         ),
@@ -250,8 +245,8 @@ class AppTheme {
   static ThemeData darkPeasentBlue() {
     return ThemeData(
       colorScheme: const ColorScheme.dark(
-        primary: AppColours.darkPrimary,
-        secondary: AppColours.magenta,
+        primary: Color(0xFF247cbc),
+        secondary: Color(0xFF13435F),
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
@@ -266,18 +261,17 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgDark,
       extensions: [
         CustomThemeExtension(
-            primaryColor: AppColours.greenPrimary,
-            primaryAccent1: AppColours.greenAccent10,
-            primaryAccent2: AppColours.greenAccent9,
-            primaryAccent3: AppColours.greenAccent8,
-            primaryAccent4: AppColours.greenAccent7,
-            primaryAccent5: AppColours.greenAccent6,
-            primaryAccent6: AppColours.greenAccent5,
-            primaryAccent7: AppColours.greenAccent4,
-            primaryAccent8: AppColours.greenAccent3,
-            primaryAccent9: AppColours.greenAccent2,
-            primaryAccent10: AppColours.greenAccent1,
-            secondaryColor: AppColours.magenta,
+            headerColor: const Color(0xFF247cbc),
+            primaryAccent1: const Color(0xFF2070a9),
+            primaryAccent2: const Color(0xFF1d6396),
+            primaryAccent3: const Color(0xFF195784),
+            primaryAccent4: const Color(0xFF164a71),
+            primaryAccent5: const Color(0xFF123e5e),
+            primaryAccent6: const Color(0xFF0e324b),
+            primaryAccent7: const Color(0xFF0b2538),
+            primaryAccent8: const Color(0xFF071926),
+            primaryAccent9: const Color(0xFF040c13),
+            primaryAccent10: const Color(0xFF000000),
             backgroundColor: AppColours.bgDark,
             backgroundAccent1: AppColours.darkAccent1,
             backgroundAccent2: AppColours.darkAccent2,
@@ -298,8 +292,8 @@ class AppTheme {
   static ThemeData lightGrassyFields() {
     return ThemeData(
       colorScheme: const ColorScheme.light(
-        primary: AppColours.greenPrimary,
-        secondary: AppColours.magenta,
+        primary: Color(0xFF587504),
+        secondary: Color(0xFFA8B683),
         surface: AppColours.bgLight,
         onSurface: Colors.black,
         onPrimary: Colors.white,
@@ -314,29 +308,28 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgLight,
       extensions: [
         CustomThemeExtension(
-          primaryColor: AppColours.greenPrimary,
-          primaryAccent1: AppColours.greenAccent1,
-          primaryAccent2: AppColours.greenAccent2,
-          primaryAccent3: AppColours.greenAccent3,
-          primaryAccent4: AppColours.greenAccent4,
-          primaryAccent5: AppColours.greenAccent5,
-          primaryAccent6: AppColours.greenAccent6,
-          primaryAccent7: AppColours.greenAccent7,
-          primaryAccent8: AppColours.greenAccent8,
-          primaryAccent9: AppColours.greenAccent9,
-          primaryAccent10: AppColours.greenAccent10,
-          secondaryColor: AppColours.magenta,
+          headerColor: const Color(0xFF587504),
+          primaryAccent1: const Color(0xFF69831d),
+          primaryAccent2: const Color(0xFF799136),
+          primaryAccent3: const Color(0xFF8a9e4f),
+          primaryAccent4: const Color(0xFF9bac68),
+          primaryAccent5: const Color(0xFFacba82),
+          primaryAccent6: const Color(0xFFbcc89b),
+          primaryAccent7: const Color(0xFFcdd6b4),
+          primaryAccent8: const Color(0xFFdee3cd),
+          primaryAccent9: const Color(0xFFeef1e6),
+          primaryAccent10: const Color(0xFFffffff),
           backgroundColor: AppColours.bgLight,
-          backgroundAccent1: Colors.grey.shade100, // Customize as needed
-          backgroundAccent2: Colors.grey.shade200, // Customize as needed
-          backgroundAccent3: Colors.grey.shade300, // Customize as needed
-          backgroundAccent4: Colors.grey.shade400, // Customize as needed
-          backgroundAccent5: Colors.grey.shade500, // Customize as needed
-          backgroundAccent6: Colors.grey.shade600, // Customize as needed
-          backgroundAccent7: Colors.grey.shade700, // Customize as needed
-          backgroundAccent8: Colors.grey.shade800, // Customize as needed
-          backgroundAccent9: Colors.grey.shade900, // Customize as needed
-          backgroundAccent10: Colors.black, // Customize as needed
+          backgroundAccent1: Colors.grey.shade100, 
+          backgroundAccent2: Colors.grey.shade200, 
+          backgroundAccent3: Colors.grey.shade300, 
+          backgroundAccent4: Colors.grey.shade400, 
+          backgroundAccent5: Colors.grey.shade500, 
+          backgroundAccent6: Colors.grey.shade600, 
+          backgroundAccent7: Colors.grey.shade700, 
+          backgroundAccent8: Colors.grey.shade800, 
+          backgroundAccent9: Colors.grey.shade900, 
+          backgroundAccent10: Colors.black, 
           inputBoxColor: AppColours.inputBoxLight,
           borderColor: AppColours.borderColourLight,
         ),
@@ -347,8 +340,8 @@ class AppTheme {
   static ThemeData darkGrassyFields() {
     return ThemeData(
       colorScheme: const ColorScheme.dark(
-        primary: AppColours.darkPrimary,
-        secondary: AppColours.magenta,
+        primary: Color(0xFF587504),
+        secondary: Color(0xFF32400b),
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
@@ -363,18 +356,17 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgDark,
       extensions: [
         CustomThemeExtension(
-            primaryColor: AppColours.greenPrimary,
-            primaryAccent1: AppColours.greenAccent10,
-            primaryAccent2: AppColours.greenAccent9,
-            primaryAccent3: AppColours.greenAccent8,
-            primaryAccent4: AppColours.greenAccent7,
-            primaryAccent5: AppColours.greenAccent6,
-            primaryAccent6: AppColours.greenAccent5,
-            primaryAccent7: AppColours.greenAccent4,
-            primaryAccent8: AppColours.greenAccent3,
-            primaryAccent9: AppColours.greenAccent2,
-            primaryAccent10: AppColours.greenAccent1,
-            secondaryColor: AppColours.magenta,
+            headerColor: const Color(0xFF587504),
+            primaryAccent1: const Color(0xFF4f6904),
+            primaryAccent2: const Color(0xFF465e03),
+            primaryAccent3: const Color(0xFF3e5203),
+            primaryAccent4: const Color(0xFF354602),
+            primaryAccent5: const Color(0xFF2c3b02),
+            primaryAccent6: const Color(0xFF232f02),
+            primaryAccent7: const Color(0xFF1a2301),
+            primaryAccent8: const Color(0xFF121701),
+            primaryAccent9: const Color(0xFF090c00),
+            primaryAccent10: const Color(0xFF000000),
             backgroundColor: AppColours.bgDark,
             backgroundAccent1: AppColours.darkAccent1,
             backgroundAccent2: AppColours.darkAccent2,
@@ -395,8 +387,8 @@ class AppTheme {
   static ThemeData lightBaumarktRot() {
     return ThemeData(
       colorScheme: const ColorScheme.light(
-        primary: AppColours.greenPrimary,
-        secondary: AppColours.magenta,
+        primary: Color(0xFFA50D0D),
+        secondary: Color(0xFFD48385),
         surface: AppColours.bgLight,
         onSurface: Colors.black,
         onPrimary: Colors.white,
@@ -411,7 +403,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgLight,
       extensions: [
         CustomThemeExtension(
-          primaryColor: const Color(0xFFA50D0D),
+          headerColor: const Color(0xFFA50D0D),
           primaryAccent1: const Color(0xFFAE2525),
           primaryAccent2: const Color(0xFFB73D3D),
           primaryAccent3: const Color(0xFFC05656),
@@ -422,18 +414,17 @@ class AppTheme {
           primaryAccent8: const Color(0xFFEDCFCF),
           primaryAccent9: const Color(0xFFF6E7E7),
           primaryAccent10: const Color(0xFFFFEFEF),
-          secondaryColor: const Color(0xFFD48385),
           backgroundColor: AppColours.bgLight,
-          backgroundAccent1: Colors.grey.shade100, // Customize as needed
-          backgroundAccent2: Colors.grey.shade200, // Customize as needed
-          backgroundAccent3: Colors.grey.shade300, // Customize as needed
-          backgroundAccent4: Colors.grey.shade400, // Customize as needed
-          backgroundAccent5: Colors.grey.shade500, // Customize as needed
-          backgroundAccent6: Colors.grey.shade600, // Customize as needed
-          backgroundAccent7: Colors.grey.shade700, // Customize as needed
-          backgroundAccent8: Colors.grey.shade800, // Customize as needed
-          backgroundAccent9: Colors.grey.shade900, // Customize as needed
-          backgroundAccent10: Colors.black, // Customize as needed
+          backgroundAccent1: Colors.grey.shade100, 
+          backgroundAccent2: Colors.grey.shade200, 
+          backgroundAccent3: Colors.grey.shade300, 
+          backgroundAccent4: Colors.grey.shade400, 
+          backgroundAccent5: Colors.grey.shade500, 
+          backgroundAccent6: Colors.grey.shade600, 
+          backgroundAccent7: Colors.grey.shade700, 
+          backgroundAccent8: Colors.grey.shade800, 
+          backgroundAccent9: Colors.grey.shade900, 
+          backgroundAccent10: Colors.black, 
           inputBoxColor: AppColours.inputBoxLight,
           borderColor: AppColours.borderColourLight,
         ),
@@ -444,8 +435,8 @@ class AppTheme {
   static ThemeData darkBaumarktRot() {
     return ThemeData(
       colorScheme: const ColorScheme.dark(
-        primary: AppColours.darkPrimary,
-        secondary: AppColours.magenta,
+        primary: Color(0xFFA50D0D),
+        secondary: Color(0xFF570711),
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
@@ -460,7 +451,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgDark,
       extensions: [
         CustomThemeExtension(
-            primaryColor: const Color(0xFFA50D0D),
+            headerColor: const Color(0xFFA50D0D),
             primaryAccent1: const Color(0xFF950C0C),
             primaryAccent2: const Color(0xFF840A0A),
             primaryAccent3: const Color(0xFF730909),
@@ -471,7 +462,6 @@ class AppTheme {
             primaryAccent8: const Color(0xFF210303),
             primaryAccent9: const Color(0xFF100101),
             primaryAccent10: const Color(0xFF000000),
-            secondaryColor: const Color(0xFF570711),
             backgroundColor: AppColours.bgDark,
             backgroundAccent1: AppColours.darkAccent1,
             backgroundAccent2: AppColours.darkAccent2,
@@ -492,9 +482,9 @@ class AppTheme {
   static ThemeData lightSchmidtBrand() {
     return ThemeData(
       colorScheme: const ColorScheme.light(
-        primary: AppColours.greenPrimary,
-        secondary: AppColours.magenta,
-        surface: AppColours.bgLight,
+        primary: Color(0xFFD78521),
+        secondary: Color(0xFFF2D396),
+        surface: Color(0xFFE8Ebf7),
         onSurface: Colors.black,
         onPrimary: Colors.white,
       ),
@@ -508,29 +498,28 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgLight,
       extensions: [
         CustomThemeExtension(
-          primaryColor: AppColours.greenPrimary,
-          primaryAccent1: AppColours.greenAccent1,
-          primaryAccent2: AppColours.greenAccent2,
-          primaryAccent3: AppColours.greenAccent3,
-          primaryAccent4: AppColours.greenAccent4,
-          primaryAccent5: AppColours.greenAccent5,
-          primaryAccent6: AppColours.greenAccent6,
-          primaryAccent7: AppColours.greenAccent7,
-          primaryAccent8: AppColours.greenAccent8,
-          primaryAccent9: AppColours.greenAccent9,
-          primaryAccent10: AppColours.greenAccent10,
-          secondaryColor: AppColours.magenta,
-          backgroundColor: AppColours.bgLight,
-          backgroundAccent1: Colors.grey.shade100, // Customize as needed
-          backgroundAccent2: Colors.grey.shade200, // Customize as needed
-          backgroundAccent3: Colors.grey.shade300, // Customize as needed
-          backgroundAccent4: Colors.grey.shade400, // Customize as needed
-          backgroundAccent5: Colors.grey.shade500, // Customize as needed
-          backgroundAccent6: Colors.grey.shade600, // Customize as needed
-          backgroundAccent7: Colors.grey.shade700, // Customize as needed
-          backgroundAccent8: Colors.grey.shade800, // Customize as needed
-          backgroundAccent9: Colors.grey.shade900, // Customize as needed
-          backgroundAccent10: Colors.black, // Customize as needed
+          headerColor: const Color(0xFFDE1A1A),
+          primaryAccent1: const Color(0xFFD78521),
+          primaryAccent2: const Color(0xFFD78521),
+          primaryAccent3: const Color(0xFFD78521),
+          primaryAccent4: const Color(0xFFD78521),
+          primaryAccent5: const Color(0xFFD78521),
+          primaryAccent6: const Color(0xFFD48385),
+          primaryAccent7: const Color(0xFFF2D396),
+          primaryAccent8: const Color(0xFFF2D396),
+          primaryAccent9: const Color(0xFFF2D396),
+          primaryAccent10: const Color(0xFFF2D396),
+          backgroundColor: const Color(0xFFE8Ebf7),
+          backgroundAccent1: Colors.grey.shade100, 
+          backgroundAccent2: Colors.grey.shade200, 
+          backgroundAccent3: Colors.grey.shade300, 
+          backgroundAccent4: Colors.grey.shade400, 
+          backgroundAccent5: Colors.grey.shade500, 
+          backgroundAccent6: Colors.grey.shade600, 
+          backgroundAccent7: Colors.grey.shade700, 
+          backgroundAccent8: Colors.grey.shade800, 
+          backgroundAccent9: Colors.grey.shade900, 
+          backgroundAccent10: Colors.black, 
           inputBoxColor: AppColours.inputBoxLight,
           borderColor: AppColours.borderColourLight,
         ),
@@ -541,8 +530,8 @@ class AppTheme {
   static ThemeData darkSchmidtBrand() {
     return ThemeData(
       colorScheme: const ColorScheme.dark(
-        primary: AppColours.darkPrimary,
-        secondary: AppColours.magenta,
+        primary: Color(0xFFD78521),
+        secondary: Color(0xFFF2D396),
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
@@ -557,18 +546,17 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgDark,
       extensions: [
         CustomThemeExtension(
-            primaryColor: AppColours.greenPrimary,
-            primaryAccent1: AppColours.greenAccent10,
-            primaryAccent2: AppColours.greenAccent9,
-            primaryAccent3: AppColours.greenAccent8,
-            primaryAccent4: AppColours.greenAccent7,
-            primaryAccent5: AppColours.greenAccent6,
-            primaryAccent6: AppColours.greenAccent5,
-            primaryAccent7: AppColours.greenAccent4,
-            primaryAccent8: AppColours.greenAccent3,
-            primaryAccent9: AppColours.greenAccent2,
-            primaryAccent10: AppColours.greenAccent1,
-            secondaryColor: AppColours.magenta,
+            headerColor: const Color(0xFFDE1A1A),
+            primaryAccent1: const Color(0xFFD78521),
+            primaryAccent2: const Color(0xFFD78521),
+            primaryAccent3: const Color(0xFFD78521),
+            primaryAccent4: const Color(0xFFD78521),
+            primaryAccent5: const Color(0xFFD78521),
+            primaryAccent6: const Color(0xFFD48385),
+            primaryAccent7: const Color(0xFFF2D396),
+            primaryAccent8: const Color(0xFFF2D396),
+            primaryAccent9: const Color(0xFFF2D396),
+            primaryAccent10: const Color(0xFFF2D396),
             backgroundColor: AppColours.bgDark,
             backgroundAccent1: AppColours.darkAccent1,
             backgroundAccent2: AppColours.darkAccent2,

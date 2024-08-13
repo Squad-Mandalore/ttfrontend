@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
-  final Color primaryColor;
+  final Color headerColor;
   final Color primaryAccent1;
   final Color primaryAccent2;
   final Color primaryAccent3;
@@ -12,8 +12,6 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
   final Color primaryAccent8;
   final Color primaryAccent9;
   final Color primaryAccent10;
-
-  final Color secondaryColor;
 
   final Color backgroundColor;
   final Color backgroundAccent1;
@@ -31,7 +29,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
   final Color borderColor;
 
   CustomThemeExtension({
-    required this.primaryColor,
+    required this.headerColor,
     required this.primaryAccent1,
     required this.primaryAccent2,
     required this.primaryAccent3,
@@ -42,7 +40,6 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     required this.primaryAccent8,
     required this.primaryAccent9,
     required this.primaryAccent10,
-    required this.secondaryColor,
     required this.backgroundColor,
     required this.backgroundAccent1,
     required this.backgroundAccent2,
@@ -60,7 +57,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
 
   @override
   CustomThemeExtension copyWith({
-    Color? primaryColor,
+    Color? headerColor,
     Color? primaryAccent1,
     Color? primaryAccent2,
     Color? primaryAccent3,
@@ -71,7 +68,6 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     Color? primaryAccent8,
     Color? primaryAccent9,
     Color? primaryAccent10,
-    Color? secondaryColor,
     Color? backgroundColor,
     Color? backgroundAccent1,
     Color? backgroundAccent2,
@@ -87,7 +83,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     Color? borderColor,
   }) {
     return CustomThemeExtension(
-      primaryColor: primaryColor ?? this.primaryColor,
+      headerColor: headerColor ?? this.headerColor,
       primaryAccent1: primaryAccent1 ?? this.primaryAccent1,
       primaryAccent2: primaryAccent2 ?? this.primaryAccent2,
       primaryAccent3: primaryAccent3 ?? this.primaryAccent3,
@@ -98,7 +94,6 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
       primaryAccent8: primaryAccent8 ?? this.primaryAccent8,
       primaryAccent9: primaryAccent9 ?? this.primaryAccent9,
       primaryAccent10: primaryAccent10 ?? this.primaryAccent10,
-      secondaryColor: secondaryColor ?? this.secondaryColor,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       backgroundAccent1: backgroundAccent1 ?? this.backgroundAccent1,
       backgroundAccent2: backgroundAccent2 ?? this.backgroundAccent2,
@@ -120,7 +115,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
       ThemeExtension<CustomThemeExtension>? other, double t) {
     if (other is! CustomThemeExtension) return this;
     return CustomThemeExtension(
-      primaryColor: Color.lerp(primaryColor, other.primaryColor, t)!,
+      headerColor: Color.lerp(headerColor, other.headerColor, t)!,
       primaryAccent1: Color.lerp(primaryAccent1, other.primaryAccent1, t)!,
       primaryAccent2: Color.lerp(primaryAccent2, other.primaryAccent2, t)!,
       primaryAccent3: Color.lerp(primaryAccent3, other.primaryAccent3, t)!,
@@ -131,7 +126,6 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
       primaryAccent8: Color.lerp(primaryAccent8, other.primaryAccent8, t)!,
       primaryAccent9: Color.lerp(primaryAccent9, other.primaryAccent9, t)!,
       primaryAccent10: Color.lerp(primaryAccent10, other.primaryAccent10, t)!,
-      secondaryColor: Color.lerp(secondaryColor, other.secondaryColor, t)!,
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t)!,
       backgroundAccent1:
           Color.lerp(backgroundAccent1, other.backgroundAccent1, t)!,

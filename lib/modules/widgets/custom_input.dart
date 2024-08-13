@@ -39,7 +39,7 @@ class CustomInput extends StatelessWidget {
         keyboardType: keyboardType,
         style: TextStyle(
           color: customColors?.borderColor ??
-              theme.textTheme.bodyMedium?.color, // Text color
+              theme.textTheme.bodyMedium?.color,
         ),
         decoration: InputDecoration(
           filled: true,
@@ -61,14 +61,14 @@ class CustomInput extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
               color: customColors?.borderColor ??
-                  theme.dividerColor, // Unfocused border color
+                  theme.dividerColor,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
               color: customColors?.borderColor ??
-                  theme.primaryColor, // Focused border color
+                  theme.primaryColor,
             ),
           ),
         ),
