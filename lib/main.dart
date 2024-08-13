@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ttfrontend/assets/colours/colours.dart';
+import 'package:ttfrontend/assets/colours/theme.dart';
 import 'package:ttfrontend/pages/login/login.dart';
 
 void main() {
@@ -12,19 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: AppColours.bgDark,
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(
-            fontFamily: 'ntn',
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      home: const LoginPage(), // initial Page
+      title: 'Squad Mandalore Zeitmessung',
+      theme: AppTheme.lightBaumarktRot(), // Set light theme
+      darkTheme: AppTheme.lightBaumarktRot(), // Set dark theme
+      themeMode: ThemeMode.system, // Use system theme by default
+      home: const LoginPage(), // Initial Page
     );
   }
 }

@@ -1,33 +1,35 @@
 import 'package:flutter/material.dart';
 import '../../../modules/widgets/custom_input.dart';
 
-class EmailInput extends StatelessWidget {
+class PasswordInput extends StatelessWidget {
   final FocusNode focusNode;
 
-  const EmailInput({Key? key, required this.focusNode}) : super(key: key);
+  const PasswordInput({super.key, required this.focusNode});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       children: [
         Container(
-          width: 260,
+          width: 313,
           alignment: Alignment.centerLeft,
           child: Text(
-            'E-Mail',
+            'Passwort',
             style: TextStyle(
               fontFamily: 'ntn',
-              fontWeight: FontWeight.w400,
-              color: Colors.white,
+              fontWeight: FontWeight.w300,
+              color: theme.colorScheme.onSurface,
               fontSize: 15,
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 5),
         CustomInput(
           focusNode: focusNode,
-          hintText: 'Arbeits E-Mail Adresse',
-          width: 270,
+          hintText: 'Passwort',
+          width: 313,
           height: 60,
         ),
       ],
