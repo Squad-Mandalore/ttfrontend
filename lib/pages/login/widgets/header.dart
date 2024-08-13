@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../assets/colours/colours.dart';
+import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import '../../../modules/utilities/custom_painter_login.dart';
 
 class Header extends StatelessWidget {
@@ -7,6 +7,9 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final customColors = theme.extension<CustomThemeExtension>();
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -14,18 +17,34 @@ class Header extends StatelessWidget {
           width: double.infinity,
           height: 230,
           child: CustomPaint(
-            painter: HeaderPainter(backgroundColor: AppColours.greenPrimary),
+            painter: HeaderPainter(
+              backgroundColor:
+                  customColors?.primaryColor ?? theme.colorScheme.primary,
+            ),
           ),
         ),
-        const Text(
-          'Schmidt’s \nHandwerksbetrieb',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'ntn',
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-            fontSize: 35,
+        Text.rich(
+          TextSpan(
+            text: "Schmidt’s\n",
+            style: TextStyle(
+              fontFamily: 'ntn',
+              fontWeight: FontWeight.w700,
+              color: theme.colorScheme.onPrimary,
+              fontSize: 40, // Larger font size for "Schmidt’s"
+            ),
+            children: [
+              TextSpan(
+                text: "Handwerksbetrieb",
+                style: TextStyle(
+                  fontFamily: 'ntn',
+                  fontWeight: FontWeight.w700,
+                  color: theme.colorScheme.onPrimary,
+                  fontSize: 32, // Smaller font size for "Handwerksbetrieb"
+                ),
+              ),
+            ],
           ),
+          textAlign: TextAlign.center,
         ),
       ],
     );
