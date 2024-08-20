@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
+import 'package:ttfrontend/pages/home_page.dart';
 import 'package:ttfrontend/pages/login/widgets/divider.dart';
 import 'package:ttfrontend/pages/login/widgets/email_input.dart';
 import 'package:ttfrontend/pages/login/widgets/login_button.dart';
@@ -91,7 +92,13 @@ class LoginPageState extends State<LoginPage> {
               const SizedBox(height: 50),
               LoginButton(
                 onPressed: () {
-                  // login logic
+                  // Perform login logic
+
+                  // After successful login, navigate to HomePage
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
                 },
               ),
               const SizedBox(height: 25),
