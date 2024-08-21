@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:ttfrontend/pages/theme_selection/theme_selection_page.dart';
+import 'package:ttfrontend/pages/timer/debug_clear_prefs.dart';
 import 'package:ttfrontend/pages/timer/timer.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +20,7 @@ class HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
-    _pageController.jumpToPage(index); // Navigate to the corresponding page
+    _pageController.jumpToPage(index);
   }
 
   void _onPageChanged(int index) {
@@ -29,17 +30,24 @@ class HomePageState extends State<HomePage> {
   }
 
   // Function to generate the dynamic app bar title
-  Widget _buildAppBarTitle(int index) {
+  Widget _buildAppBarTitle(int index, Color textColor) {
     switch (index) {
       case 0:
-        return const Text('Zeitenübersicht');
+        return Text(
+          'Zeitenübersicht',
+          style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+        );
       case 1:
-        return const Text('Zeitmanagement');
+        return Text(
+          'Zeitmanagement',
+          style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+        );
       case 2:
         return const Row(
+          // TODO: Replace with actual search widget
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(child: SearchBar()), // Replace with actual search widget
+            Expanded(child: SearchBar()),
           ],
         );
       default:
@@ -51,29 +59,30 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final customColors = theme.extension<CustomThemeExtension>();
-    final customBackgroundColor = theme.colorScheme.secondary;
-    final customIconColor =
-        customColors?.primaryAccent1 ?? theme.colorScheme.primary;
-    final unselectedIconColor = theme.colorScheme.onSurface;
+    final customBackgroundColor = theme.colorScheme.primary;
+    final customIconColor = theme.colorScheme.onPrimary;
+    final unselectedIconColor =
+        customColors?.primaryAccent6 ?? theme.colorScheme.onPrimary;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: customBackgroundColor,
+        backgroundColor: customColors?.headerColor ?? customBackgroundColor,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Image.asset(
-            'lib/assets/images/squad_mandalore_original.png', // Your small image here
+            'lib/assets/images/squad_mandalore_original.png',
             width: 30,
             height: 30,
             fit: BoxFit.contain,
           ),
         ),
-        title: _buildAppBarTitle(_selectedIndex), // Dynamic title based on page
+        title: _buildAppBarTitle(_selectedIndex,
+            theme.colorScheme.onPrimary), // Dynamic title based on page
         centerTitle: _selectedIndex == 2,
         actions: [
           IconButton(
             icon: const Icon(Icons.palette),
-            color: theme.colorScheme.onSurface,
+            color: theme.colorScheme.onPrimary,
             onPressed: () {
               // Navigate to theme selection page
               Navigator.push(
@@ -89,10 +98,9 @@ class HomePageState extends State<HomePage> {
         controller: _pageController,
         onPageChanged: _onPageChanged,
         children: const [
-          Center(child: Text('Übersicht Page')),
+          DebugClearPrefsButton(),
           TimerPage(),
-          Center(
-              child: Text('Aufgaben Page')), // This one will have a search bar
+          Center(child: Text('Aufgaben Page')),
         ],
       ),
       bottomNavigationBar: SizedBox(
@@ -100,12 +108,11 @@ class HomePageState extends State<HomePage> {
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
-          backgroundColor: customBackgroundColor, // Background color from theme
-          selectedItemColor: customIconColor, // Icon color when selected
-          unselectedItemColor:
-              unselectedIconColor, // Icon color when not selected
-          showSelectedLabels: true, // Only show the text when selected
-          showUnselectedLabels: false, // Hide text when not selected
+          backgroundColor: customColors?.headerColor ?? customBackgroundColor,
+          selectedItemColor: customIconColor,
+          unselectedItemColor: unselectedIconColor,
+          showSelectedLabels: true,
+          showUnselectedLabels: false,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month),

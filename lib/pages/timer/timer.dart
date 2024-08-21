@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ttfrontend/pages/timer/widgets/aufgaben_button.dart';
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key});
@@ -9,62 +11,94 @@ class TimerPage extends StatefulWidget {
 }
 
 class TimerPageState extends State<TimerPage> {
-  // States for the modes of the buttons
-  ArbeitszeitButtonMode _arbeitszeitMode = ArbeitszeitButtonMode.start;
-  ArbeitszeitButtonMode _fahrtzeitMode = ArbeitszeitButtonMode.start;
+  ArbeitszeitButtonMode _arbeitszeitMode = ArbeitszeitButtonMode.deactivated;
+  ArbeitszeitButtonMode _fahrtzeitMode = ArbeitszeitButtonMode.deactivated;
+  String? _currentTask;
 
-  // This function handles the transition logic for the Arbeitszeit button
-  void _handleArbeitszeitPress(String action) {
-    setState(() {
-      if (_arbeitszeitMode == ArbeitszeitButtonMode.start) {
-        _arbeitszeitMode = ArbeitszeitButtonMode.split; // Start → Split
-        _fahrtzeitMode = ArbeitszeitButtonMode.start; // Start → Start
-      } else if (_arbeitszeitMode == ArbeitszeitButtonMode.split) {
-        if (action == 'stop') {
-          _arbeitszeitMode = ArbeitszeitButtonMode.start; // Split → Start
-        } else if (action == 'pause') {
-          _arbeitszeitMode =
-              ArbeitszeitButtonMode.stop; // Split → Warning (Pause Mode)
-        }
-      } else if (_arbeitszeitMode == ArbeitszeitButtonMode.stop) {
-        _arbeitszeitMode =
-            ArbeitszeitButtonMode.split; // Warning → Split (Pause beenden)
-      }
-    });
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentTask(); // Load the task when the app starts
   }
 
-  // This function handles the transition logic for the Fahrtzeit button
-  void _handleFahrtzeitPress() {
+  // Load the task from shared preferences
+  Future<void> _loadCurrentTask() async {
+    final prefs = await SharedPreferences.getInstance();
+    final task = prefs.getString('currentTask');
+
+    // Set state once the task is loaded
+    if (task != null) {
+      setState(() {
+        _currentTask = task;
+        _arbeitszeitMode = ArbeitszeitButtonMode.start;
+        _fahrtzeitMode = ArbeitszeitButtonMode.start;
+      });
+    }
+  }
+
+  // Save the task to shared preferences
+  Future<void> _saveCurrentTask(String task) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('currentTask', task);
+  }
+
+  // Callback for when a task is selected
+  void _onTaskSelected(String task) {
     setState(() {
-      if (_fahrtzeitMode == ArbeitszeitButtonMode.start) {
-        _fahrtzeitMode = ArbeitszeitButtonMode.stop; // Start → Stop Mode
-        _arbeitszeitMode = ArbeitszeitButtonMode.start; // Stop → Start Mode
-      } else {
-        _fahrtzeitMode = ArbeitszeitButtonMode.start; // Stop → Start Mode
-      }
+      _arbeitszeitMode = _arbeitszeitMode == ArbeitszeitButtonMode.deactivated
+          ? ArbeitszeitButtonMode.start
+          : _arbeitszeitMode;
+      _fahrtzeitMode = _fahrtzeitMode == ArbeitszeitButtonMode.deactivated
+          ? ArbeitszeitButtonMode.start
+          : _fahrtzeitMode;
     });
+    _saveCurrentTask(task);
   }
 
   @override
   Widget build(BuildContext context) {
+    final double horizontalPadding =
+        MediaQuery.of(context).size.width * 0.1; // 10% padding
+
     return Center(
       child: Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 16.0), // Consistent padding
+        padding: EdgeInsets.symmetric(
+            horizontal: horizontalPadding), // Global 10% padding
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start, // Align to the left
+          mainAxisAlignment:
+              MainAxisAlignment.spaceBetween, // Center the content
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Arbeitszeit Section
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 16.0), // Space above and below text
-              child: Text(
-                "Arbeitszeit",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: Theme.of(context).colorScheme.onSurface,
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Momentane Aufgabe",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ),
+            ),
+            AufgabenButton(
+              onTaskSelected: _onTaskSelected,
+              initialTask: _currentTask,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Arbeitszeit",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               ),
             ),
@@ -81,14 +115,16 @@ class TimerPageState extends State<TimerPage> {
 
             // Fahrtzeit Section
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 16.0), // Space above and below text
-              child: Text(
-                "Fahrtzeit",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: Theme.of(context).colorScheme.onSurface,
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Fahrtzeit",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               ),
             ),
@@ -99,24 +135,43 @@ class TimerPageState extends State<TimerPage> {
               secondaryText: "heute 1 min",
               mode: _fahrtzeitMode,
               onPressed: _handleFahrtzeitPress,
-              onPausePressed: null, // No pause functionality for Fahrtzeit
-              onStopPressed: _handleFahrtzeitPress, // Handle as stop
+              onPausePressed: null,
+              onStopPressed: _handleFahrtzeitPress,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 16.0), // Space above and below text
-              child: Text(
-                "Aufgabe",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
-            ),
+            const Spacer()
           ],
         ),
       ),
     );
+  }
+
+  // Transition logic for the Arbeitszeit button
+  void _handleArbeitszeitPress(String action) {
+    setState(() {
+      if (_arbeitszeitMode == ArbeitszeitButtonMode.start) {
+        _arbeitszeitMode = ArbeitszeitButtonMode.split;
+        _fahrtzeitMode = ArbeitszeitButtonMode.start;
+      } else if (_arbeitszeitMode == ArbeitszeitButtonMode.split) {
+        if (action == 'stop') {
+          _arbeitszeitMode = ArbeitszeitButtonMode.start;
+        } else if (action == 'pause') {
+          _arbeitszeitMode = ArbeitszeitButtonMode.stop;
+        }
+      } else if (_arbeitszeitMode == ArbeitszeitButtonMode.stop) {
+        _arbeitszeitMode = ArbeitszeitButtonMode.split;
+      }
+    });
+  }
+
+  // Transition logic for the Fahrtzeit button
+  void _handleFahrtzeitPress() {
+    setState(() {
+      if (_fahrtzeitMode == ArbeitszeitButtonMode.start) {
+        _fahrtzeitMode = ArbeitszeitButtonMode.stop;
+        _arbeitszeitMode = ArbeitszeitButtonMode.start;
+      } else {
+        _fahrtzeitMode = ArbeitszeitButtonMode.start;
+      }
+    });
   }
 }
