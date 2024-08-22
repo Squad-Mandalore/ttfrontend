@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ttfrontend/pages/timer/widgets/aufgaben_button.dart';
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key});
@@ -14,6 +15,20 @@ class TimerPageState extends State<TimerPage> {
   ArbeitszeitButtonMode _arbeitszeitMode = ArbeitszeitButtonMode.deactivated;
   ArbeitszeitButtonMode _fahrtzeitMode = ArbeitszeitButtonMode.deactivated;
   String? _currentTask;
+
+  Timer? _timer;
+  DateTime? _arbeitszeitStartTime;
+  DateTime? _pauseStartTime;
+  DateTime? _fahrtzeitStartTime;
+
+  Duration _arbeitszeitDuration = Duration.zero;
+  Duration _pauseDuration = Duration.zero;
+  Duration _fahrtzeitDuration = Duration.zero;
+
+  bool _isArbeitszeitRunning = false;
+  bool _isPauseRunning = false;
+  bool _isFahrtzeitRunning = false;
+
   final List<String> _dummyTasks = [
     'Haus bauen',
     'Auto reparieren',
@@ -24,7 +39,119 @@ class TimerPageState extends State<TimerPage> {
   @override
   void initState() {
     super.initState();
-    _loadCurrentTask(); // Load the task when the app starts
+    _loadCurrentTask();
+    _loadTimers();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _loadTimers() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final arbeitszeitStartTimeMillis = prefs.getInt('arbeitszeitStartTime');
+    final pauseStartTimeMillis = prefs.getInt('pauseStartTime');
+    final fahrtzeitStartTimeMillis = prefs.getInt('fahrtzeitStartTime');
+
+    final arbeitszeitDurationMillis = prefs.getInt('arbeitszeitDuration');
+    final pauseDurationMillis = prefs.getInt('pauseDuration');
+    final fahrtzeitDurationMillis = prefs.getInt('fahrtzeitDuration');
+
+    setState(() {
+      if (arbeitszeitStartTimeMillis != null) {
+        _arbeitszeitStartTime =
+            DateTime.fromMillisecondsSinceEpoch(arbeitszeitStartTimeMillis);
+        _isArbeitszeitRunning = true;
+        _arbeitszeitMode = ArbeitszeitButtonMode.split;
+      }
+
+      if (pauseStartTimeMillis != null) {
+        _pauseStartTime =
+            DateTime.fromMillisecondsSinceEpoch(pauseStartTimeMillis);
+        _isPauseRunning = true;
+        _arbeitszeitMode = ArbeitszeitButtonMode.stop;
+      }
+
+      if (fahrtzeitStartTimeMillis != null) {
+        _fahrtzeitStartTime =
+            DateTime.fromMillisecondsSinceEpoch(fahrtzeitStartTimeMillis);
+        _isFahrtzeitRunning = true;
+        _fahrtzeitMode = ArbeitszeitButtonMode.stop;
+      }
+
+      if (arbeitszeitDurationMillis != null) {
+        _arbeitszeitDuration =
+            Duration(milliseconds: arbeitszeitDurationMillis);
+      }
+
+      if (pauseDurationMillis != null) {
+        _pauseDuration = Duration(milliseconds: pauseDurationMillis);
+      }
+
+      if (fahrtzeitDurationMillis != null) {
+        _fahrtzeitDuration = Duration(milliseconds: fahrtzeitDurationMillis);
+      }
+    });
+  }
+
+  Future<void> _saveTimers() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (_arbeitszeitStartTime != null) {
+      prefs.setInt('arbeitszeitStartTime',
+          _arbeitszeitStartTime!.millisecondsSinceEpoch);
+    }
+
+    if (_pauseStartTime != null) {
+      prefs.setInt('pauseStartTime', _pauseStartTime!.millisecondsSinceEpoch);
+    }
+
+    if (_fahrtzeitStartTime != null) {
+      prefs.setInt(
+          'fahrtzeitStartTime', _fahrtzeitStartTime!.millisecondsSinceEpoch);
+    }
+
+    prefs.setInt('arbeitszeitDuration', _arbeitszeitDuration.inMilliseconds);
+    prefs.setInt('pauseDuration', _pauseDuration.inMilliseconds);
+    prefs.setInt('fahrtzeitDuration', _fahrtzeitDuration.inMilliseconds);
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) {
+        setState(() {
+          _updateDurations();
+        });
+      }
+    });
+  }
+
+  void _updateDurations() {
+    final now = DateTime.now();
+
+    if (_isArbeitszeitRunning && _arbeitszeitStartTime != null) {
+      _arbeitszeitDuration =
+          now.difference(_arbeitszeitStartTime!) - _pauseDuration;
+    }
+
+    if (_isPauseRunning && _pauseStartTime != null) {
+      _pauseDuration += now.difference(_pauseStartTime!);
+      _pauseStartTime = now;
+    }
+
+    if (_isFahrtzeitRunning && _fahrtzeitStartTime != null) {
+      _fahrtzeitDuration = now.difference(_fahrtzeitStartTime!);
+    }
+  }
+
+  String _formatDuration(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    return '$hours:${minutes.toString().padLeft(2, '0')}';
   }
 
   // Load the task from shared preferences
@@ -32,30 +159,120 @@ class TimerPageState extends State<TimerPage> {
     final prefs = await SharedPreferences.getInstance();
     final task = prefs.getString('currentTask');
 
-    // Set state once the task is loaded
     if (task != null) {
       setState(() {
-        _currentTask = task; // TODO: Add check if task still exists
+        _currentTask = task;
         _arbeitszeitMode = ArbeitszeitButtonMode.start;
         _fahrtzeitMode = ArbeitszeitButtonMode.start;
       });
     }
   }
 
-  // Save the task to shared preferences
   Future<void> _saveCurrentTask(String task) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('currentTask', task);
   }
 
-  // Callback for when a task is selected
   void _onTaskSelected(String task) {
     setState(() {
       _currentTask = task;
       _arbeitszeitMode = ArbeitszeitButtonMode.start;
       _fahrtzeitMode = ArbeitszeitButtonMode.start;
     });
-    _saveCurrentTask(task); // Save the selected task
+    _saveCurrentTask(task);
+  }
+
+  // --------------------------------------------
+
+  void _handleArbeitszeitPress(String action) {
+    setState(() {
+      if (_arbeitszeitMode == ArbeitszeitButtonMode.start) {
+        _handleArbeitszeitStart();
+      } else if (_arbeitszeitMode == ArbeitszeitButtonMode.split) {
+        if (action == 'stop') {
+          _handleArbeitszeitStop();
+        } else if (action == 'pause') {
+          _handleArbeitszeitPauseStart();
+        }
+      } else if (_arbeitszeitMode == ArbeitszeitButtonMode.stop) {
+        _handlePauseStop();
+      }
+    });
+  }
+
+  void _handleArbeitszeitStart() {
+    setState(() {
+      _arbeitszeitMode = ArbeitszeitButtonMode.split;
+      _fahrtzeitMode = ArbeitszeitButtonMode.start;
+
+      _isArbeitszeitRunning = true;
+      _arbeitszeitStartTime = DateTime.now();
+      _pauseDuration = Duration.zero;
+      _saveTimers();
+    });
+  }
+
+  void _handleArbeitszeitPauseStart() {
+    setState(() {
+      _arbeitszeitMode = ArbeitszeitButtonMode.stop;
+      _isPauseRunning = true;
+      _pauseStartTime = DateTime.now();
+      _saveTimers();
+    });
+  }
+
+  void _handleArbeitszeitStop() {
+    setState(() {
+      _arbeitszeitMode = ArbeitszeitButtonMode.start;
+      _isArbeitszeitRunning = false;
+      _arbeitszeitDuration +=
+          DateTime.now().difference(_arbeitszeitStartTime!) - _pauseDuration;
+      _arbeitszeitStartTime = null;
+      _saveTimers();
+    });
+  }
+
+  void _handlePauseStop() {
+    setState(() {
+      _arbeitszeitMode = ArbeitszeitButtonMode.split;
+      _isPauseRunning = false;
+      _pauseDuration += DateTime.now().difference(_pauseStartTime!);
+      _pauseStartTime = null;
+      _saveTimers();
+    });
+  }
+
+  // --------------------------------------------
+
+  void _handleFahrtzeitPress() {
+    setState(() {
+      if (_fahrtzeitMode == ArbeitszeitButtonMode.start) {
+        _handleFahrtzeitStart();
+      } else {
+        _handleFahrtzeitStop();
+      }
+    });
+  }
+
+  void _handleFahrtzeitStart() {
+    setState(() {
+      _fahrtzeitMode = ArbeitszeitButtonMode.stop;
+      _arbeitszeitMode = ArbeitszeitButtonMode.start;
+
+      _isFahrtzeitRunning = true;
+      _fahrtzeitStartTime = DateTime.now();
+      _saveTimers();
+    });
+  }
+
+  void _handleFahrtzeitStop() {
+    setState(() {
+      _fahrtzeitMode = ArbeitszeitButtonMode.start;
+      _isFahrtzeitRunning = false;
+      _fahrtzeitDuration += DateTime.now().difference(_fahrtzeitStartTime!);
+      _fahrtzeitStartTime = null;
+      _saveTimers();
+    });
   }
 
   @override
@@ -65,8 +282,7 @@ class TimerPageState extends State<TimerPage> {
 
     return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: horizontalPadding), // Global 10% padding
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,7 +303,7 @@ class TimerPageState extends State<TimerPage> {
               ),
             ),
             AufgabenButton(
-              tasks: _dummyTasks, // Passing dummy tasks
+              tasks: _dummyTasks,
               onTaskSelected: _onTaskSelected,
               initialTask: _currentTask,
             ),
@@ -98,7 +314,9 @@ class TimerPageState extends State<TimerPage> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Arbeitszeit",
+                  _isPauseRunning
+                      ? "Arbeitszeit: ${_formatDuration(_arbeitszeitDuration)}"
+                      : "Arbeitszeit",
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w400,
@@ -108,10 +326,18 @@ class TimerPageState extends State<TimerPage> {
               ),
             ),
             ArbeitszeitButton(
-              buttonText: _arbeitszeitMode == ArbeitszeitButtonMode.start
-                  ? "Arbeitszeit Starten"
-                  : "Pause beenden",
-              secondaryText: "heute 1 min",
+              buttonText: _isArbeitszeitRunning
+                  ? "Pause beenden"
+                  : "Arbeitszeit starten",
+              secondaryText: _pauseDuration != Duration.zero
+                  ? _isPauseRunning
+                      ? "Pause: ${_formatDuration(_pauseDuration)}"
+                      : _arbeitszeitDuration != Duration.zero
+                          ? "Arbeitszeit: ${_formatDuration(_arbeitszeitDuration)}"
+                          : "Starte deine Arbeitszeit"
+                  : _arbeitszeitMode == ArbeitszeitButtonMode.deactivated
+                      ? "Wähle eine Aufgabe"
+                      : "Starte deine Arbeitszeit",
               mode: _arbeitszeitMode,
               onPressed: () => _handleArbeitszeitPress('stop'),
               onPausePressed: () => _handleArbeitszeitPress('pause'),
@@ -134,75 +360,21 @@ class TimerPageState extends State<TimerPage> {
               ),
             ),
             ArbeitszeitButton(
-              buttonText: _fahrtzeitMode == ArbeitszeitButtonMode.start
-                  ? "Fahrtzeit Starten"
-                  : "Fahrt beenden",
-              secondaryText: "heute 1 min",
+              buttonText:
+                  _isFahrtzeitRunning ? "Fahrt stoppen" : "Fahrt starten",
+              secondaryText: _fahrtzeitDuration != Duration.zero
+                  ? "Fahrt ${_formatDuration(_fahrtzeitDuration)}"
+                  : _fahrtzeitMode == ArbeitszeitButtonMode.deactivated
+                      ? "Wähle eine Aufgabe"
+                      : "Starte deine Fahrtzeit",
               mode: _fahrtzeitMode,
               onPressed: _handleFahrtzeitPress,
-              onPausePressed: null,
               onStopPressed: _handleFahrtzeitPress,
             ),
-            const Spacer()
+            const Spacer(),
           ],
         ),
       ),
     );
-  }
-
-// --------------------------------------------
-
-  void _handleArbeitszeitPress(String action) {
-    setState(() {
-      if (_arbeitszeitMode == ArbeitszeitButtonMode.start) {
-        _handleArbeitszeitStart();
-      } else if (_arbeitszeitMode == ArbeitszeitButtonMode.split) {
-        if (action == 'stop') {
-          _handleArbeitszeitStop();
-        } else if (action == 'pause') {
-          _handleArbeitszeitPauseStart();
-        }
-      } else if (_arbeitszeitMode == ArbeitszeitButtonMode.stop) {
-        _handlePauseStop();
-      }
-    });
-  }
-
-  void _handleArbeitszeitStart() {
-    _arbeitszeitMode = ArbeitszeitButtonMode.split;
-    _fahrtzeitMode = ArbeitszeitButtonMode.start;
-  }
-
-  void _handleArbeitszeitPauseStart() {
-    _arbeitszeitMode = ArbeitszeitButtonMode.stop;
-  }
-
-  void _handleArbeitszeitStop() {
-    _arbeitszeitMode = ArbeitszeitButtonMode.start;
-  }
-
-  void _handlePauseStop() {
-    _arbeitszeitMode = ArbeitszeitButtonMode.split;
-  }
-
-// --------------------------------------------
-
-  void _handleFahrtzeitPress() {
-    setState(() {
-      if (_fahrtzeitMode == ArbeitszeitButtonMode.start) {
-        _handleFahrtzeitStart();
-      } else {
-        _handleFahrtzeitStop();
-      }
-    });
-  }
-
-  void _handleFahrtzeitStart() {
-    _fahrtzeitMode = ArbeitszeitButtonMode.stop;
-    _arbeitszeitMode = ArbeitszeitButtonMode.start;
-  }
-
-  void _handleFahrtzeitStop() {
-    _fahrtzeitMode = ArbeitszeitButtonMode.start;
   }
 }
