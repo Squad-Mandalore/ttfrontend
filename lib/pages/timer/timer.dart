@@ -337,7 +337,7 @@ class TimerPageState extends State<TimerPage> {
                           : "Starte deine Arbeitszeit"
                   : _arbeitszeitMode == ArbeitszeitButtonMode.deactivated
                       ? "Wähle eine Aufgabe"
-                      : "Starte deine Arbeitszeit",
+                      : "Arbeitszeit: ${_formatDuration(_arbeitszeitDuration)}",
               mode: _arbeitszeitMode,
               onPressed: () => _handleArbeitszeitPress('stop'),
               onPausePressed: () => _handleArbeitszeitPress('pause'),
