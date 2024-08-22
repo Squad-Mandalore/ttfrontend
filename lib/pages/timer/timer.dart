@@ -207,7 +207,6 @@ class TimerPageState extends State<TimerPage> {
 
       _isArbeitszeitRunning = true;
       _arbeitszeitStartTime = DateTime.now();
-      _pauseDuration = Duration.zero;
       _saveTimers();
     });
   }
@@ -326,9 +325,8 @@ class TimerPageState extends State<TimerPage> {
               ),
             ),
             ArbeitszeitButton(
-              buttonText: _isArbeitszeitRunning
-                  ? "Pause beenden"
-                  : "Arbeitszeit starten",
+              buttonText:
+                  _isPauseRunning ? "Pause beenden" : "Arbeitszeit starten",
               secondaryText: _pauseDuration != Duration.zero
                   ? _isPauseRunning
                       ? "Pause: ${_formatDuration(_pauseDuration)}"
