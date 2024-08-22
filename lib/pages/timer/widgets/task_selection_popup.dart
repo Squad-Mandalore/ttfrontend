@@ -57,7 +57,7 @@ class TaskSelectionPopup extends StatelessWidget {
                         Text(
                           'Aufgaben',
                           style: TextStyle(
-                            color: theme.colorScheme.onPrimary,
+                            color: theme.colorScheme.onSurface,
                             fontSize: 20,
                             fontWeight: FontWeight.w400,
                           ),
@@ -68,13 +68,12 @@ class TaskSelectionPopup extends StatelessWidget {
                   ),
                   Divider(
                     thickness: 1.5,
-                    color: Colors.grey[300],
+                    color: theme.colorScheme.onSurface.withOpacity(0.7),
                     height: 1,
                   ),
                   Expanded(
                     child: Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: globalPadding),
+                      padding: const EdgeInsets.all(globalPadding),
                       child: ListView.builder(
                         itemCount:
                             tasks.length + 1, // Add one for the new task button
@@ -89,14 +88,13 @@ class TaskSelectionPopup extends StatelessWidget {
                                   // New task logic
                                 },
                                 child: DottedBorder(
-                                  color: customColors?.backgroundAccent2 ??
-                                      theme.colorScheme.surface,
+                                  color: theme.colorScheme.onSurface,
                                   strokeWidth: 2,
                                   borderType: BorderType.RRect,
                                   radius: const Radius.circular(8),
-                                  dashPattern: const [6, 3],
+                                  dashPattern: const [20, 15],
                                   child: Container(
-                                    height: 50,
+                                    height: 60,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       color: Colors.transparent,
@@ -104,9 +102,7 @@ class TaskSelectionPopup extends StatelessWidget {
                                     child: Center(
                                       child: Icon(
                                         Icons.add,
-                                        color:
-                                            customColors?.backgroundAccent2 ??
-                                                theme.colorScheme.surface,
+                                        color: theme.colorScheme.onSurface,
                                         size: 40,
                                       ),
                                     ),
@@ -124,9 +120,9 @@ class TaskSelectionPopup extends StatelessWidget {
                                 onTaskSelected(tasks[index]);
                               },
                               child: Container(
-                                height: 50,
+                                height: 60,
                                 decoration: BoxDecoration(
-                                  color: customColors?.primaryAccent2 ??
+                                  color: customColors?.backgroundAccent1 ??
                                       theme.colorScheme.primary,
                                   borderRadius: BorderRadius.circular(8),
                                   boxShadow: [
@@ -152,10 +148,11 @@ class TaskSelectionPopup extends StatelessWidget {
                                             TextPainter(
                                           text: TextSpan(
                                             text: displayText,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
-                                              color: Colors.white,
+                                              color:
+                                                  theme.colorScheme.onSurface,
                                             ),
                                           ),
                                           maxLines: 1,
@@ -174,8 +171,8 @@ class TaskSelectionPopup extends StatelessWidget {
 
                                         return Text(
                                           displayText,
-                                          style: const TextStyle(
-                                            color: Colors.white,
+                                          style: TextStyle(
+                                            color: theme.colorScheme.onSurface,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -201,7 +198,7 @@ class TaskSelectionPopup extends StatelessWidget {
                         child: Text(
                           'Abbrechen',
                           style: TextStyle(
-                            color: theme.colorScheme.onPrimary,
+                            color: theme.colorScheme.onSurface,
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),
