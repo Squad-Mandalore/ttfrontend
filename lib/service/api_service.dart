@@ -7,15 +7,21 @@ import 'models/token.dart';
 import 'models/graphql_query.dart';
 
 class TimeTrackingApi {
-  final String baseUrl;
+  var baseUrl = Uri.parse('http://localhost:3000/');
   String? accessToken;
-
-  TimeTrackingApi(this.baseUrl);
+  var headers = {
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Connection': 'keep-alive',
+    'DNT': '1',
+    'Origin': 'http://localhost:3000',
+  };
 
   Future<Token> login(String email, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/login'),
-      headers: {'Content-Type': 'application/json'},
+      headers: headers,
       body: jsonEncode(Login(email: email, password: password)),
     );
 
@@ -29,7 +35,7 @@ class TimeTrackingApi {
   Future<Token> refresh(String refreshToken) async {
     final response = await http.post(
       Uri.parse('$baseUrl/refresh'),
-      headers: {'Content-Type': 'application/json'},
+      headers: headers,
       body: jsonEncode({'refreshToken': refreshToken}),
     );
 
@@ -46,7 +52,12 @@ class TimeTrackingApi {
     final response = await http.post(
       Uri.parse('$baseUrl/graphql'),
       headers: {
+        'Accept-Encoding': 'gzip, deflate, br',
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Connection': 'keep-alive',
+        'DNT': '1',
+        'Origin': 'http://localhost:3000',
         'Authorization': 'Bearer $accessToken', // Add Bearer token if available
       },
       body: jsonEncode(GraphQLQuery(query: query, variables: variables)),
