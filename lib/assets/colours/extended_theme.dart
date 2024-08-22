@@ -32,6 +32,8 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
   final Color bigButtonPauseColor;
   final Color bigButtonHighlightBoxColor;
 
+  final Color popupBackgroundColor;
+
   CustomThemeExtension({
     required this.headerColor,
     required this.primaryAccent1,
@@ -61,6 +63,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     required this.bigButtonHighlightBoxColor,
     required this.bigButtonPauseColor,
     required this.bigButtonStopColor,
+    required this.popupBackgroundColor,
   });
 
   @override
@@ -93,6 +96,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     Color? bigButtonStopColor,
     Color? bigButtonPauseColor,
     Color? bigButtonHighlightBoxColor,
+    Color? popupBackgroundColor,
   }) {
     return CustomThemeExtension(
       headerColor: headerColor ?? this.headerColor,
@@ -124,6 +128,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
       bigButtonPauseColor: bigButtonPauseColor ?? this.bigButtonPauseColor,
       bigButtonHighlightBoxColor:
           bigButtonHighlightBoxColor ?? this.bigButtonHighlightBoxColor,
+      popupBackgroundColor: popupBackgroundColor ?? this.popupBackgroundColor,
     );
   }
 
@@ -173,6 +178,8 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
           Color.lerp(bigButtonPauseColor, other.bigButtonPauseColor, t)!,
       bigButtonHighlightBoxColor: Color.lerp(
           bigButtonHighlightBoxColor, other.bigButtonHighlightBoxColor, t)!,
+      popupBackgroundColor:
+          Color.lerp(popupBackgroundColor, other.popupBackgroundColor, t)!,
     );
   }
 }

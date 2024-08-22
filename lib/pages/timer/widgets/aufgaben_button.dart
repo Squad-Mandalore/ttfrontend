@@ -4,10 +4,12 @@ import 'package:ttfrontend/pages/timer/widgets/task_selection_popup.dart';
 class AufgabenButton extends StatefulWidget {
   final Function(String) onTaskSelected;
   final String? initialTask;
+  final List<String> tasks;
 
   const AufgabenButton({
     super.key,
     required this.onTaskSelected,
+    required this.tasks,
     this.initialTask,
   });
 
@@ -16,18 +18,17 @@ class AufgabenButton extends StatefulWidget {
 }
 
 class AufgabenButtonState extends State<AufgabenButton> {
-  String _selectedTask = "Aufgabe auswählen"; // Default text
-  bool _isPopupOpen = false; // Track if the popup is open
+  String _selectedTask = "Aufgabe auswählen";
+  bool _isPopupOpen = false;
 
   @override
   void initState() {
     super.initState();
     if (widget.initialTask != null) {
-      _selectedTask = widget.initialTask!; // Set the initial task if present
+      _selectedTask = widget.initialTask!;
     }
   }
 
-  // This is called whenever the widget is rebuilt with new properties.
   @override
   void didUpdateWidget(AufgabenButton oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -39,35 +40,28 @@ class AufgabenButtonState extends State<AufgabenButton> {
     }
   }
 
-  void _openTaskSelectionPopup(BuildContext context) async {
+  void _openTaskSelectionPopup(BuildContext context) {
     setState(() {
-      _isPopupOpen = true; // Set popup open state
+      _isPopupOpen = true;
     });
 
-    final selectedTask = await showDialog<String>(
+    showDialog(
       context: context,
       builder: (context) {
         return TaskSelectionPopup(
+          tasks: widget.tasks,
           onTaskSelected: (task) {
-            Navigator.of(context).pop(task);
+            // Call the task selected callback and close the popup.
+            setState(() {
+              _selectedTask = task;
+              widget.onTaskSelected(task);
+              _isPopupOpen = false;
+            });
+            Navigator.of(context).pop(); // Close the popup manually.
           },
         );
       },
     );
-
-    setState(() {
-      _isPopupOpen = false; // Set popup closed state
-    });
-
-    // Update the selected task when a task is chosen
-    if (selectedTask != null) {
-      setState(() {
-        _selectedTask = selectedTask;
-      });
-
-      // Trigger the callback to notify about the task change
-      widget.onTaskSelected(selectedTask);
-    }
   }
 
   @override
@@ -97,18 +91,50 @@ class AufgabenButtonState extends State<AufgabenButton> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              _selectedTask,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final availableWidth =
+                      constraints.maxWidth - 40; // Reserve space for the icon
+                  String displayText = _selectedTask;
+
+                  final TextPainter textPainter = TextPainter(
+                    text: TextSpan(
+                      text: displayText,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    maxLines: 1,
+                    textDirection: TextDirection.ltr,
+                  )..layout(maxWidth: availableWidth);
+
+                  if (textPainter.didExceedMaxLines) {
+                    // Truncate text based on available width
+                    final int cutoff = textPainter
+                        .getPositionForOffset(Offset(availableWidth, 0))
+                        .offset;
+                    displayText = '${_selectedTask.substring(0, cutoff)}...';
+                  }
+
+                  return Text(
+                    displayText,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  );
+                },
               ),
             ),
             AnimatedRotation(
-              turns: _isPopupOpen ? 0.5 : 0.0, // Rotate 180 degrees when open
+              turns: _isPopupOpen ? 0.5 : 0.0,
               duration: const Duration(milliseconds: 200),
-              curve: Easing.emphasizedDecelerate,
+              curve: Curves.easeInOut,
               child: const Icon(
                 Icons.arrow_drop_down,
                 color: Colors.white,
