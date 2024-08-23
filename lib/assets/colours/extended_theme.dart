@@ -27,6 +27,12 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
 
   final Color inputBoxColor;
   final Color borderColor;
+  final Color bigButtonColor;
+  final Color bigButtonStopColor;
+  final Color bigButtonPauseColor;
+  final Color bigButtonHighlightBoxColor;
+
+  final Color popupBackgroundColor;
 
   CustomThemeExtension({
     required this.headerColor,
@@ -53,6 +59,11 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     required this.backgroundAccent10,
     required this.inputBoxColor,
     required this.borderColor,
+    required this.bigButtonColor,
+    required this.bigButtonHighlightBoxColor,
+    required this.bigButtonPauseColor,
+    required this.bigButtonStopColor,
+    required this.popupBackgroundColor,
   });
 
   @override
@@ -81,6 +92,11 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     Color? backgroundAccent10,
     Color? inputBoxColor,
     Color? borderColor,
+    Color? bigButtonColor,
+    Color? bigButtonStopColor,
+    Color? bigButtonPauseColor,
+    Color? bigButtonHighlightBoxColor,
+    Color? popupBackgroundColor,
   }) {
     return CustomThemeExtension(
       headerColor: headerColor ?? this.headerColor,
@@ -107,6 +123,12 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
       backgroundAccent10: backgroundAccent10 ?? this.backgroundAccent10,
       inputBoxColor: inputBoxColor ?? this.inputBoxColor,
       borderColor: borderColor ?? this.borderColor,
+      bigButtonColor: bigButtonColor ?? this.bigButtonColor,
+      bigButtonStopColor: bigButtonStopColor ?? this.bigButtonStopColor,
+      bigButtonPauseColor: bigButtonPauseColor ?? this.bigButtonPauseColor,
+      bigButtonHighlightBoxColor:
+          bigButtonHighlightBoxColor ?? this.bigButtonHighlightBoxColor,
+      popupBackgroundColor: popupBackgroundColor ?? this.popupBackgroundColor,
     );
   }
 
@@ -149,6 +171,15 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
           Color.lerp(backgroundAccent10, other.backgroundAccent10, t)!,
       inputBoxColor: Color.lerp(inputBoxColor, other.inputBoxColor, t)!,
       borderColor: Color.lerp(borderColor, other.borderColor, t)!,
+      bigButtonColor: Color.lerp(bigButtonColor, other.bigButtonColor, t)!,
+      bigButtonStopColor:
+          Color.lerp(bigButtonStopColor, other.bigButtonStopColor, t)!,
+      bigButtonPauseColor:
+          Color.lerp(bigButtonPauseColor, other.bigButtonPauseColor, t)!,
+      bigButtonHighlightBoxColor: Color.lerp(
+          bigButtonHighlightBoxColor, other.bigButtonHighlightBoxColor, t)!,
+      popupBackgroundColor:
+          Color.lerp(popupBackgroundColor, other.popupBackgroundColor, t)!,
     );
   }
 }
