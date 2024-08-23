@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import '../../../assets/colours/colours.dart';
 
 class CustomDivider extends StatelessWidget {
-  const CustomDivider({Key? key}) : super(key: key);
+  const CustomDivider({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Divider(
-      color: AppColours.inputBoxDark,
+      color: theme.colorScheme.onSurface.withOpacity(0.3),
       thickness: 2,
-      indent: 50,
-      endIndent: 50,
+      indent: 55,
+      endIndent: 55,
     );
   }
 }

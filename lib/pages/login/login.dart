@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:ttfrontend/pages/login/widgets/divider.dart';
-import 'package:ttfrontend/pages/login/widgets/emailInput.dart';
-import 'package:ttfrontend/pages/login/widgets/loginButton.dart';
-import 'package:ttfrontend/pages/login/widgets/passwordInput.dart';
-import 'package:ttfrontend/pages/login/widgets/registerButton.dart';
+import 'package:ttfrontend/assets/colours/extended_theme.dart';
+import 'package:ttfrontend/pages/home_page.dart';
+// import 'package:ttfrontend/pages/login/widgets/divider.dart';
+import 'package:ttfrontend/pages/login/widgets/email_input.dart';
+import 'package:ttfrontend/pages/login/widgets/login_button.dart';
+import 'package:ttfrontend/pages/login/widgets/password_input.dart';
+// import 'package:ttfrontend/pages/login/widgets/register_button.dart';
 import 'widgets/header.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   bool _showHeader = true;
-  FocusNode _emailFocusNode = FocusNode();
-  FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -49,17 +51,25 @@ class _LoginPageState extends State<LoginPage> {
 
     bool shouldShowHeader = _showHeader && height >= 800;
 
+    final theme = Theme.of(context);
+    final customColors = theme.extension<CustomThemeExtension>();
+
     return Scaffold(
       body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         child: Container(
           height: height,
           width: width,
           decoration: BoxDecoration(
+            color: customColors?.backgroundColor,
             image: DecorationImage(
-              image: AssetImage('lib/assets/images/loginPage_logo.png'),
+              image: const AssetImage(
+                  'lib/assets/images/loginPage_logo_original.png'),
               fit: BoxFit.contain,
               alignment: Alignment.bottomRight,
+              opacity: 0.4,
+              colorFilter: ColorFilter.mode(
+                  theme.colorScheme.surface, BlendMode.softLight),
             ),
           ),
           child: Column(
@@ -67,8 +77,9 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: shouldShowHeader ? 0 : 100),
               AnimatedOpacity(
                 opacity: shouldShowHeader ? 1.0 : 0.0,
-                duration: Duration(milliseconds: 300),
-                child: shouldShowHeader ? const Header() : SizedBox.shrink(),
+                duration: const Duration(milliseconds: 300),
+                child:
+                    shouldShowHeader ? const Header() : const SizedBox.shrink(),
               ),
               SizedBox(height: shouldShowHeader ? 30 : 0),
               EmailInput(
@@ -81,17 +92,23 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 50),
               LoginButton(
                 onPressed: () {
-                  // login logic
+                  // Perform login logic
+
+                  // After successful login, navigate to HomePage
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
                 },
               ),
-              const SizedBox(height: 20),
-              CustomDivider(),
-              const SizedBox(height: 20),
-              RegisterButton(
-                onPressed: () {
-                  // registration logic
-                },
-              ),
+              // const SizedBox(height: 25),
+              // const CustomDivider(),
+              // const SizedBox(height: 25),
+              // RegisterButton(
+              //   onPressed: () {
+              //     // registration logic
+              //   },
+              // ),
               SizedBox(height: height * 0.10),
             ],
           ),

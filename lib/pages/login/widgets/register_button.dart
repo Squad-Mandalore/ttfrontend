@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import '../../../assets/colours/colours.dart';
 import '../../../modules/widgets/custom_button.dart';
 
 class RegisterButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const RegisterButton({Key? key, required this.onPressed}) : super(key: key);
+  const RegisterButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return CustomButton(
       buttonText: 'Registrieren',
-      buttonColour: AppColours.magenta,
+      buttonColour: theme.colorScheme.secondary,
       buttonHeight: 50,
-      buttonWidth: 270,
-      textSize: 24,
-      borderColor: Colors.white,
+      buttonWidth: 313,
+      textSize: 20,
+      onTap: onPressed,
     );
   }
 }

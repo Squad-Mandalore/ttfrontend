@@ -8,9 +8,10 @@ class CustomButton extends StatelessWidget {
   final double? buttonWidth;
   final double textSize;
   final Color? borderColor;
+  final VoidCallback? onTap;
 
   const CustomButton({
-    Key? key,
+    super.key,
     this.buttonText,
     required this.buttonColour,
     this.iconData,
@@ -18,15 +19,18 @@ class CustomButton extends StatelessWidget {
     required this.buttonWidth,
     required this.textSize,
     this.borderColor,
-  }) : super(key: key);
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
+    const textColor = Colors.white;
+
     return Material(
       elevation: 8.0,
       borderRadius: BorderRadius.circular(12.0),
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           height: buttonHeight,
           width: buttonWidth,
@@ -46,7 +50,7 @@ class CustomButton extends StatelessWidget {
                 if (iconData != null)
                   Icon(
                     iconData,
-                    color: Colors.white,
+                    color: textColor,
                   ),
                 if (iconData != null && buttonText != null)
                   const SizedBox(width: 10),
@@ -55,8 +59,8 @@ class CustomButton extends StatelessWidget {
                     buttonText!,
                     style: TextStyle(
                       fontSize: textSize,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
               ],

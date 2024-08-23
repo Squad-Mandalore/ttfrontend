@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:ttfrontend/assets/colours/colours.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:ttfrontend/pages/login/login.dart';
+import 'package:ttfrontend/pages/theme_selection/theme_provider/theme_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -11,20 +23,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: AppColours.bgDark,
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(
-            fontFamily: 'ntn',
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      home: const LoginPage(), // initial Page
+      title: 'Squad Mandalore Zeitmessung',
+      theme: themeProvider.lightTheme,
+      darkTheme: themeProvider.darkTheme,
+      themeMode: themeProvider.themeMode,
+      home: const LoginPage(),
     );
   }
 }
