@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 
-enum ArbeitszeitButtonMode { start, split, stop, deactivated }
+enum WorkTimeButtonMode { start, split, stop, deactivated }
 
-class ArbeitszeitButton extends StatelessWidget {
-  final ArbeitszeitButtonMode mode;
+class WorkTimeButton extends StatelessWidget {
+  final WorkTimeButtonMode mode;
   final String buttonText;
   final String secondaryText;
   final VoidCallback? onPressed;
   final VoidCallback? onPausePressed;
   final VoidCallback? onStopPressed;
 
-  const ArbeitszeitButton({
+  const WorkTimeButton({
     super.key,
     required this.mode,
     required this.buttonText,
@@ -30,9 +30,9 @@ class ArbeitszeitButton extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         // Main Button or Split Buttons depending on mode
-        if (mode == ArbeitszeitButtonMode.start ||
-            mode == ArbeitszeitButtonMode.stop ||
-            mode == ArbeitszeitButtonMode.deactivated)
+        if (mode == WorkTimeButtonMode.start ||
+            mode == WorkTimeButtonMode.stop ||
+            mode == WorkTimeButtonMode.deactivated)
           Stack(
             children: [
               Container(
@@ -44,14 +44,14 @@ class ArbeitszeitButton extends StatelessWidget {
                     bottomLeft: Radius.circular(0),
                     bottomRight: Radius.circular(0),
                   ),
-                  color: mode == ArbeitszeitButtonMode.stop
+                  color: mode == WorkTimeButtonMode.stop
                       ? customColors?.bigButtonStopColor ??
                           theme.colorScheme.error // Stop mode color
                       : customColors?.bigButtonColor ??
                           theme.colorScheme.primary, // Button color from theme
                 ),
                 child: MaterialButton(
-                  onPressed: mode == ArbeitszeitButtonMode.deactivated
+                  onPressed: mode == WorkTimeButtonMode.deactivated
                       ? null
                       : onPressed,
                   height: 144,
@@ -72,7 +72,7 @@ class ArbeitszeitButton extends StatelessWidget {
                   ),
                 ),
               ),
-              if (mode == ArbeitszeitButtonMode.deactivated)
+              if (mode == WorkTimeButtonMode.deactivated)
                 Container(
                   height: 144, // Same height as the button
                   width: MediaQuery.of(context).size.width,
@@ -86,7 +86,7 @@ class ArbeitszeitButton extends StatelessWidget {
                 ),
             ],
           )
-        else if (mode == ArbeitszeitButtonMode.split)
+        else if (mode == WorkTimeButtonMode.split)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

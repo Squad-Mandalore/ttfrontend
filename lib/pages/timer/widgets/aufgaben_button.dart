@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/pages/timer/widgets/task_selection_popup.dart';
 
-class AufgabenButton extends StatefulWidget {
+class TasksButton extends StatefulWidget {
   final Function(String) onTaskSelected;
   final String? initialTask;
   final List<String> tasks;
 
-  const AufgabenButton({
+  const TasksButton({
     super.key,
     required this.onTaskSelected,
     required this.tasks,
@@ -14,10 +14,10 @@ class AufgabenButton extends StatefulWidget {
   });
 
   @override
-  AufgabenButtonState createState() => AufgabenButtonState();
+  TasksButtonState createState() => TasksButtonState();
 }
 
-class AufgabenButtonState extends State<AufgabenButton> {
+class TasksButtonState extends State<TasksButton> {
   String _selectedTask = "Aufgabe auswählen";
   bool _isPopupOpen = false;
 
@@ -30,7 +30,7 @@ class AufgabenButtonState extends State<AufgabenButton> {
   }
 
   @override
-  void didUpdateWidget(AufgabenButton oldWidget) {
+  void didUpdateWidget(TasksButton oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialTask != oldWidget.initialTask &&
         widget.initialTask != null) {

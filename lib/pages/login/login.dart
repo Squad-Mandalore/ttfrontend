@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:ttfrontend/pages/home_page.dart';
-import 'package:ttfrontend/pages/login/widgets/divider.dart';
+// import 'package:ttfrontend/pages/login/widgets/divider.dart';
 import 'package:ttfrontend/pages/login/widgets/email_input.dart';
 import 'package:ttfrontend/pages/login/widgets/login_button.dart';
 import 'package:ttfrontend/pages/login/widgets/password_input.dart';
-import 'package:ttfrontend/pages/login/widgets/register_button.dart';
+// import 'package:ttfrontend/pages/login/widgets/register_button.dart';
 import 'widgets/header.dart';
 
 class LoginPage extends StatefulWidget {
@@ -101,14 +101,14 @@ class LoginPageState extends State<LoginPage> {
                   );
                 },
               ),
-              const SizedBox(height: 25),
-              const CustomDivider(),
-              const SizedBox(height: 25),
-              RegisterButton(
-                onPressed: () {
-                  // registration logic
-                },
-              ),
+              // const SizedBox(height: 25),
+              // const CustomDivider(),
+              // const SizedBox(height: 25),
+              // RegisterButton(
+              //   onPressed: () {
+              //     // registration logic
+              //   },
+              // ),
               SizedBox(height: height * 0.10),
             ],
           ),
