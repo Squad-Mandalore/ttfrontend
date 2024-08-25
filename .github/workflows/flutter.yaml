@@ -1,0 +1,28 @@
+name: Flutter
+
+on:
+  pull_request:
+    branches: [ "dev", "master" ]
+  push:
+    # Publish semver tags as releases.
+    tags: [ 'v[0-9]+.[0-9]+.[0-9]+' ]
+
+jobs:
+  build:
+    name: Build, Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: action/checkout@v4
+      - name: Setup
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: 'gradle'
+      - name: Setup
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+      - run: flutter pub get
+      - name: Test
