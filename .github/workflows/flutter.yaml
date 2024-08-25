@@ -14,16 +14,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Setup
+      - name: Setup java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
           cache: 'gradle'
-      - name: Setup
+      - name: Setup flutter
         uses: subosito/flutter-action@v2
         with:
           cache: true
       - run: flutter pub get
+      - name: Build web
+        run: flutter build web --release
+      - name: Build apk
+        run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: build
+          retention-days: 1
       - name: Test
         run: flutter test
