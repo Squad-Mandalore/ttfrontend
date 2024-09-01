@@ -13,7 +13,7 @@ class ThemeSelectionPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Theme'),
+        title: const Text('Design Auswählen'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,11 +34,11 @@ class ThemeSelectionPage extends StatelessWidget {
                 ),
                 DropdownMenuItem(
                   value: ThemeMode.light,
-                  child: Text('Light'),
+                  child: Text('Hell'),
                 ),
                 DropdownMenuItem(
                   value: ThemeMode.dark,
-                  child: Text('Dark'),
+                  child: Text('Dunkel'),
                 ),
               ],
             ),
@@ -62,7 +62,7 @@ class ThemeSelectionPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             CustomButton(
-              buttonText: 'Hardworking Brown',
+              buttonText: 'Schwerstarbeiter Braun',
               buttonColour: _getButtonColor(
                 selectedTheme == 'HardworkingBrown',
                 themeProvider,
@@ -80,7 +80,7 @@ class ThemeSelectionPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             CustomButton(
-              buttonText: 'Peasent Blue',
+              buttonText: 'Bauern Blau',
               buttonColour: _getButtonColor(
                 selectedTheme == 'PeasentBlue',
                 themeProvider,
@@ -98,7 +98,7 @@ class ThemeSelectionPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             CustomButton(
-              buttonText: 'Grassy Fields',
+              buttonText: 'Landschafts Grün',
               buttonColour: _getButtonColor(
                 selectedTheme == 'GrassyFields',
                 themeProvider,
@@ -134,7 +134,7 @@ class ThemeSelectionPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             CustomButton(
-              buttonText: 'Schmidt Brand',
+              buttonText: "Schmidt's Handwerksbetrieb",
               buttonColour: _getButtonColor(
                 selectedTheme == 'SchmidtBrand',
                 themeProvider,

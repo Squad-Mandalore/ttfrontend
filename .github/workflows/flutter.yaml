@@ -1,0 +1,39 @@
+name: Flutter
+
+on:
+  pull_request:
+    branches: [ "dev", "master" ]
+  push:
+    # Publish semver tags as releases.
+    tags: [ 'v[0-9]+.[0-9]+.[0-9]+' ]
+
+jobs:
+  build:
+    name: Build, Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: 'gradle'
+      - name: Setup flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+      - run: flutter pub get
+      # The flutter build command defaults to --release. [Docu](https://docs.flutter.dev/deployment/android)
+      - name: Build web
+        run: flutter build web
+      - name: Build apk
+        run: flutter build apk --split-per-abi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: build
+          retention-days: 1
+      - name: Test
+        run: flutter test
