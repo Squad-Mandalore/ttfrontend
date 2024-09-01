@@ -6,9 +6,11 @@ import 'models/login.dart';
 import 'models/token.dart';
 import 'models/graphql_query.dart';
 
-class TimeTrackingApi {
-  var baseUrl = Uri.parse('http://localhost:3000/');
-  String? accessToken;
+class ApiService {
+  // For testing purpose -> localhost unknown for emulator
+  // https://medium.com/@podcoder/connecting-flutter-application-to-localhost-a1022df63130
+  var baseUrl = Uri.parse('http://192.168.178.89:3000');
+  static Token? token;
   var headers = {
     'Accept-Encoding': 'gzip, deflate, br',
     'Content-Type': 'application/json',
@@ -26,7 +28,7 @@ class TimeTrackingApi {
     );
 
     if (response.statusCode == 200) {
-      return Token.fromJson(jsonDecode(response.body));
+      return token = Token.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Login failed with status code: ${response.statusCode}');
     }
@@ -58,7 +60,7 @@ class TimeTrackingApi {
         'Connection': 'keep-alive',
         'DNT': '1',
         'Origin': 'http://localhost:3000',
-        'Authorization': 'Bearer $accessToken', // Add Bearer token if available
+        'Authorization': 'bearer ${token?.accessToken}', // Add Bearer token if available
       },
       body: jsonEncode(GraphQLQuery(query: query, variables: variables)),
     );
