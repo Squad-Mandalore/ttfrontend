@@ -38,8 +38,7 @@ class CustomInput extends StatelessWidget {
         obscureText: obscureText,
         keyboardType: keyboardType,
         style: TextStyle(
-          color: customColors?.borderColor ??
-              theme.textTheme.bodyMedium?.color,
+          color: customColors?.borderColor ?? theme.textTheme.bodyMedium?.color,
         ),
         decoration: InputDecoration(
           filled: true,
@@ -60,15 +59,13 @@ class CustomInput extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
-              color: customColors?.borderColor ??
-                  theme.dividerColor,
+              color: customColors?.borderColor ?? theme.dividerColor,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
-              color: customColors?.borderColor ??
-                  theme.primaryColor,
+              color: customColors?.borderColor ?? theme.primaryColor,
             ),
           ),
         ),
