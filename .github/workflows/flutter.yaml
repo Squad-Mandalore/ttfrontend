@@ -37,3 +37,5 @@ jobs:
           retention-days: 1
       - name: Test
         run: flutter test
+      - name: Analyse
+        run: flutter analyze --fatal-warnings
