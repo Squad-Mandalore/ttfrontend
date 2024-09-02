@@ -1,5 +1,15 @@
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
+import 'package:ttfrontend/service/api_service.dart';
 import 'package:ttfrontend/service/log_service.dart';
+import 'package:ttfrontend/service/models/login.dart';
+import 'package:ttfrontend/service/models/token.dart';
+
+import 'log_test.mocks.dart';
+
+@GenerateNiceMocks([MockSpec<ApiService>()])
+
 
 // it can only be 'tested' when a debugger is attached so I am just testing if the function can run
 void main() {
@@ -44,6 +54,18 @@ void main() {
       const description = 'fatal description';
 
       fatal(message, description: description);
+    });
+  });
+
+  group('ApiServiceTest', () {
+
+    var apiService = MockApiService();
+    Token token = Token(accessToken: "accessToken123", refreshToken: "refreshToken321");
+    Login login = Login(email:"John@Doe.com", password: "password123");
+
+    test('loginTest', ()  {
+      when(apiService.login(login.email, login.email)).thenAnswer((_) async => token);
+
     });
   });
 }
