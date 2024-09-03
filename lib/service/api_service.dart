@@ -8,9 +8,9 @@ import 'models/token.dart';
 
 class ApiService {
   /* For testing purpose -> localhost unknown for emulator use local ip */
-  var baseurl = Uri.parse('http://192.168.178.89:3000');
+  var baseurl = Uri.parse('http://10.0.2.2:3000');
   /* GraphQL HttpLink -> Different Object than baseUrl */
-  final _httpLink = HttpLink('http://192.168.178.89:3000');
+  final _httpLink = HttpLink('http://10.0.2.2:3000');
   /* static saved token */
   static Token? token;
   /* common headers vor request */
