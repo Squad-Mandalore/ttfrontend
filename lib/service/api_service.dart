@@ -9,10 +9,16 @@ import 'models/token.dart';
 class ApiService {
   /* For testing purpose -> localhost unknown for emulator use local ip */
   var baseurl = Uri.parse('http://10.0.2.2:3000');
+
   /* GraphQL HttpLink -> Different Object than baseUrl */
   final _httpLink = HttpLink('http://10.0.2.2:3000');
+
   /* static saved token */
   static Token? token;
+
+  /* GraphQLClient for Widget*/
+  static ValueNotifier<GraphQLClient>? _client;
+
   /* common headers vor request */
   var headers = {
     'Accept-Encoding': 'gzip, deflate, br',
@@ -22,6 +28,7 @@ class ApiService {
     'DNT': '1',
     'Origin': 'http://localhost:3000',
   };
+
 
   void initGraphQL() async {
     await initHiveForFlutter();
@@ -33,6 +40,7 @@ class ApiService {
             cache: GraphQLCache(store: HiveStore()),
         ),
     );
+    _client = client;
   }
 
   Future<Token> login(String email, String password) async {
