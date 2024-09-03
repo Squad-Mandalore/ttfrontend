@@ -3,8 +3,9 @@ import '../../../modules/widgets/custom_input.dart';
 
 class PasswordInput extends StatelessWidget {
   final FocusNode focusNode;
+  final TextEditingController controller;
 
-  const PasswordInput({super.key, required this.focusNode});
+  const PasswordInput({super.key, required this.focusNode, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,7 @@ class PasswordInput extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         CustomInput(
+          controller: controller,
           focusNode: focusNode,
           hintText: 'Passwort',
           width: 313,
