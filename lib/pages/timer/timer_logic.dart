@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 import 'dart:async';
 
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
@@ -136,9 +137,9 @@ class TimerLogic extends ChangeNotifier {
   }
 
   // --------------------------------------------
-  void handleWorkTimePress(String action) {
+  void handleWorkTimePress(String action, BuildContext context) {
     if (workTimeMode == WorkTimeButtonMode.start) {
-      handleWorkTimeStart();
+      handleWorkTimeStart(context);
     } else if (workTimeMode == WorkTimeButtonMode.split) {
       if (action == 'stop') {
         handleWorkTimeStop();
@@ -163,7 +164,7 @@ class TimerLogic extends ChangeNotifier {
     await prefs.setString('currentTask', task);
   }
 
-  void handleWorkTimeStart() {
+  void handleWorkTimeStart(BuildContext context) {
     workTimeMode = WorkTimeButtonMode.split;
     handleDrivingTimeStop();
 
@@ -171,6 +172,50 @@ class TimerLogic extends ChangeNotifier {
     workTimeStartTime = DateTime.now();
     saveTimers();
     notifyListeners();
+    showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return GenericPopup(
+      title: "User Information",
+      mode: PopUpMode.warning,
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              labelText: "Name",
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            decoration: InputDecoration(
+              labelText: "Email",
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            "Please confirm your information before proceeding.",
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+      onAgree: () {
+        // Handle agree logic
+        Navigator.of(context).pop();
+      },
+      onDisagree: () {
+        // Handle disagree logic
+        Navigator.of(context).pop();
+      },
+    );
+  },
+);
+
   }
 
   void handleWorkTimePauseStart() {
