@@ -116,7 +116,7 @@ class LoginPageState extends State<LoginPage> {
                   }).catchError((error) =>
                   {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Invalid username or password')),
+                      const SnackBar(content: Text('E-Mail-Adresse oder Passwort ungültig')),
                     )
                   });
                 },
