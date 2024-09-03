@@ -119,7 +119,7 @@ class LoginPageState extends State<LoginPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('E-Mail-Adresse oder Passwort ungültig')),
                     ),
-                    info("Login invalid: $error")
+                    print("Login invalid: $error")
                   });
                 },
               ),
