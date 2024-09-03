@@ -17,7 +17,7 @@ class ApiService {
   static Token? token;
 
   /* GraphQLClient for Widget*/
-  static ValueNotifier<GraphQLClient>? _client;
+  static ValueNotifier<GraphQLClient>? clientQL;
 
   /* common headers vor request */
   var headers = {
@@ -40,7 +40,7 @@ class ApiService {
             cache: GraphQLCache(store: HiveStore()),
         ),
     );
-    _client = client;
+    clientQL = client;
   }
 
   Future<Token> login(String email, String password) async {
