@@ -98,6 +98,8 @@ class LoginPageState extends State<LoginPage> {
                 controller: _passwordController,
                 focusNode: _passwordFocusNode,
               ),
+              const SizedBox(height: 10),
+
               const SizedBox(height: 50),
               LoginButton(
                 onPressed: () async {
@@ -112,8 +114,11 @@ class LoginPageState extends State<LoginPage> {
                     (builder: (context) => const HomePage()),
                     )
                   }).catchError((error) =>
-                   error
-                  );
+                  {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Invalid username or password')),
+                    )
+                  });
                 },
               ),
               // const SizedBox(height: 25),
