@@ -29,6 +29,12 @@ class TimerLogic extends ChangeNotifier {
   bool isPauseRunning = false;
   bool isDrivingTimeRunning = false;
 
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   TimerLogic() {
     loadTimers();
     startTimer();
@@ -105,27 +111,34 @@ class TimerLogic extends ChangeNotifier {
     prefs.setInt('pauseDuration', pauseDuration.inMilliseconds);
     prefs.setInt('drivingTimeDuration', drivingTimeDuration.inMilliseconds);
   }
-
-  void startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+void startTimer() {
+  timer = Timer.periodic(const Duration(seconds: 1), (_) {
+    if (timer?.isActive ?? false) {
       _updateDurations();
-    });
-  }
-
-  void _updateDurations() {
-    // Only update the UI for current duration display, but don't add to the total duration.
-    if (isWorkTimeRunning && workTimeStartTime != null) {
-      notifyListeners();
     }
+  });
+}
 
-    if (isPauseRunning && pauseStartTime != null) {
-      notifyListeners();
-    }
-
-    if (isDrivingTimeRunning && drivingTimeStartTime != null) {
+void _updateDurations() {
+  if (isWorkTimeRunning && workTimeStartTime != null) {
+    if (hasListeners) {
       notifyListeners();
     }
   }
+
+  if (isPauseRunning && pauseStartTime != null) {
+    if (hasListeners) {
+      notifyListeners();
+    }
+  }
+
+  if (isDrivingTimeRunning && drivingTimeStartTime != null) {
+    if (hasListeners) {
+      notifyListeners();
+    }
+  }
+}
+
 
   String formatDuration(Duration duration) {
     final hours = duration.inHours;

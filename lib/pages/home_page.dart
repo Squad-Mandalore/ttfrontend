@@ -23,7 +23,14 @@ class HomePageState extends State<HomePage> {
     Task(id: '1', name: 'Test Task'),
     Task(id: '2', name: 'Test Task 2'),
     Task(id: '3', name: 'Test Task 3'),
-    Task(id: '4', name: 'Test Task 4 with a very long title')
+    Task(id: '4', name: 'Test Task 4 with a very long title'),
+    Task(id: '4', name: 'Test Task 4 with a very long title'),
+    Task(id: '4', name: 'Test Task 4 with a very long title'),
+    Task(id: '4', name: 'Test Task 4 with a very long title'),
+    Task(id: '4', name: 'Test Task 4 with a very long title'),
+    Task(id: '4', name: 'Test Task 4 with a very long title'),
+    Task(id: '4', name: 'Test Task 4 with a very long title'),
+    Task(id: '4', name: 'Test Task 4 with a very long title'),
   ];
 
   String _searchQuery = '';
@@ -56,7 +63,8 @@ class HomePageState extends State<HomePage> {
                 border: InputBorder.none,
                 filled: true,
                 fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               ),
               style: const TextStyle(color: Colors.black, fontSize: 18),
               onChanged: (query) {
@@ -170,7 +178,8 @@ class HomePageState extends State<HomePage> {
         children: [
           const DebugClearPrefsButton(),
           const TimerPage(),
-          TaskPage(tasks: tasks, searchQuery: _searchQuery), // Pass search query
+          TaskPage(
+              tasks: tasks, searchQuery: _searchQuery), // Pass search query
         ],
       ),
       bottomNavigationBar: SizedBox(

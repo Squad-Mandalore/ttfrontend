@@ -11,6 +11,8 @@ class AppTheme {
         surface: AppColours.bgLight,
         onSurface: Colors.black,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -63,6 +65,8 @@ class AppTheme {
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -116,6 +120,8 @@ class AppTheme {
         surface: AppColours.bgLight,
         onSurface: Colors.black,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -169,6 +175,8 @@ class AppTheme {
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -222,6 +230,8 @@ class AppTheme {
         surface: AppColours.bgLight,
         onSurface: Colors.black,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -275,6 +285,8 @@ class AppTheme {
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -328,6 +340,8 @@ class AppTheme {
         surface: AppColours.bgLight,
         onSurface: Colors.black,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -381,6 +395,8 @@ class AppTheme {
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -434,6 +450,8 @@ class AppTheme {
         surface: AppColours.bgLight,
         onSurface: Colors.black,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -487,6 +505,8 @@ class AppTheme {
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -540,6 +560,8 @@ class AppTheme {
         surface: Colors.white,
         onSurface: Colors.black,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -593,6 +615,8 @@ class AppTheme {
         surface: AppColours.bgDark,
         onSurface: Colors.white,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(

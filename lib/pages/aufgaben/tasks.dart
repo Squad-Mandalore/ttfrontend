@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 import 'package:ttfrontend/pages/aufgaben/util/task_filter.dart';
+import 'package:ttfrontend/pages/aufgaben/util/task_popup_logic.dart';
 
 class Task {
   final String id;
-  final String name;
+  String name;
 
   Task({required this.id, required this.name});
 }
 
 class TaskPage extends StatefulWidget {
   final List<Task> tasks;
-  final String searchQuery; // Add searchQuery as a parameter
+  final String searchQuery;
 
   const TaskPage({
     super.key,
     required this.tasks,
-    required this.searchQuery, // Initialize with searchQuery
+    required this.searchQuery,
   });
 
   @override
@@ -31,14 +31,14 @@ class TaskPageState extends State<TaskPage> {
   @override
   void initState() {
     super.initState();
-    _filterTasks(); // Call the filter function on init
+    _filterTasks();
   }
 
   @override
   void didUpdateWidget(TaskPage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.searchQuery != oldWidget.searchQuery) {
-      _filterTasks(); // Re-filter tasks if the search query changes
+      _filterTasks();
     }
   }
 
@@ -74,7 +74,15 @@ class TaskPageState extends State<TaskPage> {
                       surfaceTintColor: theme.colorScheme.onPrimary,
                     ),
                     onPressed: () {
-                      _showAddTaskPopup(context);
+                      TaskPopupLogic.showAddTaskPopup(context, (newTaskName) {
+                        setState(() {
+                          // Logic to add the task
+                          final newTask = Task(
+                              id: DateTime.now().toString(), name: newTaskName);
+                          widget.tasks.add(newTask);
+                          _filterTasks();
+                        });
+                      });
                     },
                     child: Text(
                       'Neue Aufgabe hinzufügen',
@@ -94,12 +102,22 @@ class TaskPageState extends State<TaskPage> {
                   ListView.builder(
                     itemCount: filteredTasks.length + 1,
                     itemBuilder: (context, index) {
-                      if (index == filteredTasks.length) {
+                      if (index == 0) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: GestureDetector(
                             onTap: () {
-                              _showAddTaskPopup(context);
+                              TaskPopupLogic.showAddTaskPopup(context,
+                                  (newTaskName) {
+                                setState(() {
+                                  // Logic to add the task
+                                  final newTask = Task(
+                                      id: DateTime.now().toString(),
+                                      name: newTaskName);
+                                  widget.tasks.add(newTask);
+                                  _filterTasks();
+                                });
+                              });
                             },
                             child: DottedBorder(
                               color: theme.colorScheme.onSurface,
@@ -126,7 +144,7 @@ class TaskPageState extends State<TaskPage> {
                         );
                       }
 
-                      final task = filteredTasks[index];
+                      final task = filteredTasks[index - 1];
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -155,11 +173,6 @@ class TaskPageState extends State<TaskPage> {
                                   ),
                                 ),
                               ),
-                              Divider(
-                                height: 1,
-                                color: theme.colorScheme.onSurface
-                                    .withOpacity(0.5),
-                              ),
                               Row(
                                 children: [
                                   Expanded(
@@ -182,8 +195,13 @@ class TaskPageState extends State<TaskPage> {
                                           ),
                                         ),
                                         onPressed: () {
-                                          _showDeleteConfirmation(
-                                              context, task);
+                                          TaskPopupLogic.showDeleteConfirmation(
+                                              context, task, () {
+                                            setState(() {
+                                              widget.tasks.remove(task);
+                                              _filterTasks();
+                                            });
+                                          });
                                         },
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(
@@ -193,20 +211,34 @@ class TaskPageState extends State<TaskPage> {
                                     ),
                                   ),
                                   Expanded(
-                                    child: TextButton.icon(
-                                      icon: Icon(
-                                        Icons.edit,
-                                        color: theme.colorScheme.primary,
-                                      ),
-                                      label: Text(
-                                        'Bearbeiten',
-                                        style: TextStyle(
-                                          color: theme.colorScheme.primary,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: theme.colorScheme.secondary,
+                                        borderRadius: const BorderRadius.only(
+                                          bottomRight: Radius.circular(8),
                                         ),
                                       ),
-                                      onPressed: () {
-                                        _showEditTaskPopup(context, task);
-                                      },
+                                      child: TextButton.icon(
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: theme.colorScheme.onSecondary,
+                                        ),
+                                        label: Text(
+                                          'Bearbeiten',
+                                          style: TextStyle(
+                                            color: theme.colorScheme.onSecondary,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          TaskPopupLogic.showEditTaskPopup(
+                                              context, task, (newTaskName) {
+                                            setState(() {
+                                              task.name = newTaskName;
+                                              _filterTasks();
+                                            });
+                                          });
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -222,7 +254,15 @@ class TaskPageState extends State<TaskPage> {
                     right: 10,
                     child: FloatingActionButton(
                       onPressed: () {
-                        _showAddTaskPopup(context);
+                        TaskPopupLogic.showAddTaskPopup(context, (newTaskName) {
+                          setState(() {
+                            final newTask = Task(
+                                id: DateTime.now().toString(),
+                                name: newTaskName);
+                            widget.tasks.add(newTask);
+                            _filterTasks();
+                          });
+                        });
                       },
                       child: const Icon(Icons.add),
                     ),
@@ -232,104 +272,4 @@ class TaskPageState extends State<TaskPage> {
             ),
     );
   }
-
-
-
-  void _showDeleteConfirmation(BuildContext context, Task task) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return GenericPopup(
-          title: 'Aufgabe löschen',
-          content: Column(
-            children: [
-              Text("Möchten Sie die Aufgabe ${task.name} wirklich löschen?"),
-              const Text(
-                  "Änderungen sind global und betreffen somit alle Benutzer."),
-            ],
-          ),
-          mode: PopUpMode.warning,
-          onAgree: () {
-            // Delete task logic using task.id
-            Navigator.of(context).pop();
-          },
-          onDisagree: () {
-            Navigator.of(context).pop();
-          },
-        );
-      },
-    );
-  }
-
-  void _showEditTaskPopup(BuildContext context, Task task) {
-    final TextEditingController controller =
-        TextEditingController(text: task.name);
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return GenericPopup(
-          title: 'Aufgabe bearbeiten',
-          content: Column(
-            children: [
-              TextField(
-                controller: controller,
-                decoration: InputDecoration(
-                  labelText: task.name,
-                  border: const OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                  "Änderungen sind global und für alle Benutzer sichtbar."),
-            ],
-          ),
-          mode: PopUpMode.agree,
-          onAgree: () {
-            // Edit task logic using task.id and controller.text
-            Navigator.of(context).pop();
-          },
-          onDisagree: () {
-            Navigator.of(context).pop();
-          },
-        );
-      },
-    );
-  }
-
-  void _showAddTaskPopup(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return GenericPopup(
-          title: 'Neue Aufgabe hinzufügen',
-          content: Column(
-            children: [
-              TextField(
-                controller: controller,
-                decoration: const InputDecoration(
-                  labelText: "Neue Aufgabe",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                  "Die neue Aufgabe wird global hinzugefügt und ist für alle Benutzer sichtbar."),
-            ],
-          ),
-          mode: PopUpMode.agree,
-          onAgree: () {
-            // Add task logic using controller.text
-            Navigator.of(context).pop();
-          },
-          onDisagree: () {
-            Navigator.of(context).pop();
-          },
-        );
-      },
-    );
-  }
-
 }

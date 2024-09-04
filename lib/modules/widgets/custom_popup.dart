@@ -9,6 +9,8 @@ class GenericPopup extends StatelessWidget {
   final PopUpMode mode; // The mode of the popup
   final VoidCallback? onAgree; // Optional in case not needed
   final VoidCallback? onDisagree; // Optional in case not needed
+  final String? cancleText; // Optional in case not needed
+  final String? agreeText; // Optional in case not needed
 
   const GenericPopup({
     super.key,
@@ -17,6 +19,8 @@ class GenericPopup extends StatelessWidget {
     required this.mode,
     this.onAgree,
     this.onDisagree,
+    this.cancleText,
+    this.agreeText,
   });
 
   @override
@@ -27,19 +31,18 @@ class GenericPopup extends StatelessWidget {
 
     const double globalPadding = 16.0;
 
-    Color backgroundColor =
+    Color backgroundColor = mode == PopUpMode.error ? theme.colorScheme.surface : 
         customColors?.popupBackgroundColor ?? theme.colorScheme.surface;
 
-    // Calculate the available height
     double availableHeight = mediaQuery.size.height - 300;
 
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth:
-              mediaQuery.size.width - 40, // Ensures left and right padding
+              mediaQuery.size.width - 40,
           maxHeight:
-              availableHeight, // Max height to prevent overlapping nav/app bars
+              availableHeight,
           minHeight: 200,
         ),
         child: Material(
@@ -60,7 +63,7 @@ class GenericPopup extends StatelessWidget {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min, // Shrinks to fit content
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   title,
@@ -95,7 +98,7 @@ class GenericPopup extends StatelessWidget {
                         TextButton(
                           onPressed: onDisagree,
                           child: Text(
-                            'Abbrechen',
+                            cancleText ?? 'Abbrechen',
                             style: TextStyle(
                               color: theme.colorScheme.secondary,
                               fontSize: 16,
@@ -109,15 +112,13 @@ class GenericPopup extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: mode == PopUpMode.agree
                                 ? theme.colorScheme.primary
-                                : mode == PopUpMode.warning
-                                    ? const Color.fromARGB(255, 223, 106, 11)
                                     : const Color(0xFFDE1A1A),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                           child: Text(
-                            mode == PopUpMode.agree
+                             agreeText != null ? agreeText! : mode == PopUpMode.agree
                                 ? 'Zustimmen'
                                 : mode == PopUpMode.warning
                                     ? 'OK'
