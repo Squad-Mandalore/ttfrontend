@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 import 'dart:async';
 
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
@@ -17,7 +16,7 @@ class TimerLogic extends ChangeNotifier {
     'Eine ganz lange Autobahn entlang fahren',
   ]; // Dummy tasks
 
-  Timer? _timer;
+  Timer? timer;
   DateTime? workTimeStartTime;
   DateTime? pauseStartTime;
   DateTime? drivingTimeStartTime;
@@ -108,14 +107,12 @@ class TimerLogic extends ChangeNotifier {
   }
 
   void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
       _updateDurations();
     });
   }
 
   void _updateDurations() {
-    final now = DateTime.now();
-
     // Only update the UI for current duration display, but don't add to the total duration.
     if (isWorkTimeRunning && workTimeStartTime != null) {
       notifyListeners();
@@ -137,9 +134,9 @@ class TimerLogic extends ChangeNotifier {
   }
 
   // --------------------------------------------
-  void handleWorkTimePress(String action, BuildContext context) {
+  void handleWorkTimePress(String action) {
     if (workTimeMode == WorkTimeButtonMode.start) {
-      handleWorkTimeStart(context);
+      handleWorkTimeStart();
     } else if (workTimeMode == WorkTimeButtonMode.split) {
       if (action == 'stop') {
         handleWorkTimeStop();
@@ -164,7 +161,7 @@ class TimerLogic extends ChangeNotifier {
     await prefs.setString('currentTask', task);
   }
 
-  void handleWorkTimeStart(BuildContext context) {
+  void handleWorkTimeStart() {
     workTimeMode = WorkTimeButtonMode.split;
     handleDrivingTimeStop();
 
@@ -172,50 +169,6 @@ class TimerLogic extends ChangeNotifier {
     workTimeStartTime = DateTime.now();
     saveTimers();
     notifyListeners();
-    showDialog(
-  context: context,
-  builder: (BuildContext context) {
-    return GenericPopup(
-      title: "User Information",
-      mode: PopUpMode.warning,
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextField(
-            decoration: InputDecoration(
-              labelText: "Name",
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            decoration: InputDecoration(
-              labelText: "Email",
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "Please confirm your information before proceeding.",
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 14,
-            ),
-          ),
-        ],
-      ),
-      onAgree: () {
-        // Handle agree logic
-        Navigator.of(context).pop();
-      },
-      onDisagree: () {
-        // Handle disagree logic
-        Navigator.of(context).pop();
-      },
-    );
-  },
-);
-
   }
 
   void handleWorkTimePauseStart() {

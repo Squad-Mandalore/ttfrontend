@@ -40,7 +40,7 @@ class GenericPopup extends StatelessWidget {
               mediaQuery.size.width - 40, // Ensures left and right padding
           maxHeight:
               availableHeight, // Max height to prevent overlapping nav/app bars
-          minHeight: 300,
+          minHeight: 200,
         ),
         child: Material(
           color: Colors.transparent,
