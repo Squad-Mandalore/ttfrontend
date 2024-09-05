@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/cupertino.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:ttfrontend/service/models/graphql_query.dart';
+import 'package:ttfrontend/service/models/graphql_response.dart';
 import 'models/login.dart';
 import 'models/token.dart';
 
@@ -10,14 +9,8 @@ class ApiService {
   /* For testing purpose -> localhost unknown for emulator use local ip */
   var baseurl = Uri.parse('http://10.0.2.2:3000');
 
-  /* GraphQL HttpLink -> Different Object than baseUrl */
-  final _httpLink = HttpLink('http://10.0.2.2:3000');
-
   /* static saved token */
   static Token? token;
-
-  /* GraphQLClient for Widget*/
-  static ValueNotifier<GraphQLClient>? clientQL;
 
   /* common headers vor request */
   var headers = {
@@ -28,20 +21,6 @@ class ApiService {
     'DNT': '1',
     'Origin': 'http://localhost:3000',
   };
-
-
-  void initGraphQL() async {
-    await initHiveForFlutter();
-    final authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(_httpLink);
-    ValueNotifier<GraphQLClient> client = ValueNotifier(
-        GraphQLClient(
-            link: link,
-            cache: GraphQLCache(store: HiveStore()),
-        ),
-    );
-    clientQL = client;
-  }
 
   Future<Token> login(String email, String password) async {
     final response = await http.post(
@@ -71,5 +50,28 @@ class ApiService {
           'Refresh failed with status code: ${response.statusCode}');
     }
   }
+
+  Future<GraphQLResponse> graphQLRequest(GraphQLQuery query) async {
+    try {
+      headers.addAll({'Authorization': 'Bearer ${token!.accessToken}'});
+      var response = await http.post(
+        Uri.parse('$baseurl/graphql'),
+        headers: headers,
+        body: json.encode(query),
+        encoding: Encoding.getByName('utf-8'), // Ensure proper encoding
+      );
+
+      if (response.statusCode == 200) {
+        print('Response body: ${response.body}');
+        return GraphQLResponse(data: jsonDecode(response.body));
+      } else {
+        throw Exception('Request Error ${response.statusCode}');
+      }
+    } catch (e) {
+      throw('An error occurred: $e');
+    }
+  }
+
+
 
 }
