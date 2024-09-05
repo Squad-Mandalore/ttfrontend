@@ -22,6 +22,8 @@ class ApiService {
     'Origin': 'http://localhost:3000',
   };
 
+  /// Request access and refresh token with [email] and [password]
+  /// response [Token]
   Future<Token> login(String email, String password) async {
     final response = await http.post(
       Uri.parse('$baseurl/login'),
@@ -36,6 +38,8 @@ class ApiService {
     }
   }
 
+  /// Request access and refresh token with [refreshToken]
+  /// response [Token.refreshToken]
   Future<Token> refresh(String refreshToken) async {
     final response = await http.post(
       Uri.parse('$baseurl/refresh'),
@@ -51,9 +55,13 @@ class ApiService {
     }
   }
 
+  /// Request to the GraphQL endpoint with [GraphQLQuery] object,
+  /// response -> [GraphQLResponse]
+  /// Do know, that there are no hardcoded models (e.g. worktime, employee ...)
+  /// and Query's / Mutations need to be tested
   Future<GraphQLResponse> graphQLRequest(GraphQLQuery query) async {
     try {
-      headers.addAll({'Authorization': 'Bearer ${token!.accessToken}'});
+      headers.addAll({""'Authorization': 'Bearer ${token!.accessToken}'});
       var response = await http.post(
         Uri.parse('$baseurl/graphql'),
         headers: headers,
@@ -71,7 +79,5 @@ class ApiService {
       throw('An error occurred: $e');
     }
   }
-
-
 
 }

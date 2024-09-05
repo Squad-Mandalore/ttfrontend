@@ -3,6 +3,8 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:ttfrontend/service/api_service.dart';
 import 'package:ttfrontend/service/log_service.dart';
+import 'package:ttfrontend/service/models/graphql_query.dart';
+import 'package:ttfrontend/service/models/graphql_response.dart';
 import 'package:ttfrontend/service/models/login.dart';
 import 'package:ttfrontend/service/models/token.dart';
 
@@ -62,10 +64,27 @@ void main() {
     var apiService = MockApiService();
     Token token = Token(accessToken: "accessToken123", refreshToken: "refreshToken321");
     Login login = Login(email:"John@Doe.com", password: "password123");
+    var response = GraphQLResponse(data: {"tasks":[{"taskid": 1, "taskDescription": "Neues Hobby suchen"}]});
+    var query = """
+        query {
+          task{
+            task_id
+            task_description
+          }
+        }
+        """;
 
     test('loginTest', ()  {
       when(apiService.login(login.email, login.email)).thenAnswer((_) async => token);
 
+    });
+
+    test('refreshTest', () {
+      when(apiService.refresh(token.refreshToken)).thenAnswer((_) async => token);
+    });
+
+    test('requestGraphQl', () {
+      when(apiService.graphQLRequest(GraphQLQuery(query: query))).thenAnswer((_) async => response);
     });
   });
 }
