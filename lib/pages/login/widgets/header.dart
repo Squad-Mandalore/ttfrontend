@@ -23,7 +23,7 @@ class Header extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             height: 230,
             child: CustomPaint(
