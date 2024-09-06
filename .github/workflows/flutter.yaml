@@ -9,7 +9,6 @@ on:
 
 jobs:
   build:
-    name: Build, Test
     runs-on: ubuntu-latest
 
     steps:
@@ -35,5 +34,25 @@ jobs:
           name: build-${{ github.sha }}
           path: build
           retention-days: 1
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: 'gradle'
+      - name: Setup flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+      - run: flutter pub get
+
       - name: Test
         run: flutter test
+      - name: Analyse
+        run: flutter analyze --fatal-warnings
