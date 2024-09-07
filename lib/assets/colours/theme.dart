@@ -3,17 +3,49 @@ import 'package:ttfrontend/assets/colours/colours.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 
 class AppTheme {
-  static ThemeData lightTelekomFunk() {
-    return ThemeData(
-      colorScheme: const ColorScheme.light(
-        primary: AppColours.greenPrimary,
-        secondary: AppColours.magenta,
-        surface: AppColours.bgLight,
-        onSurface: Colors.black,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
+  static DropdownMenuThemeData _dropdownMenuTheme(ColorScheme colorScheme) {
+  return DropdownMenuThemeData(
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: BorderSide(
+          color: colorScheme.onSurface.withOpacity(0.5),
+        ),
       ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: BorderSide(
+          color: colorScheme.onSurface.withOpacity(0.5),
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: BorderSide(
+          color: colorScheme.primary,
+          width: 2.0,
+        ),
+      ),
+      filled: true,
+      fillColor: colorScheme.surface,
+    ),
+  );
+}
+
+
+
+  static ThemeData lightTelekomFunk() {
+    const colorScheme = ColorScheme.light(
+      primary: AppColours.greenPrimary,
+      secondary: AppColours.magenta,
+      surface: AppColours.bgLight,
+      onSurface: Colors.black,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
+    return ThemeData(
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -22,52 +54,56 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
-            headerColor: AppColours.greenPrimary,
-            primaryAccent1: AppColours.greenAccent1,
-            primaryAccent2: AppColours.greenAccent2,
-            primaryAccent3: AppColours.greenAccent3,
-            primaryAccent4: AppColours.greenAccent4,
-            primaryAccent5: AppColours.greenAccent5,
-            primaryAccent6: AppColours.greenAccent6,
-            primaryAccent7: AppColours.greenAccent7,
-            primaryAccent8: AppColours.greenAccent8,
-            primaryAccent9: AppColours.greenAccent9,
-            primaryAccent10: AppColours.greenAccent10,
-            backgroundColor: AppColours.bgLight,
-            backgroundAccent1: Colors.grey.shade100,
-            backgroundAccent2: Colors.grey.shade200,
-            backgroundAccent3: Colors.grey.shade300,
-            backgroundAccent4: Colors.grey.shade400,
-            backgroundAccent5: Colors.grey.shade500,
-            backgroundAccent6: Colors.grey.shade600,
-            backgroundAccent7: Colors.grey.shade700,
-            backgroundAccent8: Colors.grey.shade800,
-            backgroundAccent9: Colors.grey.shade900,
-            backgroundAccent10: Colors.black,
-            inputBoxColor: AppColours.inputBoxLight,
-            borderColor: AppColours.borderColourLight,
-            bigButtonColor: AppColours.greenPrimary,
-            bigButtonHighlightBoxColor: AppColours.greenAccent3,
-            bigButtonPauseColor: AppColours.greenAccent9,
-            bigButtonStopColor: AppColours.magenta,
-            popupBackgroundColor: AppColours.bgLight),
+          headerColor: AppColours.greenPrimary,
+          primaryAccent1: AppColours.greenAccent1,
+          primaryAccent2: AppColours.greenAccent2,
+          primaryAccent3: AppColours.greenAccent3,
+          primaryAccent4: AppColours.greenAccent4,
+          primaryAccent5: AppColours.greenAccent5,
+          primaryAccent6: AppColours.greenAccent6,
+          primaryAccent7: AppColours.greenAccent7,
+          primaryAccent8: AppColours.greenAccent8,
+          primaryAccent9: AppColours.greenAccent9,
+          primaryAccent10: AppColours.greenAccent10,
+          backgroundColor: AppColours.bgLight,
+          backgroundAccent1: Colors.grey.shade100,
+          backgroundAccent2: Colors.grey.shade200,
+          backgroundAccent3: Colors.grey.shade300,
+          backgroundAccent4: Colors.grey.shade400,
+          backgroundAccent5: Colors.grey.shade500,
+          backgroundAccent6: Colors.grey.shade600,
+          backgroundAccent7: Colors.grey.shade700,
+          backgroundAccent8: Colors.grey.shade800,
+          backgroundAccent9: Colors.grey.shade900,
+          backgroundAccent10: Colors.black,
+          inputBoxColor: AppColours.inputBoxLight,
+          borderColor: AppColours.borderColourLight,
+          bigButtonColor: AppColours.greenPrimary,
+          bigButtonHighlightBoxColor: AppColours.greenAccent3,
+          bigButtonPauseColor: AppColours.greenAccent9,
+          bigButtonStopColor: AppColours.magenta,
+          popupBackgroundColor: AppColours.bgLight,
+        ),
       ],
     );
   }
 
   static ThemeData darkTelekomFunk() {
+    const colorScheme = ColorScheme.dark(
+      primary: AppColours.greenPrimary,
+      secondary: AppColours.magenta,
+      surface: AppColours.bgDark,
+      onSurface: Colors.white,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.dark(
-        primary: AppColours.greenPrimary,
-        secondary: AppColours.magenta,
-        surface: AppColours.bgDark,
-        onSurface: Colors.white,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -76,6 +112,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: AppColours.greenPrimary,
@@ -113,16 +150,18 @@ class AppTheme {
   }
 
   static ThemeData lightHardworkingBrown() {
+    const colorScheme = ColorScheme.light(
+      primary: Color(0xFF723a11),
+      secondary: Color(0xFFb79987),
+      surface: AppColours.bgLight,
+      onSurface: Colors.black,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.light(
-        primary: Color(0xFF723a11),
-        secondary: Color(0xFFb79987),
-        surface: AppColours.bgLight,
-        onSurface: Colors.black,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -131,6 +170,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF723a11),
@@ -168,16 +208,18 @@ class AppTheme {
   }
 
   static ThemeData darkHardworkingBrown() {
+    const colorScheme = ColorScheme.dark(
+      primary: Color(0xFF723a11),
+      secondary: Color(0xFF3F2513),
+      surface: AppColours.bgDark,
+      onSurface: Colors.white,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF723a11),
-        secondary: Color(0xFF3F2513),
-        surface: AppColours.bgDark,
-        onSurface: Colors.white,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -186,6 +228,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF723a11),
@@ -223,16 +266,18 @@ class AppTheme {
   }
 
   static ThemeData lightPeasentBlue() {
+    const colorScheme = ColorScheme.light(
+      primary: Color(0xFF247cbc),
+      secondary: Color(0xFF8CBCDC),
+      surface: AppColours.bgLight,
+      onSurface: Colors.black,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.light(
-        primary: Color(0xFF247cbc),
-        secondary: Color(0xFF8CBCDC),
-        surface: AppColours.bgLight,
-        onSurface: Colors.black,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -241,6 +286,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF247cbc),
@@ -278,16 +324,18 @@ class AppTheme {
   }
 
   static ThemeData darkPeasentBlue() {
+    const colorScheme = ColorScheme.dark(
+      primary: Color(0xFF247cbc),
+      secondary: Color(0xFF13435F),
+      surface: AppColours.bgDark,
+      onSurface: Colors.white,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF247cbc),
-        secondary: Color(0xFF13435F),
-        surface: AppColours.bgDark,
-        onSurface: Colors.white,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -296,6 +344,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF247cbc),
@@ -333,16 +382,18 @@ class AppTheme {
   }
 
   static ThemeData lightGrassyFields() {
+    const colorScheme = ColorScheme.light(
+      primary: Color(0xFF587504),
+      secondary: Color(0xFFA8B683),
+      surface: AppColours.bgLight,
+      onSurface: Colors.black,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.light(
-        primary: Color(0xFF587504),
-        secondary: Color(0xFFA8B683),
-        surface: AppColours.bgLight,
-        onSurface: Colors.black,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -351,6 +402,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF587504),
@@ -388,16 +440,18 @@ class AppTheme {
   }
 
   static ThemeData darkGrassyFields() {
+    const colorScheme = ColorScheme.dark(
+      primary: Color(0xFF587504),
+      secondary: Color(0xFF32400b),
+      surface: AppColours.bgDark,
+      onSurface: Colors.white,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF587504),
-        secondary: Color(0xFF32400b),
-        surface: AppColours.bgDark,
-        onSurface: Colors.white,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -406,6 +460,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF587504),
@@ -443,16 +498,18 @@ class AppTheme {
   }
 
   static ThemeData lightBaumarktRot() {
+    const colorScheme = ColorScheme.light(
+      primary: Color(0xFFA50D0D),
+      secondary: Color(0xFFD48385),
+      surface: AppColours.bgLight,
+      onSurface: Colors.black,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.light(
-        primary: Color(0xFFA50D0D),
-        secondary: Color(0xFFD48385),
-        surface: AppColours.bgLight,
-        onSurface: Colors.black,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -461,6 +518,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFA50D0D),
@@ -498,16 +556,18 @@ class AppTheme {
   }
 
   static ThemeData darkBaumarktRot() {
+    const colorScheme = ColorScheme.dark(
+      primary: Color(0xFFA50D0D),
+      secondary: Color(0xFF570711),
+      surface: AppColours.bgDark,
+      onSurface: Colors.white,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.dark(
-        primary: Color(0xFFA50D0D),
-        secondary: Color(0xFF570711),
-        surface: AppColours.bgDark,
-        onSurface: Colors.white,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -516,6 +576,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFA50D0D),
@@ -553,16 +614,18 @@ class AppTheme {
   }
 
   static ThemeData lightSchmidtBrand() {
+    const colorScheme = ColorScheme.light(
+      primary: Color(0xFFD78521),
+      secondary: Color(0xFFF2D396),
+      surface: Colors.white,
+      onSurface: Colors.black,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.light(
-        primary: Color(0xFFD78521),
-        secondary: Color(0xFFF2D396),
-        surface: Colors.white,
-        onSurface: Colors.black,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -571,6 +634,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFDE1A1A),
@@ -608,16 +672,18 @@ class AppTheme {
   }
 
   static ThemeData darkSchmidtBrand() {
+    const colorScheme = ColorScheme.dark(
+      primary: Color(0xFFD78521),
+      secondary: Color(0xFFF6CE9E),
+      surface: AppColours.bgDark,
+      onSurface: Colors.white,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    );
+
     return ThemeData(
-      colorScheme: const ColorScheme.dark(
-        primary: Color(0xFFD78521),
-        secondary: Color(0xFFF6CE9E),
-        surface: AppColours.bgDark,
-        onSurface: Colors.white,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-      ),
+      colorScheme: colorScheme,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontFamily: 'ntn',
@@ -626,6 +692,7 @@ class AppTheme {
         ),
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFDE1A1A),

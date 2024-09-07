@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
-import 'package:ttfrontend/pages/aufgaben/tasks.dart';
+import 'package:ttfrontend/pages/overview/overview.dart';
+import 'package:ttfrontend/pages/tasks/tasks.dart';
 import 'package:ttfrontend/pages/theme_selection/theme_selection_page.dart';
 import 'package:ttfrontend/pages/timer/debug_clear_prefs.dart';
 import 'package:ttfrontend/pages/timer/timer.dart';
@@ -176,7 +177,7 @@ class HomePageState extends State<HomePage> {
         controller: _pageController,
         onPageChanged: _onPageChanged,
         children: [
-          const DebugClearPrefsButton(),
+          const OverviewPage(),
           const TimerPage(),
           TaskPage(
               tasks: tasks, searchQuery: _searchQuery), // Pass search query

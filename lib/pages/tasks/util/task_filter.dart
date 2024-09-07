@@ -1,4 +1,4 @@
-import 'package:ttfrontend/pages/aufgaben/tasks.dart';
+import 'package:ttfrontend/pages/tasks/tasks.dart';
 
 class TaskFilter {
   static List<Task> filterTasks(List<Task> tasks, String query) {
