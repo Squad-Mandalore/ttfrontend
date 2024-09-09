@@ -27,7 +27,7 @@ jobs:
       - run: flutter pub get
       # The flutter build command defaults to --release. [Docu](https://docs.flutter.dev/deployment/android)
       - name: Build web
-        run: flutter build web
+        run: flutter pub run build_runner build
       - name: Build apk
         run: flutter build apk --split-per-abi
       - uses: actions/upload-artifact@v4

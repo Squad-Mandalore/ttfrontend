@@ -107,6 +107,7 @@ For non-Arch Linux users, please refer to the [Flutter online documentation](htt
 To run your Flutter application, select your build device and execute:
 
 ```
+flutter pub run build_runner build
 flutter run
 ```
 

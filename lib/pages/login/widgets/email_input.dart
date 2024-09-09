@@ -3,8 +3,9 @@ import '../../../modules/widgets/custom_input.dart';
 
 class EmailInput extends StatelessWidget {
   final FocusNode focusNode;
+  final TextEditingController controller;
 
-  const EmailInput({super.key, required this.focusNode});
+  const EmailInput({super.key, required this.focusNode, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,7 @@ class EmailInput extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         CustomInput(
+          controller: controller,
           focusNode: focusNode,
           hintText: 'Arbeits E-Mail Adresse',
           width: 313,
