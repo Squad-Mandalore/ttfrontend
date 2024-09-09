@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
+import 'package:ttfrontend/pages/overview/utils/overview_popup_logic.dart';
 
 class TimeCard extends StatelessWidget {
   final int hours;
@@ -45,7 +46,9 @@ class TimeCard extends StatelessWidget {
                 const Spacer(),
                 IconButton(
                   onPressed: () {
-                    // Add edit functionality here
+                    OverviewPopupLogic.showEditPopup(context, (callback) {
+                      // Add edit functionality here
+                    });
                   },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(customColors?.backgroundAccent5 ?? theme.colorScheme.surface),
@@ -60,7 +63,9 @@ class TimeCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 IconButton(
                   onPressed: () {
-                    // Add delete functionality here
+                    OverviewPopupLogic.showDeleteConfirmation(context, () {
+                      // Add edit functionality here
+                    });
                   },
                   icon: const Icon(Icons.delete),
                   color: Colors.white,
