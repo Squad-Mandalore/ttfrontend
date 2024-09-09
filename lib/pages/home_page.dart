@@ -178,8 +178,7 @@ class HomePageState extends State<HomePage> {
         children: [
           const DebugClearPrefsButton(),
           const TimerPage(),
-          TaskPage(
-              tasks: tasks, searchQuery: _searchQuery), // Pass search query
+          TaskPage(searchQuery: _searchQuery), // Pass search query
         ],
       ),
       bottomNavigationBar: SizedBox(

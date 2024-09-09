@@ -61,7 +61,7 @@ class ApiService {
   /// and Query's / Mutations need to be tested
   Future<GraphQLResponse> graphQLRequest(GraphQLQuery query) async {
     try {
-      headers.addAll({""'Authorization': 'Bearer ${token!.accessToken}'});
+      headers.addAll({"" 'Authorization': 'Bearer ${token!.accessToken}'});
       var response = await http.post(
         Uri.parse('$baseurl/graphql'),
         headers: headers,
@@ -76,8 +76,7 @@ class ApiService {
         throw Exception('Request Error ${response.statusCode}');
       }
     } catch (e) {
-      throw('An error occurred: $e');
+      throw ('An error occurred: $e');
     }
   }
-
 }

@@ -111,34 +111,34 @@ class TimerLogic extends ChangeNotifier {
     prefs.setInt('pauseDuration', pauseDuration.inMilliseconds);
     prefs.setInt('drivingTimeDuration', drivingTimeDuration.inMilliseconds);
   }
-void startTimer() {
-  timer = Timer.periodic(const Duration(seconds: 1), (_) {
-    if (timer?.isActive ?? false) {
-      _updateDurations();
-    }
-  });
-}
 
-void _updateDurations() {
-  if (isWorkTimeRunning && workTimeStartTime != null) {
-    if (hasListeners) {
-      notifyListeners();
-    }
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (timer?.isActive ?? false) {
+        _updateDurations();
+      }
+    });
   }
 
-  if (isPauseRunning && pauseStartTime != null) {
-    if (hasListeners) {
-      notifyListeners();
+  void _updateDurations() {
+    if (isWorkTimeRunning && workTimeStartTime != null) {
+      if (hasListeners) {
+        notifyListeners();
+      }
+    }
+
+    if (isPauseRunning && pauseStartTime != null) {
+      if (hasListeners) {
+        notifyListeners();
+      }
+    }
+
+    if (isDrivingTimeRunning && drivingTimeStartTime != null) {
+      if (hasListeners) {
+        notifyListeners();
+      }
     }
   }
-
-  if (isDrivingTimeRunning && drivingTimeStartTime != null) {
-    if (hasListeners) {
-      notifyListeners();
-    }
-  }
-}
-
 
   String formatDuration(Duration duration) {
     final hours = duration.inHours;

@@ -31,18 +31,17 @@ class GenericPopup extends StatelessWidget {
 
     const double globalPadding = 16.0;
 
-    Color backgroundColor = mode == PopUpMode.error ? theme.colorScheme.surface : 
-        customColors?.popupBackgroundColor ?? theme.colorScheme.surface;
+    Color backgroundColor = mode == PopUpMode.error
+        ? theme.colorScheme.surface
+        : customColors?.popupBackgroundColor ?? theme.colorScheme.surface;
 
     double availableHeight = mediaQuery.size.height - 300;
 
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth:
-              mediaQuery.size.width - 40,
-          maxHeight:
-              availableHeight,
+          maxWidth: mediaQuery.size.width - 40,
+          maxHeight: availableHeight,
           minHeight: 200,
         ),
         child: Material(
@@ -112,17 +111,19 @@ class GenericPopup extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: mode == PopUpMode.agree
                                 ? theme.colorScheme.primary
-                                    : const Color(0xFFDE1A1A),
+                                : const Color(0xFFDE1A1A),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                           child: Text(
-                             agreeText != null ? agreeText! : mode == PopUpMode.agree
-                                ? 'Zustimmen'
-                                : mode == PopUpMode.warning
-                                    ? 'OK'
-                                    : 'Mist',
+                            agreeText != null
+                                ? agreeText!
+                                : mode == PopUpMode.agree
+                                    ? 'Zustimmen'
+                                    : mode == PopUpMode.warning
+                                        ? 'OK'
+                                        : 'Mist',
                             style: TextStyle(
                               color: theme.colorScheme.onPrimary,
                               fontSize: 16,

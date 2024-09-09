@@ -3,6 +3,7 @@ import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:ttfrontend/pages/aufgaben/util/task_filter.dart';
 import 'package:ttfrontend/pages/aufgaben/util/task_popup_logic.dart';
+import 'package:ttfrontend/service/task_service.dart';
 
 class Task {
   final String id;
@@ -12,12 +13,11 @@ class Task {
 }
 
 class TaskPage extends StatefulWidget {
-  final List<Task> tasks;
+  final List<Task> tasks = getTasks();
   final String searchQuery;
 
-  const TaskPage({
+  TaskPage({
     super.key,
-    required this.tasks,
     required this.searchQuery,
   });
 
@@ -74,7 +74,8 @@ class TaskPageState extends State<TaskPage> {
               return true;
             },
             child: ListView.builder(
-              itemCount: filteredTasks.length + 2, // +2 for the top and bottom spacing
+              itemCount:
+                  filteredTasks.length + 2, // +2 for the top and bottom spacing
               padding: EdgeInsets.symmetric(horizontal: globalPadding),
               itemBuilder: (context, index) {
                 if (index == 0) {
@@ -91,9 +92,7 @@ class TaskPageState extends State<TaskPage> {
                       onTap: () {
                         TaskPopupLogic.showAddTaskPopup(context, (newTaskName) {
                           setState(() {
-                            final newTask = Task(
-                                id: DateTime.now().toString(),
-                                name: newTaskName);
+                            final newTask = createTask(newTaskName);
                             widget.tasks.add(newTask);
                             _filterTasks();
                           });
@@ -178,6 +177,7 @@ class TaskPageState extends State<TaskPage> {
                                     TaskPopupLogic.showDeleteConfirmation(
                                         context, task, () {
                                       setState(() {
+                                        final toRemove = removeTask(task.id);
                                         widget.tasks.remove(task);
                                         _filterTasks();
                                       });
@@ -213,6 +213,8 @@ class TaskPageState extends State<TaskPage> {
                                     TaskPopupLogic.showEditTaskPopup(
                                         context, task, (newTaskName) {
                                       setState(() {
+                                        final toUpdate =
+                                            updateTask(task.id, newTaskName);
                                         task.name = newTaskName;
                                         _filterTasks();
                                       });
@@ -275,8 +277,8 @@ class TaskPageState extends State<TaskPage> {
               onPressed: () {
                 TaskPopupLogic.showAddTaskPopup(context, (newTaskName) {
                   setState(() {
-                    final newTask = Task(
-                        id: DateTime.now().toString(), name: newTaskName);
+                    final newTask =
+                        Task(id: DateTime.now().toString(), name: newTaskName);
                     widget.tasks.add(newTask);
                     _filterTasks();
                   });
