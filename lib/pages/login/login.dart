@@ -72,10 +72,10 @@ class LoginPageState extends State<LoginPage> {
             color: customColors?.backgroundColor,
             image: DecorationImage(
               image: const AssetImage(
-                  'lib/assets/images/loginPage_logo_original.png'),
+                  'lib/assets/images/loginPage_logo_grey.png'),
               fit: BoxFit.contain,
               alignment: Alignment.bottomRight,
-              opacity: 0.4,
+              opacity: 0.2,
               colorFilter: ColorFilter.mode(
                   theme.colorScheme.surface, BlendMode.softLight),
             ),

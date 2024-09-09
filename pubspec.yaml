@@ -1,5 +1,5 @@
 name: ttfrontend
-description: "A new Flutter project."
+description: "The best Time Tracking App ever developed. Copyright Squad Mandalore"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -47,7 +47,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_launcher_icons: "^0.13.1"
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -56,6 +56,30 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   test: ^1.25.2
   build_runner: ^2.4.0
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/assets/images/icon.png"
+  #adaptive_icon_background: "#E2007548"
+  #adaptive_icon_foreground: "lib/assets/images/icon_fg.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "lib/assets/images/icon.png"
+    web:
+      generate: true
+      image_path: "lib/assets/images/icon.png"
+      background_color: "#FFFFFF"
+      theme_color: "#E20074"
+  windows:
+    generate: true
+    image_path: "lib/assets/images/icon.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "lib/assets/images/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -71,6 +95,8 @@ flutter:
   assets:
     - lib/assets/images/squad_mandalore_original.png
     - lib/assets/images/loginPage_logo_original.png
+    - lib/assets/images/icon.png
+    - lib/assets/images/loginPage_logo_grey.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
