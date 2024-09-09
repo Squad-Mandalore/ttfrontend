@@ -42,4 +42,21 @@ class OverviewLogic {
     await initializeDateFormatting('en_US');
     return DateFormat.y().format(DateTime.now());
   }
+
+  static List<String> getDaysInGerman(int year, int month) {
+    initializeDateFormatting('de');
+    DateTime now = DateTime.now();
+    int daysInMonth = DateTime(year, month + 1, 0).day;
+
+    List<String> days = [];
+    for (int day = 1; day <= daysInMonth; day++) {
+      DateTime date = DateTime(year, month, day);
+      if (year == now.year && month == now.month && day > now.day) break;
+
+      String weekdayName = DateFormat.EEEE('de').format(date);
+      String formattedDay = day.toString().padLeft(2, '0');
+      days.add('$formattedDay. $weekdayName');
+    }
+    return days;
+  }
 }

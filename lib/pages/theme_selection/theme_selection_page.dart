@@ -163,7 +163,7 @@ class ThemeSelectionPage extends StatelessWidget {
   ) {
     final isDarkMode = themeProvider.themeMode == ThemeMode.dark ||
         (themeProvider.themeMode == ThemeMode.system &&
-            WidgetsBinding.instance.window.platformBrightness ==
+            WidgetsBinding.instance.platformDispatcher.platformBrightness ==
                 Brightness.dark);
 
     final themeData = isDarkMode

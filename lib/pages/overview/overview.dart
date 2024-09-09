@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
+import 'package:ttfrontend/pages/overview/widgets/time_card.dart';
 
 class OverviewPage extends StatefulWidget {
   const OverviewPage({super.key});
@@ -10,14 +11,14 @@ class OverviewPage extends StatefulWidget {
   OverviewPageState createState() => OverviewPageState();
 }
 
-class OverviewPageState extends State<OverviewPage> with SingleTickerProviderStateMixin {
-  // Dropdown state for month and year
+class OverviewPageState extends State<OverviewPage>
+    with SingleTickerProviderStateMixin {
   String? selectedMonth;
   String? selectedYear;
+  String? selectedDay;
   String? currentYear;
 
-  // Switching logic state
-  bool isDayViewSelected = true;
+  bool isDayViewSelected = false; // Default to Monatsansicht
 
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -29,15 +30,17 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
 
     // Initialize the animation controller
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300), // Reduced duration for a quicker transition
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
-    // Define the animation curve without bounce effect
     _animation = CurvedAnimation(
       parent: _animationController,
-      curve: Curves.linear,
+      curve: Curves.easeInOut,
     );
+
+    _animationController.value =
+        1.0; // Ensure it starts aligned with Monatsansicht
   }
 
   Future<void> _initializeDefaults() async {
@@ -47,7 +50,20 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
       selectedMonth = month;
       selectedYear = year;
       currentYear = year;
+      _updateDaysDropdown();
     });
+  }
+
+  void _updateDaysDropdown() {
+    if (selectedMonth != null && selectedYear != null) {
+      int monthIndex =
+          OverviewLogic.getMonthsInGerman().indexOf(selectedMonth!) + 1;
+      int year = int.parse(selectedYear!);
+      List<String> days = OverviewLogic.getDaysInGerman(year, monthIndex);
+      setState(() {
+        selectedDay = days.isNotEmpty ? days.first : null;
+      });
+    }
   }
 
   void _onViewSelected(bool isDayView) {
@@ -70,6 +86,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     const double globalPadding = 30.0;
+    final customColors = theme.extension<CustomThemeExtension>();
 
     bool isCurrentYear = selectedYear == currentYear;
 
@@ -101,6 +118,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2<String>(
                     barrierColor: theme.colorScheme.onSurface.withOpacity(0.1),
+                    
                     isExpanded: true,
                     hint: Text(
                       'Select Month',
@@ -125,6 +143,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                     onChanged: (String? newValue) {
                       setState(() {
                         selectedMonth = newValue!;
+                        _updateDaysDropdown();
                       });
                     },
                     buttonStyleData: ButtonStyleData(
@@ -132,6 +151,8 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                       height: 40,
                       width: double.infinity,
                       decoration: BoxDecoration(
+                        color: customColors?.backgroundAccent3 ??
+                            theme.colorScheme.surface,
                         border: Border.all(
                           color: theme.colorScheme.onSurface.withOpacity(0.5),
                           width: 1.0,
@@ -171,6 +192,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                     onChanged: (String? newValue) {
                       setState(() {
                         selectedYear = newValue!;
+                        _updateDaysDropdown();
                       });
                     },
                     buttonStyleData: ButtonStyleData(
@@ -178,6 +200,8 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                       height: 40,
                       width: double.infinity,
                       decoration: BoxDecoration(
+                        color: customColors?.backgroundAccent3 ??
+                            theme.colorScheme.surface,
                         border: Border.all(
                           color: theme.colorScheme.onSurface.withOpacity(0.5),
                           width: 1.0,
@@ -197,12 +221,10 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                 child: Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
-                    // Underline that shows under both buttons
                     Container(
                       height: 2.0,
                       color: theme.colorScheme.onSurface.withOpacity(0.5),
                     ),
-                    // Animated line under the selected button
                     AnimatedBuilder(
                       animation: _animationController,
                       builder: (context, child) {
@@ -212,13 +234,13 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                               0.0),
                           child: Container(
                             height: 2.0,
-                            width: MediaQuery.of(context).size.width / 2 - globalPadding,
+                            width: MediaQuery.of(context).size.width / 2 -
+                                globalPadding,
                             color: theme.colorScheme.primary,
                           ),
                         );
                       },
                     ),
-                    // Text buttons placed above the animated line
                     Row(
                       children: [
                         Expanded(
@@ -274,14 +296,85 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
           // Content for Tagesansicht or Monatsansicht
           Expanded(
             child: isDayViewSelected
-                ? Center(
-                    child: Text(
-                      'Tagesansicht Content',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface,
-                        fontSize: 16.0,
+                ? Column(
+                    children: [
+                      // Dropdown for selecting the day
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                          barrierColor:
+                              theme.colorScheme.onSurface.withOpacity(0.1),
+                          isExpanded: true,
+                          hint: Text(
+                            'Select Day',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).hintColor,
+                            ),
+                          ),
+                          items: selectedMonth != null && selectedYear != null
+                              ? OverviewLogic.getDaysInGerman(
+                                      int.parse(selectedYear!),
+                                      OverviewLogic.getMonthsInGerman()
+                                              .indexOf(selectedMonth!) +
+                                          1)
+                                  .map((String day) => DropdownMenuItem<String>(
+                                        value: day,
+                                        child: Text(
+                                          day,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ))
+                                  .toList()
+                              : [],
+                          value: selectedDay,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedDay = newValue!;
+                            });
+                          },
+                          buttonStyleData: ButtonStyleData(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            height: 40,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: customColors?.backgroundAccent3 ??
+                            theme.colorScheme.surface,
+                              border: Border.all(
+                                color: theme.colorScheme.onSurface
+                                    .withOpacity(0.5),
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            maxHeight: MediaQuery.of(context).size.height * 0.5,
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 16.0),
+                      // Scrollable list of time cards
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: 10, // Replace with actual data count
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: TimeCard(
+                                hours: index + 1,
+                                minutes: (index * 10) % 60,
+                                type: index % 2 == 0 ? 'Arbeitszeit' : 'Pause',
+                                activity: 'Activity $index',
+                                id: '$index',
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   )
                 : Center(
                     child: Text(

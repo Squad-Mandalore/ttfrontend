@@ -3,7 +3,6 @@ import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:ttfrontend/pages/overview/overview.dart';
 import 'package:ttfrontend/pages/tasks/tasks.dart';
 import 'package:ttfrontend/pages/theme_selection/theme_selection_page.dart';
-import 'package:ttfrontend/pages/timer/debug_clear_prefs.dart';
 import 'package:ttfrontend/pages/timer/timer.dart';
 
 class HomePage extends StatefulWidget {
@@ -146,7 +145,7 @@ class HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: customColors?.headerColor ?? customBackgroundColor,
+        backgroundColor: customColors?.appBarColor ?? customBackgroundColor,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Image.asset(
@@ -188,7 +187,7 @@ class HomePageState extends State<HomePage> {
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
-          backgroundColor: customColors?.headerColor ?? customBackgroundColor,
+          backgroundColor: customColors?.appBarColor ?? customBackgroundColor,
           selectedItemColor: customIconColor,
           unselectedItemColor: unselectedIconColor,
           showSelectedLabels: true,

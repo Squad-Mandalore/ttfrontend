@@ -10,9 +10,11 @@ class DebugClearPrefsButton extends StatelessWidget {
       onPressed: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.clear();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Shared preferences cleared!')),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Shared preferences cleared!')),
+          );
+        }
       },
       child: const Text('Clear Shared Preferences'),
     );

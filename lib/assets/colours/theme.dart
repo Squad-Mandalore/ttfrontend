@@ -4,34 +4,32 @@ import 'package:ttfrontend/assets/colours/extended_theme.dart';
 
 class AppTheme {
   static DropdownMenuThemeData _dropdownMenuTheme(ColorScheme colorScheme) {
-  return DropdownMenuThemeData(
-    inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: colorScheme.onSurface.withOpacity(0.5),
+    return DropdownMenuThemeData(
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.5),
+          ),
         ),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: colorScheme.onSurface.withOpacity(0.5),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.5),
+          ),
         ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: colorScheme.primary,
-          width: 2.0,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: colorScheme.primary,
+            width: 2.0,
+          ),
         ),
+        filled: true,
+        fillColor: colorScheme.surface,
       ),
-      filled: true,
-      fillColor: colorScheme.surface,
-    ),
-  );
-}
-
-
+    );
+  }
 
   static ThemeData lightTelekomFunk() {
     const colorScheme = ColorScheme.light(
@@ -58,6 +56,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: AppColours.greenPrimary,
+          appBarColor: AppColours.greenPrimary,
           primaryAccent1: AppColours.greenAccent1,
           primaryAccent2: AppColours.greenAccent2,
           primaryAccent3: AppColours.greenAccent3,
@@ -116,6 +115,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: AppColours.greenPrimary,
+          appBarColor: Colors.grey.shade900,
           primaryAccent1: AppColours.greenAccent10,
           primaryAccent2: AppColours.greenAccent9,
           primaryAccent3: AppColours.greenAccent8,
@@ -174,6 +174,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF723a11),
+          appBarColor: const Color(0xFF723a11),
           primaryAccent1: const Color(0xFF804e29),
           primaryAccent2: const Color(0xFF8e6141),
           primaryAccent3: const Color(0xFF9c7558),
@@ -232,6 +233,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF723a11),
+          appBarColor: const Color(0xFF723a11),
           primaryAccent1: const Color(0xFF67340f),
           primaryAccent2: const Color(0xFF5b2e0e),
           primaryAccent3: const Color(0xFF50290c),
@@ -290,6 +292,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF247cbc),
+          appBarColor: const Color(0xFF247cbc),
           primaryAccent1: const Color(0xFF3a89c3),
           primaryAccent2: const Color(0xFF5096c9),
           primaryAccent3: const Color(0xFF66a3d0),
@@ -348,6 +351,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF247cbc),
+          appBarColor: const Color(0xFF247cbc),
           primaryAccent1: const Color(0xFF2070a9),
           primaryAccent2: const Color(0xFF1d6396),
           primaryAccent3: const Color(0xFF195784),
@@ -406,6 +410,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF587504),
+          appBarColor:  const Color(0xFF587504),
           primaryAccent1: const Color(0xFF69831d),
           primaryAccent2: const Color(0xFF799136),
           primaryAccent3: const Color(0xFF8a9e4f),
@@ -464,6 +469,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF587504),
+          appBarColor: const Color(0xFF587504),
           primaryAccent1: const Color(0xFF4f6904),
           primaryAccent2: const Color(0xFF465e03),
           primaryAccent3: const Color(0xFF3e5203),
@@ -522,6 +528,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFA50D0D),
+          appBarColor: const Color(0xFFA50D0D),
           primaryAccent1: const Color(0xFFAE2525),
           primaryAccent2: const Color(0xFFB73D3D),
           primaryAccent3: const Color(0xFFC05656),
@@ -580,6 +587,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFA50D0D),
+          appBarColor: const Color(0xFFA50D0D),
           primaryAccent1: const Color(0xFF950C0C),
           primaryAccent2: const Color(0xFF840A0A),
           primaryAccent3: const Color(0xFF730909),
@@ -638,6 +646,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFDE1A1A),
+          appBarColor:const Color(0xFFD78521),
           primaryAccent1: const Color(0xFFD78521),
           primaryAccent2: const Color(0xFFD78521),
           primaryAccent3: const Color(0xFFD78521),
@@ -696,6 +705,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFDE1A1A),
+          appBarColor:  AppColours.darkAccent7,
           primaryAccent1: const Color(0xFFD78521),
           primaryAccent2: const Color(0xFFD78521),
           primaryAccent3: const Color(0xFFD78521),
