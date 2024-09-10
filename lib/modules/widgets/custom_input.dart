@@ -11,6 +11,7 @@ class CustomInput extends StatelessWidget {
   final double? width;
   final double? height;
   final FocusNode? focusNode;
+  final TextEditingController? controller;
 
   const CustomInput({
     super.key,
@@ -23,6 +24,7 @@ class CustomInput extends StatelessWidget {
     this.width,
     this.height,
     this.focusNode,
+    this.controller,
   });
 
   @override
@@ -35,6 +37,7 @@ class CustomInput extends StatelessWidget {
       height: height,
       child: TextField(
         focusNode: focusNode,
+        controller: controller,
         obscureText: obscureText,
         keyboardType: keyboardType,
         style: TextStyle(
