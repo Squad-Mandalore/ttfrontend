@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ttfrontend/pages/tasks/tasks.dart';
 import 'dart:async';
 
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
@@ -9,11 +10,13 @@ class TimerLogic extends ChangeNotifier {
   WorkTimeButtonMode drivingTimeMode = WorkTimeButtonMode.deactivated;
   String? currentTask;
 
-  final List<String> dummyTasks = [
-    'Haus bauen',
-    'Auto reparieren',
-    'Auto klauen',
-    'Eine ganz lange Autobahn entlang fahren',
+  final List<Task> dummyTasks = [
+    Task(name: 'Haus bauen', id: "1"),
+    Task(name: 'Haus bauen', id: "1"),
+    Task(name: 'Haus bauen', id: "1"),
+    Task(name: 'Haus bauen', id: "1"),
+    Task(name: 'Haus bauen', id: "1"),
+    Task(name: 'Haus bauen', id: "1"),
   ]; // Dummy tasks
 
   Timer? timer;
@@ -40,7 +43,7 @@ class TimerLogic extends ChangeNotifier {
     startTimer();
   }
 
-  List<String> get tasks => dummyTasks;
+  List<Task> get tasks => dummyTasks;
   String? get selectedTask => currentTask;
 
   Future<void> loadTimers() async {
@@ -111,34 +114,34 @@ class TimerLogic extends ChangeNotifier {
     prefs.setInt('pauseDuration', pauseDuration.inMilliseconds);
     prefs.setInt('drivingTimeDuration', drivingTimeDuration.inMilliseconds);
   }
-void startTimer() {
-  timer = Timer.periodic(const Duration(seconds: 1), (_) {
-    if (timer?.isActive ?? false) {
-      _updateDurations();
-    }
-  });
-}
 
-void _updateDurations() {
-  if (isWorkTimeRunning && workTimeStartTime != null) {
-    if (hasListeners) {
-      notifyListeners();
-    }
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (timer?.isActive ?? false) {
+        _updateDurations();
+      }
+    });
   }
 
-  if (isPauseRunning && pauseStartTime != null) {
-    if (hasListeners) {
-      notifyListeners();
+  void _updateDurations() {
+    if (isWorkTimeRunning && workTimeStartTime != null) {
+      if (hasListeners) {
+        notifyListeners();
+      }
+    }
+
+    if (isPauseRunning && pauseStartTime != null) {
+      if (hasListeners) {
+        notifyListeners();
+      }
+    }
+
+    if (isDrivingTimeRunning && drivingTimeStartTime != null) {
+      if (hasListeners) {
+        notifyListeners();
+      }
     }
   }
-
-  if (isDrivingTimeRunning && drivingTimeStartTime != null) {
-    if (hasListeners) {
-      notifyListeners();
-    }
-  }
-}
-
 
   String formatDuration(Duration duration) {
     final hours = duration.inHours;

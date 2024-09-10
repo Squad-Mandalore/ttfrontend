@@ -1,6 +1,21 @@
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+class TimeEntry {
+  int hours;
+  int minutes;
+  String type;
+  String activity;
+
+  TimeEntry({
+    required this.hours,
+    required this.minutes,
+    required this.type,
+    required this.activity,
+  });
+}
+
+
 class OverviewLogic {
   static List<String> getMonthsInGerman({bool forCurrentYear = false}) {
     List<String> allMonths = [

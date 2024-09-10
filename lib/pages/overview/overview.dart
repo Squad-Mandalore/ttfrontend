@@ -118,7 +118,6 @@ class OverviewPageState extends State<OverviewPage>
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2<String>(
                     barrierColor: theme.colorScheme.onSurface.withOpacity(0.1),
-                    
                     isExpanded: true,
                     hint: Text(
                       'Select Month',
@@ -292,13 +291,12 @@ class OverviewPageState extends State<OverviewPage>
               ),
             ],
           ),
-          const SizedBox(height: 16.0),
-          // Content for Tagesansicht or Monatsansicht
+          const SizedBox(height: 30.0),
+          // Content for Tagesansicht
           Expanded(
             child: isDayViewSelected
                 ? Column(
                     children: [
-                      // Dropdown for selecting the day
                       DropdownButtonHideUnderline(
                         child: DropdownButton2<String>(
                           barrierColor:
@@ -340,7 +338,7 @@ class OverviewPageState extends State<OverviewPage>
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: customColors?.backgroundAccent3 ??
-                            theme.colorScheme.surface,
+                                  theme.colorScheme.surface,
                               border: Border.all(
                                 color: theme.colorScheme.onSurface
                                     .withOpacity(0.5),
@@ -348,7 +346,6 @@ class OverviewPageState extends State<OverviewPage>
                               ),
                               borderRadius: BorderRadius.circular(8.0),
                             ),
-                            
                           ),
                           dropdownStyleData: DropdownStyleData(
                             maxHeight: MediaQuery.of(context).size.height * 0.5,
@@ -359,15 +356,18 @@ class OverviewPageState extends State<OverviewPage>
                       // Scrollable list of time cards
                       Expanded(
                         child: ListView.builder(
-                          itemCount: 10, // Replace with actual data count
+                          itemCount: 10, // TODO: Replace with actual data count
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 8.0),
                               child: TimeCard(
-                                hours: index + 1,
-                                minutes: (index * 10) % 60,
-                                type: index % 2 == 0 ? 'Arbeitszeit' : 'Pause',
-                                activity: 'Activity $index',
+                                entry: TimeEntry(
+                                  hours: index + 1,
+                                  minutes: (index * 10) % 60,
+                                  type:
+                                      index % 2 == 0 ? 'Arbeitszeit' : 'Pause',
+                                  activity: 'Activity $index',
+                                ),
                                 id: '$index',
                               ),
                             );
@@ -376,15 +376,146 @@ class OverviewPageState extends State<OverviewPage>
                       ),
                     ],
                   )
-                : Center(
-                    child: Text(
-                      'Monatsansicht Content',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface,
-                        fontSize: 16.0,
+                :
+                // Monatsansicht Content
+                Column(children: [
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      color: customColors?.backgroundAccent3 ??
+                          theme.colorScheme.surface,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Aufgaben-Bearbeitungszeit'),
+                                Text(
+                                  'XXXh',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.onSurface,
+                                  ),
+                                  textAlign: TextAlign.end,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Fahrtzeit'),
+                                Text(
+                                  'XXXh',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.onSurface,
+                                  ),
+                                  textAlign: TextAlign.end,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Gesamt',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'XXXh',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.onSurface,
+                                  ),
+                                  textAlign: TextAlign.end,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 30),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      color: customColors?.backgroundAccent3 ??
+                          theme.colorScheme.surface,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            // Placeholder for the graphic
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.primary,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(Icons.self_improvement,
+                                  color: Colors.white),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'zuletzt ausgestellt:',
+                                    style: TextStyle(
+                                      color: theme.colorScheme.onSurface,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Nie',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: theme.colorScheme.onSurface,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // PDF generation logic here
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        ),
+                        child:  Text(
+                          'PDF generieren',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
           ),
         ],
       ),

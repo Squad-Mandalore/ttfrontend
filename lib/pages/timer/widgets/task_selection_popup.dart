@@ -1,10 +1,11 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
+import 'package:ttfrontend/pages/tasks/tasks.dart';
 
 class TaskSelectionPopup extends StatelessWidget {
   final Function(String) onTaskSelected;
-  final List<String> tasks;
+  final List<Task> tasks;
 
   const TaskSelectionPopup({
     super.key,
@@ -117,7 +118,7 @@ class TaskSelectionPopup extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: GestureDetector(
                               onTap: () {
-                                onTaskSelected(tasks[index]);
+                                onTaskSelected(tasks[index].name);
                               },
                               child: Container(
                                 height: 60,
@@ -142,7 +143,7 @@ class TaskSelectionPopup extends StatelessWidget {
                                       builder: (context, constraints) {
                                         final availableWidth =
                                             constraints.maxWidth;
-                                        String displayText = tasks[index];
+                                        String displayText = tasks[index].name;
 
                                         final TextPainter textPainter =
                                             TextPainter(
@@ -166,7 +167,7 @@ class TaskSelectionPopup extends StatelessWidget {
                                                   availableWidth - 20, 0))
                                               .offset;
                                           displayText =
-                                              '${tasks[index].substring(0, cutoff)}...';
+                                              '${tasks[index].name.substring(0, cutoff)}...';
                                         }
 
                                         return Text(

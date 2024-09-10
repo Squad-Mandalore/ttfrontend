@@ -75,13 +75,13 @@ class TaskPageState extends State<TaskPage> {
             },
             child: ListView.builder(
               itemCount: filteredTasks.length + 2, // +2 for the top and bottom spacing
-              padding: EdgeInsets.symmetric(horizontal: globalPadding),
+              padding: const EdgeInsets.symmetric(horizontal: globalPadding),
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return SizedBox(height: globalPadding); // Top spacing
+                  return const SizedBox(height: globalPadding); // Top spacing
                 }
                 if (index == filteredTasks.length + 1) {
-                  return SizedBox(height: globalPadding); // Bottom spacing
+                  return const SizedBox(height: globalPadding); // Bottom spacing
                 }
 
                 if (index == 1) {

@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
+import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_popup_logic.dart';
+import 'package:ttfrontend/pages/tasks/tasks.dart';
 
 class TimeCard extends StatelessWidget {
-  final int hours;
-  final int minutes;
-  final String type;
-  final String activity;
+  final TimeEntry entry;
   final String id;
 
   const TimeCard({
     super.key,
-    required this.hours,
-    required this.minutes,
-    required this.type,
-    required this.activity,
+    required this.entry,
     required this.id,
   });
 
@@ -24,19 +20,19 @@ class TimeCard extends StatelessWidget {
     final customColors = theme.extension<CustomThemeExtension>();
 
     return Card(
-      color: customColors?.backgroundAccent3 ?? theme.colorScheme.surface,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
+        borderRadius: BorderRadius.circular(12.0),
       ),
+      color: customColors?.backgroundAccent3 ?? theme.colorScheme.surface,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Text(
-                  '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')} h',
+                  '${entry.hours.toString().padLeft(2, '0')}:${entry.minutes.toString().padLeft(2, '0')} h',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -46,16 +42,21 @@ class TimeCard extends StatelessWidget {
                 const Spacer(),
                 IconButton(
                   onPressed: () {
-                    OverviewPopupLogic.showEditPopup(context, (callback) {
-                      // Add edit functionality here
-                    });
+                    OverviewPopupLogic.showEditPopup(
+                      context,
+                      entry,
+                      (editedEntry) {
+                        // Handle edit action here
+                      },
+                      [Task(name: "Task 1", id: '1'), Task(name: "Task 1", id: '1')],
+                    );
                   },
-                  style: ButtonStyle(
+                  icon: const Icon(Icons.edit_outlined),
+                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(customColors?.backgroundAccent5 ?? theme.colorScheme.surface),
                     minimumSize: WidgetStateProperty.all(const Size(37, 37)),
                   ),
-                  icon: const Icon(Icons.edit),
-                  color: theme.colorScheme.onSurface,
+                  color: Colors.white,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   splashRadius: 20,
@@ -67,7 +68,7 @@ class TimeCard extends StatelessWidget {
                       // Add edit functionality here
                     });
                   },
-                  icon: const Icon(Icons.delete),
+                  icon: const Icon(Icons.delete_outline),
                   color: Colors.white,
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(Colors.red),
@@ -80,39 +81,37 @@ class TimeCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 4.0),
+            const SizedBox(height: 8.0),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0, vertical: 4.0),
-                decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: Text(
-                type,
-                style: TextStyle(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w500,
-                ),
-                ),
-              ),
-              Flexible(
-                child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                  activity,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: theme.colorScheme.onSurface,
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0, vertical: 4.0),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
+                  child: Text(
+                    entry.type,
+                    style: TextStyle(
+                      color: theme.colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ],
                 ),
-              ),
+                const Spacer(),
+                entry.type == 'Pause'
+                    ? const Spacer()
+                    : 
+                Flexible(
+                  child: Text(
+                    entry.activity,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                ),
               ],
             ),
           ],

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ttfrontend/pages/tasks/tasks.dart';
 import 'package:ttfrontend/pages/timer/widgets/task_selection_popup.dart';
 
 class TasksButton extends StatefulWidget {
   final Function(String) onTaskSelected;
   final String? initialTask;
-  final List<String> tasks;
+  final List<Task> tasks;
 
   const TasksButton({
     super.key,
