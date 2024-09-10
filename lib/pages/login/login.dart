@@ -116,11 +116,14 @@ class LoginPageState extends State<LoginPage> {
                     )
                   }).catchError((error) =>
                   {
+                    if(context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('E-Mail-Adresse oder Passwort ungültig')),
                     ),
                     print("Login invalid: $error")
+                    }
                   });
+              
                 },
               ),
               // const SizedBox(height: 25),

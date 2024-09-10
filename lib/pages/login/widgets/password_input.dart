@@ -30,6 +30,7 @@ class PasswordInput extends StatelessWidget {
         CustomInput(
           controller: controller,
           focusNode: focusNode,
+          obscureText: true,
           hintText: 'Passwort',
           width: 313,
           height: 60,

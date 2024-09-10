@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:ttfrontend/assets/colours/extended_theme.dart';
+import 'package:ttfrontend/pages/overview/dayview_content.dart';
+import 'package:ttfrontend/pages/overview/monthly_view.dart';
+import 'package:ttfrontend/pages/overview/overview_header.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
-import 'package:ttfrontend/pages/overview/widgets/time_card.dart';
 
 class OverviewPage extends StatefulWidget {
   const OverviewPage({super.key});
@@ -28,7 +28,6 @@ class OverviewPageState extends State<OverviewPage>
     super.initState();
     _initializeDefaults();
 
-    // Initialize the animation controller
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
@@ -39,8 +38,7 @@ class OverviewPageState extends State<OverviewPage>
       curve: Curves.easeInOut,
     );
 
-    _animationController.value =
-        1.0; // Ensure it starts aligned with Monatsansicht
+    _animationController.value = 1.0; // Ensure it starts aligned with Monatsansicht
   }
 
   Future<void> _initializeDefaults() async {
@@ -84,440 +82,48 @@ class OverviewPageState extends State<OverviewPage>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    const double globalPadding = 30.0;
-    final customColors = theme.extension<CustomThemeExtension>();
-
-    bool isCurrentYear = selectedYear == currentYear;
-
-    return Padding(
-      padding: const EdgeInsets.only(
-          left: globalPadding,
-          right: globalPadding,
-          bottom: globalPadding,
-          top: 50.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              'Monatsauswahl',
-              style: TextStyle(
-                color: theme.colorScheme.onSurface,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            OverviewHeader(
+              selectedMonth: selectedMonth,
+              selectedYear: selectedYear,
+              isCurrentYear: selectedYear == currentYear,
+              animationController: _animationController,
+              animation: _animation,
+              onMonthChanged: (String? newValue) {
+                setState(() {
+                  selectedMonth = newValue;
+                  _updateDaysDropdown();
+                });
+              },
+              onYearChanged: (String? newValue) {
+                setState(() {
+                  selectedYear = newValue;
+                  _updateDaysDropdown();
+                });
+              },
+              onViewSelected: _onViewSelected,
+              isDayViewSelected: isDayViewSelected,
             ),
-          ),
-          const SizedBox(height: 8.0),
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton2<String>(
-                    barrierColor: theme.colorScheme.onSurface.withOpacity(0.1),
-                    isExpanded: true,
-                    hint: Text(
-                      'Select Month',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).hintColor,
-                      ),
-                    ),
-                    items: OverviewLogic.getMonthsInGerman(
-                            forCurrentYear: isCurrentYear)
-                        .map((String month) => DropdownMenuItem<String>(
-                              value: month,
-                              child: Text(
-                                month,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                    value: selectedMonth,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedMonth = newValue!;
-                        _updateDaysDropdown();
-                      });
-                    },
-                    buttonStyleData: ButtonStyleData(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      height: 40,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: customColors?.backgroundAccent3 ??
-                            theme.colorScheme.surface,
-                        border: Border.all(
-                          color: theme.colorScheme.onSurface.withOpacity(0.5),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8.0),
-              Expanded(
-                flex: 1,
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton2<String>(
-                    isExpanded: true,
-                    barrierColor: theme.colorScheme.onSurface.withOpacity(0.1),
-                    hint: Text(
-                      'Select Year',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).hintColor,
-                      ),
-                    ),
-                    items: OverviewLogic.getYears()
-                        .map((String year) => DropdownMenuItem<String>(
-                              value: year,
-                              child: Text(
-                                year,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                    value: selectedYear,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedYear = newValue!;
-                        _updateDaysDropdown();
-                      });
-                    },
-                    buttonStyleData: ButtonStyleData(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      height: 40,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: customColors?.backgroundAccent3 ??
-                            theme.colorScheme.surface,
-                        border: Border.all(
-                          color: theme.colorScheme.onSurface.withOpacity(0.5),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 30.0),
-          Row(
-            children: [
-              Expanded(
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Container(
-                      height: 2.0,
-                      color: theme.colorScheme.onSurface.withOpacity(0.5),
-                    ),
-                    AnimatedBuilder(
-                      animation: _animationController,
-                      builder: (context, child) {
-                        return Align(
-                          alignment: Alignment(
-                              _animation.value * (isDayViewSelected ? -1 : 1),
-                              0.0),
-                          child: Container(
-                            height: 2.0,
-                            width: MediaQuery.of(context).size.width / 2 -
-                                globalPadding,
-                            color: theme.colorScheme.primary,
-                          ),
-                        );
+            Expanded(
+              child: isDayViewSelected
+                  ? TagesansichtContent(
+                      selectedMonth: selectedMonth,
+                      selectedYear: selectedYear,
+                      selectedDay: selectedDay,
+                      onDayChanged: (String? newValue) {
+                        setState(() {
+                          selectedDay = newValue;
+                        });
                       },
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () => _onViewSelected(true),
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: Text(
-                                'Tagesansicht',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: isDayViewSelected
-                                      ? theme.colorScheme.onSurface
-                                      : theme.colorScheme.onSurface
-                                          .withOpacity(0.5),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () => _onViewSelected(false),
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: Text(
-                                'Monatsansicht',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: !isDayViewSelected
-                                      ? theme.colorScheme.onSurface
-                                      : theme.colorScheme.onSurface
-                                          .withOpacity(0.5),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 30.0),
-          // Content for Tagesansicht
-          Expanded(
-            child: isDayViewSelected
-                ? Column(
-                    children: [
-                      DropdownButtonHideUnderline(
-                        child: DropdownButton2<String>(
-                          barrierColor:
-                              theme.colorScheme.onSurface.withOpacity(0.1),
-                          isExpanded: true,
-                          hint: Text(
-                            'Select Day',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).hintColor,
-                            ),
-                          ),
-                          items: selectedMonth != null && selectedYear != null
-                              ? OverviewLogic.getDaysInGerman(
-                                      int.parse(selectedYear!),
-                                      OverviewLogic.getMonthsInGerman()
-                                              .indexOf(selectedMonth!) +
-                                          1)
-                                  .map((String day) => DropdownMenuItem<String>(
-                                        value: day,
-                                        child: Text(
-                                          day,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ))
-                                  .toList()
-                              : [],
-                          value: selectedDay,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedDay = newValue!;
-                            });
-                          },
-                          buttonStyleData: ButtonStyleData(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            height: 40,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: customColors?.backgroundAccent3 ??
-                                  theme.colorScheme.surface,
-                              border: Border.all(
-                                color: theme.colorScheme.onSurface
-                                    .withOpacity(0.5),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          dropdownStyleData: DropdownStyleData(
-                            maxHeight: MediaQuery.of(context).size.height * 0.5,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      // Scrollable list of time cards
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: 10, // TODO: Replace with actual data count
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: TimeCard(
-                                entry: TimeEntry(
-                                  hours: index + 1,
-                                  minutes: (index * 10) % 60,
-                                  type:
-                                      index % 2 == 0 ? 'Arbeitszeit' : 'Pause',
-                                  activity: 'Activity $index',
-                                ),
-                                id: '$index',
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  )
-                :
-                // Monatsansicht Content
-                Column(children: [
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      color: customColors?.backgroundAccent3 ??
-                          theme.colorScheme.surface,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text('Aufgaben-Bearbeitungszeit'),
-                                Text(
-                                  'XXXh',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
-                                  textAlign: TextAlign.end,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text('Fahrtzeit'),
-                                Text(
-                                  'XXXh',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
-                                  textAlign: TextAlign.end,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Gesamt',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'XXXh',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
-                                  textAlign: TextAlign.end,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      color: customColors?.backgroundAccent3 ??
-                          theme.colorScheme.surface,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            // Placeholder for the graphic
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.primary,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(Icons.self_improvement,
-                                  color: Colors.white),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'zuletzt ausgestellt:',
-                                    style: TextStyle(
-                                      color: theme.colorScheme.onSurface,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'Nie',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: theme.colorScheme.onSurface,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // PDF generation logic here
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.colorScheme.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        ),
-                        child:  Text(
-                          'PDF generieren',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ]),
-          ),
-        ],
+                    )
+                  : const MonatsansichtContent(),
+            ),
+          ],
+        ),
       ),
     );
   }
