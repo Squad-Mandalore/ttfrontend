@@ -19,20 +19,6 @@ class HomePageState extends State<HomePage> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
-  List<Task> tasks = [
-    Task(id: '1', name: 'Test Task'),
-    Task(id: '2', name: 'Test Task 2'),
-    Task(id: '3', name: 'Test Task 3'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-  ];
-
   String _searchQuery = '';
 
   void _onItemTapped(int index) {
@@ -103,16 +89,15 @@ class HomePageState extends State<HomePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            if (tasks.length > 1)
-              IconButton(
-                icon: const Icon(Icons.search),
-                color: textColor,
-                onPressed: () {
-                  setState(() {
-                    _isSearching = true;
-                  });
-                },
-              ),
+            IconButton(
+              icon: const Icon(Icons.search),
+              color: textColor,
+              onPressed: () {
+                setState(() {
+                  _isSearching = true;
+                });
+              },
+            ),
           ],
         );
       }

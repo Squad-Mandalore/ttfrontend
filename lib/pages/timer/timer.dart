@@ -39,8 +39,6 @@ class TimerPage extends StatelessWidget {
                     ),
                   ),
                   TasksButton(
-                    // TODO: Implement Tasks
-                    tasks: logic.dummyTasks,
                     onTaskSelected: logic.onTaskSelected,
                     initialTask: logic.currentTask,
                   ),

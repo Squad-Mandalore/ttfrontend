@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/modules/widgets/custom_popup.dart';
-import 'package:ttfrontend/pages/aufgaben/tasks.dart'; // Assuming Task is defined here
+import 'package:ttfrontend/service/models/task.dart'; // Assuming Task is defined here
 
 class TaskPopupLogic {
   static void showDeleteConfirmation(

@@ -1,20 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
+import 'package:ttfrontend/service/models/task.dart';
 
 class TimerLogic extends ChangeNotifier {
   WorkTimeButtonMode workTimeMode = WorkTimeButtonMode.deactivated;
   WorkTimeButtonMode drivingTimeMode = WorkTimeButtonMode.deactivated;
-  String? currentTask;
-
-  final List<String> dummyTasks = [
-    'Haus bauen',
-    'Auto reparieren',
-    'Auto klauen',
-    'Eine ganz lange Autobahn entlang fahren',
-  ]; // Dummy tasks
+  Task? currentTask;
 
   Timer? timer;
   DateTime? workTimeStartTime;
@@ -36,12 +32,20 @@ class TimerLogic extends ChangeNotifier {
   }
 
   TimerLogic() {
+    loadTask();
     loadTimers();
     startTimer();
   }
 
-  List<String> get tasks => dummyTasks;
-  String? get selectedTask => currentTask;
+  Future<void> loadTask() async {
+    final prefs = await SharedPreferences.getInstance();
+    final currentTaskJson = prefs.getString('currentTask');
+
+    if (currentTaskJson != null) {
+      currentTask =
+          Task.fromJson(json.decode(currentTaskJson) as Map<String, dynamic>);
+    }
+  }
 
   Future<void> loadTimers() async {
     final prefs = await SharedPreferences.getInstance();
@@ -161,7 +165,7 @@ class TimerLogic extends ChangeNotifier {
     }
   }
 
-  void onTaskSelected(String task) {
+  void onTaskSelected(Task task) {
     currentTask = task;
     workTimeMode = WorkTimeButtonMode.start;
     drivingTimeMode = WorkTimeButtonMode.start;
@@ -169,9 +173,9 @@ class TimerLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveCurrentTask(String task) async {
+  Future<void> saveCurrentTask(Task task) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('currentTask', task);
+    await prefs.setString('currentTask', jsonEncode(task));
   }
 
   void handleWorkTimeStart() {
