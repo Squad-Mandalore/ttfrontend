@@ -1,6 +1,7 @@
+import 'dart:convert';  // Import for base64 decoding
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_pdfview/flutter_pdfview.dart';  // Import the PDF viewer
 import 'package:path_provider/path_provider.dart';
 import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 import 'package:ttfrontend/service/api_service.dart';
@@ -12,9 +13,11 @@ Future<void> fetchAndSavePdf(String month, String headerColor, BuildContext cont
       generatePdf(month: $month, headerColor: $header_color)
     }
   ''';
+
   // Format headerColor from baumarktRot to BAUMARKT_ROT to match the enum value
   String formattedHeaderColor = headerColor.replaceAllMapped(RegExp(r'[A-Z]'), (match) => '_${match.group(0)}').toUpperCase();
   formattedHeaderColor = formattedHeaderColor.replaceFirst('_', '');
+
   try {
     ApiService apiService = ApiService();
     GraphQLQuery graphQLQuery = GraphQLQuery(
@@ -27,32 +30,37 @@ Future<void> fetchAndSavePdf(String month, String headerColor, BuildContext cont
 
     final response = await apiService.graphQLRequest(graphQLQuery);
 
-    final fileUrl = response.data?['generatePdf'];  // Access the correct path in the response
+    final base64Pdf = response.data?['data']?['generatePdf'];  // Access the correct path in the response
 
-    if (fileUrl != null) {
-      final pdfResponse = await http.get(Uri.parse(fileUrl));
+    if (base64Pdf != null) {
+      // Decode the Base64 string to get the binary data
+      final pdfBytes = base64Decode(base64Pdf);
 
-      if (pdfResponse.statusCode == 200) {
-        final pdfBytes = pdfResponse.bodyBytes;
+      // Get the directory to save the file in the Downloads folder
+      final directory = await getDownloadsDirectory();
+      if (directory == null) {
+        throw Exception("Could not access the Downloads directory.");
+      }
 
-        // Get the directory to save the file in the Downloads folder
-        final directory = await getDownloadsDirectory();
-        if (directory == null) {
-          throw Exception("Could not access the Downloads directory.");
-        }
+      final filePath = '${directory.path}/downloaded_file.pdf';
 
-        final filePath = '${directory.path}/downloaded_file.pdf';
+      // Save the PDF file
+      final file = File(filePath);
+      await file.writeAsBytes(pdfBytes);
 
-        // Save the PDF file
-        final file = File(filePath);
-        await file.writeAsBytes(pdfBytes);
+      print('PDF saved to $filePath');
 
-        print('PDF saved to $filePath');
-      } else {
-        throw Exception('Failed to download PDF from $fileUrl');
+      // Show the PDF file using a PDF viewer
+      if (context.mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PdfViewerPage(filePath: filePath),
+          ),
+        );
       }
     } else {
-      throw Exception('No file URL returned from GraphQL query.');
+      throw Exception('No PDF data returned from GraphQL query.');
     }
   } catch (e) {
     print('Failed to fetch PDF: $e');
@@ -62,3 +70,22 @@ Future<void> fetchAndSavePdf(String month, String headerColor, BuildContext cont
   }
 }
 
+// A separate widget to view the PDF
+class PdfViewerPage extends StatelessWidget {
+  final String filePath;
+
+  const PdfViewerPage({super.key, required this.filePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Monatsübersicht'),
+      ),
+      body: PDFView(
+        filePath: filePath,
+        autoSpacing: false,
+      ),
+    );
+  }
+}

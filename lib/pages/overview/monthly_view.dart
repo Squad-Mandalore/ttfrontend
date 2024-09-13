@@ -19,6 +19,7 @@ class MonthviewContentState extends State<MonthviewContent> {
   String? arbeitszeit;
   String? fahrtzeit;
   String? totalTime;
+  bool isGeneratingPdf = false;  // Add a boolean to track PDF generation state
 
   @override
   void initState() {
@@ -31,7 +32,7 @@ class MonthviewContentState extends State<MonthviewContent> {
     MonthlyStats monthlyStats = MonthlyStats();
 
     try {
-      final times =  await monthlyStats.getMonthlyStats(formattedMonthYear);
+      final times = await monthlyStats.getMonthlyStats(formattedMonthYear);
       final arbeitszeit = times['worktime'];
       final fahrtzeit = times['drivetime'];
       final totalTime = times['totalTime'];
@@ -43,8 +44,26 @@ class MonthviewContentState extends State<MonthviewContent> {
       });
     } catch (e) {
       if (context.mounted) {
-      GenericPopup.showErrorPopup(context, 
-          'Es ist ein Fehler beim Laden der Daten aufgetreten. Bitte versuche es später erneut.');
+        GenericPopup.showErrorPopup(context, 
+            'Es ist ein Fehler beim Laden der Daten aufgetreten. Bitte versuche es später erneut.');
+      }
+    }
+  }
+
+  Future<void> _generatePdf() async {
+    setState(() {
+      isGeneratingPdf = true;  // Show the loading indicator
+    });
+
+    String themeKey = Provider.of<ThemeProvider>(context, listen: false).getCurrentThemeKey();
+
+    try {
+      await fetchAndSavePdf(widget.formattedMonthYear, themeKey, context);
+    } finally {
+      if (mounted) {
+        setState(() {
+          isGeneratingPdf = false;  // Hide the loading indicator
+        });
       }
     }
   }
@@ -53,7 +72,6 @@ class MonthviewContentState extends State<MonthviewContent> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final customColors = theme.extension<CustomThemeExtension>();
-    String themeKey = Provider.of<ThemeProvider>(context, listen: false).getCurrentThemeKey();
 
     return Column(
       children: [
@@ -170,9 +188,7 @@ class MonthviewContentState extends State<MonthviewContent> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {
-              fetchAndSavePdf(widget.formattedMonthYear, themeKey, context);
-            },
+            onPressed: isGeneratingPdf ? null : _generatePdf,
             style: ElevatedButton.styleFrom(
               backgroundColor: theme.colorScheme.primary,
               shape: RoundedRectangleBorder(
@@ -180,14 +196,23 @@ class MonthviewContentState extends State<MonthviewContent> {
               ),
               padding: const EdgeInsets.symmetric(vertical: 16.0),
             ),
-            child: Text(
-              'PDF generieren',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),
+            child: isGeneratingPdf
+                ? const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : Text(
+                    'PDF generieren',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
           ),
         ),
       ],
