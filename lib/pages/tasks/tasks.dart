@@ -5,7 +5,7 @@ import 'package:ttfrontend/pages/tasks/util/task_filter.dart';
 import 'package:ttfrontend/pages/tasks/util/task_popup_logic.dart';
 
 class Task {
-  final String id;
+  final int id;
   String name;
 
   Task({required this.id, required this.name});
@@ -92,7 +92,7 @@ class TaskPageState extends State<TaskPage> {
                         TaskPopupLogic.showAddTaskPopup(context, (newTaskName) {
                           setState(() {
                             final newTask = Task(
-                                id: DateTime.now().toString(),
+                                id: 2,
                                 name: newTaskName);
                             widget.tasks.add(newTask);
                             _filterTasks();
@@ -276,7 +276,7 @@ class TaskPageState extends State<TaskPage> {
                 TaskPopupLogic.showAddTaskPopup(context, (newTaskName) {
                   setState(() {
                     final newTask = Task(
-                        id: DateTime.now().toString(), name: newTaskName);
+                        id: 2, name: newTaskName);
                     widget.tasks.add(newTask);
                     _filterTasks();
                   });

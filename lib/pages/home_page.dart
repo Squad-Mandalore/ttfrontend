@@ -20,17 +20,17 @@ class HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
 
   List<Task> tasks = [
-    Task(id: '1', name: 'Test Task'),
-    Task(id: '2', name: 'Test Task 2'),
-    Task(id: '3', name: 'Test Task 3'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
-    Task(id: '4', name: 'Test Task 4 with a very long title'),
+    Task(id: 1, name: 'Test Task'),
+    Task(id: 2, name: 'Test Task 2'),
+    Task(id: 3, name: 'Test Task 3'),
+    Task(id: 4, name: 'Test Task 4 with a very long title'),
+    Task(id: 4, name: 'Test Task 4 with a very long title'),
+    Task(id: 4, name: 'Test Task 4 with a very long title'),
+    Task(id: 4, name: 'Test Task 4 with a very long title'),
+    Task(id: 4, name: 'Test Task 4 with a very long title'),
+    Task(id: 4, name: 'Test Task 4 with a very long title'),
+    Task(id: 4, name: 'Test Task 4 with a very long title'),
+    Task(id: 4, name: 'Test Task 4 with a very long title'),
   ];
 
   String _searchQuery = '';

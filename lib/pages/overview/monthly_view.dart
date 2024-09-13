@@ -1,22 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
+import 'package:ttfrontend/modules/widgets/custom_popup.dart';
+import 'package:ttfrontend/pages/overview/utils/monthly_stats.dart';
+import 'package:ttfrontend/pages/overview/utils/pdf_generation.dart';
+import 'package:ttfrontend/pages/theme_selection/theme_provider/theme_provider.dart';
 
-class MonatsansichtContent extends StatelessWidget {
-  const MonatsansichtContent({super.key});
+class MonthviewContent extends StatefulWidget {
+  final String formattedMonthYear;
+
+  const MonthviewContent({super.key, required this.formattedMonthYear});
+
+  @override
+  MonthviewContentState createState() => MonthviewContentState();
+}
+
+class MonthviewContentState extends State<MonthviewContent> {
+  String? arbeitszeit;
+  String? fahrtzeit;
+  String? totalTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchMonthlyStats(context);
+  }
+
+  Future<void> _fetchMonthlyStats(BuildContext context) async {
+    String formattedMonthYear = widget.formattedMonthYear;
+    MonthlyStats monthlyStats = MonthlyStats();
+
+    try {
+      final times =  await monthlyStats.getMonthlyStats(formattedMonthYear);
+      final arbeitszeit = times['worktime'];
+      final fahrtzeit = times['drivetime'];
+      final totalTime = times['totalTime'];
+
+      setState(() {
+        this.arbeitszeit = arbeitszeit;
+        this.fahrtzeit = fahrtzeit;
+        this.totalTime = totalTime;
+      });
+    } catch (e) {
+      if (context.mounted) {
+      GenericPopup.showErrorPopup(context, 
+          'Es ist ein Fehler beim Laden der Daten aufgetreten. Bitte versuche es später erneut.');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final customColors = theme.extension<CustomThemeExtension>();
+    String themeKey = Provider.of<ThemeProvider>(context, listen: false).getCurrentThemeKey();
 
     return Column(
       children: [
+        const SizedBox(height: 30),
         Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.0),
           ),
-          color: customColors?.backgroundAccent3 ??
-              theme.colorScheme.surface,
+          color: customColors?.backgroundAccent3 ?? theme.colorScheme.surface,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -27,7 +73,7 @@ class MonatsansichtContent extends StatelessWidget {
                   children: [
                     const Text('Aufgaben-Bearbeitungszeit'),
                     Text(
-                      'XXXh',
+                      arbeitszeit ?? 'Lade...',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: theme.colorScheme.onSurface,
@@ -42,7 +88,7 @@ class MonatsansichtContent extends StatelessWidget {
                   children: [
                     const Text('Fahrtzeit'),
                     Text(
-                      'XXXh',
+                      fahrtzeit ?? 'Lade...',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: theme.colorScheme.onSurface,
@@ -62,7 +108,7 @@ class MonatsansichtContent extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'XXXh',
+                      totalTime ?? 'Lade...',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: theme.colorScheme.onSurface,
@@ -80,8 +126,7 @@ class MonatsansichtContent extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.0),
           ),
-          color: customColors?.backgroundAccent3 ??
-              theme.colorScheme.surface,
+          color: customColors?.backgroundAccent3 ?? theme.colorScheme.surface,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -126,7 +171,7 @@ class MonatsansichtContent extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              // PDF generation logic here
+              fetchAndSavePdf(widget.formattedMonthYear, themeKey, context);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: theme.colorScheme.primary,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
+import 'package:ttfrontend/pages/overview/utils/daily_logic.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_popup_logic.dart';
 import 'package:ttfrontend/pages/tasks/tasks.dart';
@@ -7,11 +8,13 @@ import 'package:ttfrontend/pages/tasks/tasks.dart';
 class TimeCard extends StatelessWidget {
   final TimeEntry entry;
   final String id;
+  final VoidCallback onUpdate;
 
   const TimeCard({
     super.key,
     required this.entry,
     required this.id,
+    required this.onUpdate,
   });
 
   @override
@@ -32,9 +35,9 @@ class TimeCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '${entry.hours.toString().padLeft(2, '0')}:${entry.minutes.toString().padLeft(2, '0')} h',
+                  OverviewLogic.getFormattedHoursAndMinutes(entry),
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.onSurface,
                   ),
@@ -45,39 +48,24 @@ class TimeCard extends StatelessWidget {
                     OverviewPopupLogic.showEditPopup(
                       context,
                       entry,
-                      (editedEntry) {
-                        // Handle edit action here
+                      (editedEntry) async {
+                        await DailyLogic().editTimer(editedEntry);
+                        onUpdate();  // Call the callback to update the list
                       },
-                      [Task(name: "Task 1", id: '1'), Task(name: "Task 1", id: '1')],
+                      [Task(name: "Task 1", id: 1), Task(name: "Task 2", id: 2)],
                     );
                   },
                   icon: const Icon(Icons.edit_outlined),
-                   style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(customColors?.backgroundAccent5 ?? theme.colorScheme.surface),
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(
+                        customColors?.backgroundAccent5 ??
+                            theme.colorScheme.surface),
                     minimumSize: WidgetStateProperty.all(const Size(37, 37)),
                   ),
                   color: Colors.white,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   splashRadius: 20,
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  onPressed: () {
-                    OverviewPopupLogic.showDeleteConfirmation(context, () {
-                      // Add edit functionality here
-                    });
-                  },
-                  icon: const Icon(Icons.delete_outline),
-                  color: Colors.white,
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(Colors.red),
-                    minimumSize: WidgetStateProperty.all(const Size(37, 37)),
-                  ),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  splashRadius: 40,
-                  iconSize: 20,
                 ),
               ],
             ),
@@ -100,18 +88,19 @@ class TimeCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                entry.type == 'Pause'
-                    ? const Spacer()
-                    : 
-                Flexible(
-                  child: Text(
-                    entry.activity,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurface,
+                if (entry.type != 'Pause')
+                  Flexible(
+                    flex: 0,
+                    child: Text(
+                      entry.activity.name,
+                      textAlign: TextAlign.end,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface,
+                      ),
                     ),
                   ),
-                ),
+                const Padding(padding: EdgeInsets.only(right: 8.0))
               ],
             ),
           ],

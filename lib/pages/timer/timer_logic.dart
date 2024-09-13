@@ -8,15 +8,15 @@ import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
 class TimerLogic extends ChangeNotifier {
   WorkTimeButtonMode workTimeMode = WorkTimeButtonMode.deactivated;
   WorkTimeButtonMode drivingTimeMode = WorkTimeButtonMode.deactivated;
-  String? currentTask;
+  Task? currentTask;
 
   final List<Task> dummyTasks = [
-    Task(name: 'Haus bauen', id: "1"),
-    Task(name: 'Haus bauen', id: "1"),
-    Task(name: 'Haus bauen', id: "1"),
-    Task(name: 'Haus bauen', id: "1"),
-    Task(name: 'Haus bauen', id: "1"),
-    Task(name: 'Haus bauen', id: "1"),
+    Task(name: 'Haus bauen', id: 1),
+    Task(name: 'Haus bauen', id: 1),
+    Task(name: 'Haus bauen', id: 1),
+    Task(name: 'Haus bauen', id: 1),
+    Task(name: 'Haus bauen', id: 1),
+    Task(name: 'Haus bauen', id: 1),
   ]; // Dummy tasks
 
   Timer? timer;
@@ -44,7 +44,7 @@ class TimerLogic extends ChangeNotifier {
   }
 
   List<Task> get tasks => dummyTasks;
-  String? get selectedTask => currentTask;
+  Task? get selectedTask => currentTask;
 
   Future<void> loadTimers() async {
     final prefs = await SharedPreferences.getInstance();
@@ -164,7 +164,7 @@ class TimerLogic extends ChangeNotifier {
     }
   }
 
-  void onTaskSelected(String task) {
+  void onTaskSelected(Task task) {
     currentTask = task;
     workTimeMode = WorkTimeButtonMode.start;
     drivingTimeMode = WorkTimeButtonMode.start;
@@ -172,9 +172,9 @@ class TimerLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveCurrentTask(String task) async {
+  Future<void> saveCurrentTask(Task task) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('currentTask', task);
+    await prefs.setInt('currentTask', task.id);
   }
 
   void handleWorkTimeStart() {

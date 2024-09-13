@@ -36,18 +36,19 @@ class OverviewHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 50.0),
         Align(
           alignment: Alignment.topLeft,
           child: Text(
             'Monatsauswahl',
             style: TextStyle(
               color: theme.colorScheme.onSurface,
-              fontSize: 20,
+              fontSize: 24,
               fontWeight: FontWeight.w500,
             ),
           ),
         ),
-        const SizedBox(height: 8.0),
+        const SizedBox(height: 16.0),
         Row(
           children: [
             Expanded(
@@ -57,7 +58,7 @@ class OverviewHeader extends StatelessWidget {
                   barrierColor: theme.colorScheme.onSurface.withOpacity(0.1),
                   isExpanded: true,
                   hint: Text(
-                    'Select Month',
+                    'Monat auswählen',
                     style: TextStyle(
                       fontSize: 14,
                       color: Theme.of(context).hintColor,
@@ -102,7 +103,7 @@ class OverviewHeader extends StatelessWidget {
                   isExpanded: true,
                   barrierColor: theme.colorScheme.onSurface.withOpacity(0.1),
                   hint: Text(
-                    'Select Year',
+                    'Jahr auswählen',
                     style: TextStyle(
                       fontSize: 14,
                       color: Theme.of(context).hintColor,

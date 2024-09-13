@@ -2,21 +2,43 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
+import 'package:ttfrontend/pages/overview/utils/daily_logic.dart';
 import 'package:ttfrontend/pages/overview/widgets/time_card.dart';
 
-class TagesansichtContent extends StatelessWidget {
+class DayviewContent extends StatefulWidget {
   final String? selectedMonth;
   final String? selectedYear;
   final String? selectedDay;
   final Function(String?) onDayChanged;
 
-  const TagesansichtContent({
+  const DayviewContent({
     super.key,
     this.selectedMonth,
     this.selectedYear,
     this.selectedDay,
     required this.onDayChanged,
   });
+
+  @override
+  _DayviewContentState createState() => _DayviewContentState();
+}
+
+class _DayviewContentState extends State<DayviewContent> {
+  Future<List<TimeEntry>> _fetchTimers() async {
+    final dailyLogic = DailyLogic();
+    if (widget.selectedYear == null ||
+        widget.selectedMonth == null ||
+        widget.selectedDay == null) {
+      return [];
+    }
+
+    return await dailyLogic.getTimersForDay(
+        widget.selectedYear!, widget.selectedMonth!, widget.selectedDay!);
+  }
+
+  void _reloadTimers() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +52,17 @@ class TagesansichtContent extends StatelessWidget {
             barrierColor: theme.colorScheme.onSurface.withOpacity(0.1),
             isExpanded: true,
             hint: Text(
-              'Select Day',
+              'Tag auswählen',
               style: TextStyle(
                 fontSize: 14,
                 color: Theme.of(context).hintColor,
               ),
             ),
-            items: selectedMonth != null && selectedYear != null
+            items: widget.selectedMonth != null && widget.selectedYear != null
                 ? OverviewLogic.getDaysInGerman(
-                        int.parse(selectedYear!),
+                        int.parse(widget.selectedYear!),
                         OverviewLogic.getMonthsInGerman()
-                                .indexOf(selectedMonth!) +
+                                .indexOf(widget.selectedMonth!) +
                             1)
                     .map((String day) => DropdownMenuItem<String>(
                           value: day,
@@ -53,8 +75,8 @@ class TagesansichtContent extends StatelessWidget {
                         ))
                     .toList()
                 : [],
-            value: selectedDay,
-            onChanged: onDayChanged,
+            value: widget.selectedDay,
+            onChanged: widget.onDayChanged,
             buttonStyleData: ButtonStyleData(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               height: 40,
@@ -77,20 +99,31 @@ class TagesansichtContent extends StatelessWidget {
         const SizedBox(height: 16.0),
         // Scrollable list of time cards
         Expanded(
-          child: ListView.builder(
-            itemCount: 10, // TODO: Replace with actual data count
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: TimeCard(
-                  entry: TimeEntry(
-                    hours: index + 1,
-                    minutes: (index * 10) % 60,
-                    type: index % 2 == 0 ? 'Arbeitszeit' : 'Pause',
-                    activity: 'Activity $index',
-                  ),
-                  id: '$index',
-                ),
+          child: FutureBuilder<List<TimeEntry>>(
+            future: _fetchTimers(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('Es wurden keine Timer gefunden'));
+              }
+
+              final timers = snapshot.data!;
+
+              return ListView.builder(
+                itemCount: timers.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: TimeCard(
+                      entry: timers[index],
+                      id: '$index',
+                      onUpdate: _reloadTimers,  // Pass the callback
+                    ),
+                  );
+                },
               );
             },
           ),

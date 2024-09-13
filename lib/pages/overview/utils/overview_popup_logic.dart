@@ -1,50 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
 import 'package:ttfrontend/pages/tasks/tasks.dart';
 import 'package:ttfrontend/pages/timer/widgets/tasks_button.dart';
 
 class OverviewPopupLogic {
-  static void showDeleteConfirmation(BuildContext context, VoidCallback onDelete) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return GenericPopup(
-          title: 'Eintrag löschen',
-          agreeText: 'Löschen',
-          content: const Column(
-            children: [
-              Text("Möchten Sie die Zeit wirklich löschen?"),
-              Text("Diese Aktion kann nicht rückgängig gemacht werden."),
-            ],
-          ),
-          mode: PopUpMode.warning,
-          onAgree: () {
-            onDelete();
-            Navigator.of(context).pop();
-          },
-          onDisagree: () {
-            Navigator.of(context).pop();
-          },
-        );
-      },
-    );
-  }
-
   static void showEditPopup(
     BuildContext context,
     TimeEntry entry,
     Function(TimeEntry) onEdit,
-    List<Task> availableTasks,  // Pass in the available tasks
+    List<Task> availableTasks, // Pass in the available tasks
   ) {
-    final TextEditingController hoursController =
-        TextEditingController(text: entry.hours.toString());
-    final TextEditingController minutesController =
-        TextEditingController(text: entry.minutes.toString());
     final List<String> timeTypes = ['Fahrtzeit', 'Arbeitszeit', 'Pause'];
     String selectedType = entry.type;
-    String selectedTask = entry.activity;  // This will store the selected task
+    Task selectedTask = entry.activity;
+
+    // Initialize the start and end time controllers
+    TimeOfDay selectedStartTime =
+        TimeOfDay(hour: entry.startTime.hour, minute: entry.startTime.minute);
+    TimeOfDay selectedEndTime =
+        TimeOfDay(hour: entry.endTime.hour, minute: entry.endTime.minute);
 
     showDialog(
       context: context,
@@ -60,34 +35,60 @@ class OverviewPopupLogic {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: hoursController,
-                          keyboardType: TextInputType.number,
+                        child: TextFormField(
+                          readOnly: true,
+                          onTap: () async {
+                            final TimeOfDay? picked = await showTimePicker(
+                              context: context,
+                              initialTime: selectedStartTime,
+                              helpText: "Startzeit",
+                              hourLabelText: 'Stunde',
+                              minuteLabelText: 'Minute',
+                              confirmText: 'Bestätigen',
+                              cancelText: 'Abbrechen',
+                            );
+                            if (picked != null && picked != selectedStartTime) {
+                              setState(() {
+                                selectedStartTime = picked;
+                              });
+                            }
+                          },
                           decoration: const InputDecoration(
-                            labelText: 'hh',
+                            labelText: 'Startzeit',
                             border: OutlineInputBorder(),
+                            suffixIcon: Icon(Icons.access_time),
                           ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(2),
-                          ],
+                          controller: TextEditingController(
+                              text: selectedStartTime.format(context)),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      const Text(':'),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 16),
                       Expanded(
-                        child: TextField(
-                          controller: minutesController,
-                          keyboardType: TextInputType.number,
+                        child: TextFormField(
+                          readOnly: true,
+                          onTap: () async {
+                            final TimeOfDay? picked = await showTimePicker(
+                              context: context,
+                              initialTime: selectedEndTime,
+                              helpText: "Endzeit",
+                              hourLabelText: 'Stunde',
+                              minuteLabelText: 'Minute',
+                              confirmText: 'Bestätigen',
+                              cancelText: 'Abbrechen',
+                            );
+                            if (picked != null && picked != selectedEndTime) {
+                              setState(() {
+                                selectedEndTime = picked;
+                              });
+                            }
+                          },
                           decoration: const InputDecoration(
-                            labelText: 'mm',
+                            labelText: 'Endzeit',
                             border: OutlineInputBorder(),
+                            suffixIcon: Icon(Icons.access_time),
                           ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(2),
-                          ],
+                          controller: TextEditingController(
+                              text: selectedEndTime.format(context)),
                         ),
                       ),
                     ],
@@ -109,13 +110,12 @@ class OverviewPopupLogic {
                       setState(() {
                         selectedType = newValue!;
                         if (selectedType == 'Pause') {
-                          selectedTask = 'Neue Aufgabe zuweisen';  // Clear the task if Pause is selected
+                          selectedTask = Task(id: -1, name: 'Neue Aufgabe zuweisen');
                         }
                       });
                     },
                   ),
                   const SizedBox(height: 16),
-                  // Conditionally show the TasksButton if the type is not "Pause"
                   if (selectedType != 'Pause')
                     TasksButton(
                       tasks: availableTasks,
@@ -132,14 +132,24 @@ class OverviewPopupLogic {
           ),
           onDisagree: () => Navigator.of(context).pop(),
           onAgree: () {
-            final int hours = int.tryParse(hoursController.text) ?? 0;
-            final int minutes = int.tryParse(minutesController.text) ?? 0;
-
             onEdit(TimeEntry(
-              hours: hours,
-              minutes: minutes,
+              startTime: DateTime(
+                entry.startTime.year,
+                entry.startTime.month,
+                entry.startTime.day,
+                selectedStartTime.hour,
+                selectedStartTime.minute,
+              ),
+              endTime: DateTime(
+                entry.endTime.year,
+                entry.endTime.month,
+                entry.endTime.day,
+                selectedEndTime.hour,
+                selectedEndTime.minute,
+              ),
               type: selectedType,
-              activity: selectedTask,  // Use the selected task
+              activity: selectedTask,
+              worktimeId: entry.worktimeId,
             ));
             Navigator.of(context).pop();
           },

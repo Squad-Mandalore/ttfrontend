@@ -4,7 +4,7 @@ import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:ttfrontend/pages/tasks/tasks.dart';
 
 class TaskSelectionPopup extends StatelessWidget {
-  final Function(String) onTaskSelected;
+  final Function(Task) onTaskSelected;
   final List<Task> tasks;
 
   const TaskSelectionPopup({
@@ -118,7 +118,7 @@ class TaskSelectionPopup extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: GestureDetector(
                               onTap: () {
-                                onTaskSelected(tasks[index].name);
+                                onTaskSelected(tasks[index]);
                               },
                               child: Container(
                                 height: 60,

@@ -3,8 +3,8 @@ import 'package:ttfrontend/pages/tasks/tasks.dart';
 import 'package:ttfrontend/pages/timer/widgets/task_selection_popup.dart';
 
 class TasksButton extends StatefulWidget {
-  final Function(String) onTaskSelected;
-  final String? initialTask;
+  final Function(Task) onTaskSelected;
+  final Task? initialTask;
   final List<Task> tasks;
 
   const TasksButton({
@@ -19,7 +19,7 @@ class TasksButton extends StatefulWidget {
 }
 
 class TasksButtonState extends State<TasksButton> {
-  String _selectedTask = "Aufgabe auswählen";
+  Task _selectedTask = Task(name: "Aufgabe auswählen", id: -1);
   bool _isPopupOpen = false;
 
   @override
@@ -97,7 +97,7 @@ class TasksButtonState extends State<TasksButton> {
                 builder: (context, constraints) {
                   final availableWidth =
                       constraints.maxWidth - 40; // Reserve space for the icon
-                  String displayText = _selectedTask;
+                  String displayText = _selectedTask.name;
 
                   final TextPainter textPainter = TextPainter(
                     text: TextSpan(
@@ -117,7 +117,7 @@ class TasksButtonState extends State<TasksButton> {
                     final int cutoff = textPainter
                         .getPositionForOffset(Offset(availableWidth, 0))
                         .offset;
-                    displayText = '${_selectedTask.substring(0, cutoff)}...';
+                    displayText = '${_selectedTask.name.substring(0, cutoff)}...';
                   }
 
                   return Text(

@@ -1,24 +1,25 @@
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:ttfrontend/pages/tasks/tasks.dart';
 
 class TimeEntry {
-  int hours;
-  int minutes;
+  DateTime startTime;
+  DateTime endTime;
   String type;
-  String activity;
+  Task activity;
+  int worktimeId;
 
   TimeEntry({
-    required this.hours,
-    required this.minutes,
+    required this.startTime,
+    required this.endTime,
     required this.type,
     required this.activity,
+    required this.worktimeId,
   });
 }
 
-
 class OverviewLogic {
-  static List<String> getMonthsInGerman({bool forCurrentYear = false}) {
-    List<String> allMonths = [
+  static List<String> allMonths = [
       'Januar',
       'Februar',
       'März',
@@ -32,6 +33,16 @@ class OverviewLogic {
       'November',
       'Dezember',
     ];
+  // Helper function to manually format DateTime strings
+  static String formatDateTimeString(String year, String month, String day, String time) {
+    return '$year-${month.padLeft(2, '0')}-${day.padLeft(2, '0')}T$time''Z';
+  }
+
+  static String formatDateTime(DateTime dateTime) {
+    return '${DateFormat('yyyy-MM-ddTHH:mm:ss').format(dateTime)}Z';
+  }
+
+  static List<String> getMonthsInGerman({bool forCurrentYear = false}) {
 
     if (forCurrentYear) {
       int currentMonth = DateTime.now().month;
@@ -72,6 +83,47 @@ class OverviewLogic {
       String formattedDay = day.toString().padLeft(2, '0');
       days.add('$formattedDay. $weekdayName');
     }
-    return days;
+    return days.reversed.toList();
+  }
+
+  static String formatMonthYearForBackend(String month, String year) {
+    int? monthIndex = allMonths.indexOf(month) + 1;
+    if (monthIndex > 0) {
+      String formattedMonth = monthIndex.toString().padLeft(2, '0');
+      return '$year-$formattedMonth';
+    }
+    return '';
+  }
+ 
+  static String translateTypeToGerman(String type) {
+    switch (type) {
+      case 'BREAK':
+        return 'Pause';
+      case 'WORK':
+        return 'Arbeitszeit';
+      case 'RIDE': 
+        return 'Fahrtzeit';
+      default:
+        return 'Nicht mein typ';
+    }
+  }
+
+  static String translateTypeToEnglish(String type) {
+    switch (type) {
+      case 'Pause':
+        return 'BREAK';
+      case 'Arbeitszeit':
+        return 'WORK';
+      case 'Fahrtzeit': 
+        return 'RIDE';
+      default:
+        return 'Not my type';
+    }
+  }
+
+  static String getFormattedHoursAndMinutes(TimeEntry entry) {
+    int hours = entry.endTime.difference(entry.startTime).inHours;
+    int minutes = entry.endTime.difference(entry.startTime).inMinutes % 60;
+    return '$hours:${minutes.toString().padLeft(2, '0')} h';
   }
 }
