@@ -1,7 +1,7 @@
 import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
-import 'package:ttfrontend/pages/tasks/tasks.dart';
 import 'package:ttfrontend/service/api_service.dart';
 import 'package:ttfrontend/service/models/graphql_query.dart';
+import 'package:ttfrontend/service/models/task.dart';
 import 'package:ttfrontend/service/models/graphql_response.dart';
 
 class MonthlyStats {

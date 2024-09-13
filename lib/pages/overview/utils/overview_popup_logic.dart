@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
-import 'package:ttfrontend/pages/tasks/tasks.dart';
 import 'package:ttfrontend/pages/timer/widgets/tasks_button.dart';
+import 'package:ttfrontend/service/models/task.dart';
+
 
 class OverviewPopupLogic {
   static void showEditPopup(
@@ -118,7 +119,6 @@ class OverviewPopupLogic {
                   const SizedBox(height: 16),
                   if (selectedType != 'Pause')
                     TasksButton(
-                      tasks: availableTasks,
                       initialTask: selectedTask,
                       onTaskSelected: (task) {
                         setState(() {

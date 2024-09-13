@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:ttfrontend/pages/overview/utils/daily_logic.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
+import 'package:ttfrontend/service/models/task.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_popup_logic.dart';
-import 'package:ttfrontend/pages/tasks/tasks.dart';
 
 class TimeCard extends StatelessWidget {
   final TimeEntry entry;

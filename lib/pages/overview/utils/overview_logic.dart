@@ -1,6 +1,6 @@
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:ttfrontend/pages/tasks/tasks.dart';
+import 'package:ttfrontend/service/models/task.dart';
 
 class TimeEntry {
   DateTime startTime;

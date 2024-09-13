@@ -8,7 +8,6 @@ import 'package:ttfrontend/pages/login/widgets/login_button.dart';
 import 'package:ttfrontend/pages/login/widgets/password_input.dart';
 // import 'package:ttfrontend/pages/login/widgets/register_button.dart';
 import '../../service/api_service.dart';
-import '../../service/log_service.dart';
 import 'widgets/header.dart';
 
 class LoginPage extends StatefulWidget {
