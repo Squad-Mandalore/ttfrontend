@@ -123,8 +123,9 @@ class TaskSelectionPopup extends StatelessWidget {
                                     child: Container(
                                       height: 60,
                                       decoration: BoxDecoration(
-                                        color: customColors?.backgroundAccent1 ??
-                                            theme.colorScheme.primary,
+                                        color:
+                                            customColors?.backgroundAccent1 ??
+                                                theme.colorScheme.primary,
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
@@ -162,14 +163,16 @@ class TaskSelectionPopup extends StatelessWidget {
                                                 textDirection:
                                                     TextDirection.ltr,
                                               )..layout(
-                                                  maxWidth: availableWidth);
+                                                      maxWidth: availableWidth);
 
                                               if (textPainter
                                                   .didExceedMaxLines) {
                                                 // Truncate text based on available width
                                                 final int cutoff = textPainter
-                                                    .getPositionForOffset(Offset(
-                                                        availableWidth - 20, 0))
+                                                    .getPositionForOffset(
+                                                        Offset(
+                                                            availableWidth - 20,
+                                                            0))
                                                     .offset;
                                                 displayText =
                                                     '${tasks[index].name.substring(0, cutoff)}...';
@@ -183,8 +186,7 @@ class TaskSelectionPopup extends StatelessWidget {
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
                                                 ),
-                                                overflow:
-                                                    TextOverflow.ellipsis,
+                                                overflow: TextOverflow.ellipsis,
                                               );
                                             },
                                           ),

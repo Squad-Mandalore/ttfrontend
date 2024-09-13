@@ -9,13 +9,11 @@ import 'package:ttfrontend/service/task_service.dart';
 class TaskList extends StatefulWidget {
   final List<Task> tasks;
   final String searchQuery;
-  final VoidCallback onTaskListUpdated;
 
   const TaskList({
     super.key,
     required this.tasks,
     required this.searchQuery,
-    required this.onTaskListUpdated,
   });
 
   @override
@@ -60,46 +58,89 @@ class _TaskListState extends State<TaskList> {
     final customColors = theme.extension<CustomThemeExtension>();
     const double globalPadding = 16.0;
 
-    return Stack(
-      children: [
-        NotificationListener<ScrollNotification>(
-          onNotification: (scrollNotification) {
-            if (scrollNotification is ScrollUpdateNotification) {
-              _updateShadows(scrollNotification.metrics);
-            }
-            return true;
-          },
-          child: ListView.builder(
-            itemCount: filteredTasks.length + 1, // +1 for the addButton on top
-            padding: const EdgeInsets.symmetric(
-                horizontal: globalPadding, vertical: globalPadding),
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return _addButton(theme);
-              }
+    return widget.tasks.isEmpty
+        ? _buildEmptyTaskView()
+        : Stack(
+            children: [
+              NotificationListener<ScrollNotification>(
+                onNotification: (scrollNotification) {
+                  if (scrollNotification is ScrollUpdateNotification) {
+                    _updateShadows(scrollNotification.metrics);
+                  }
+                  return true;
+                },
+                child: ListView.builder(
+                  itemCount:
+                      filteredTasks.length + 1, // +1 for the addButton on top
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: globalPadding, vertical: globalPadding),
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return _addButton(theme);
+                    }
 
-              final task = filteredTasks[index - 1]; // Adjust index for tasks
+                    final task =
+                        filteredTasks[index - 1]; // Adjust index for tasks
 
-              return _taskListItem(theme, customColors, task);
+                    return _taskListItem(theme, customColors, task);
+                  },
+                ),
+              ),
+              if (_showTopShadow)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: _shadow(),
+                ),
+              if (_showBottomShadow)
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: _shadow(),
+                ),
+              _floatingAddButton(),
+            ],
+          );
+  }
+
+  Widget _buildEmptyTaskView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.inbox,
+            size: 64,
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Keine Aufgaben gefunden.\nFüge eine neue Aufgabe hinzu!',
+            style: TextStyle(
+              fontSize: 18,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              TaskPopupLogic.showAddTaskPopup(context, (newTaskName) async {
+                var toAdd = await createTask(newTaskName);
+                if (toAdd != null) {
+                  setState(() {
+                    widget.tasks.add(toAdd);
+                    _filterTasks();
+                  });
+                }
+              });
             },
+            child: const Text('Neue Aufgabe hinzufügen'),
           ),
-        ),
-        if (_showTopShadow)
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: _shadow(),
-          ),
-        if (_showBottomShadow)
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: _shadow(),
-          ),
-        _floatingAddButton(),
-      ],
+        ],
+      ),
     );
   }
 
@@ -114,7 +155,6 @@ class _TaskListState extends State<TaskList> {
               setState(() {
                 widget.tasks.add(toAdd);
                 _filterTasks();
-                widget.onTaskListUpdated();  // Notify the TaskPage to reload tasks
               });
             }
           });
@@ -156,7 +196,6 @@ class _TaskListState extends State<TaskList> {
               setState(() {
                 widget.tasks.add(toAdd);
                 _filterTasks();
-                widget.onTaskListUpdated();  // Notify the TaskPage to reload tasks
               });
             }
           });
@@ -174,9 +213,6 @@ class _TaskListState extends State<TaskList> {
           setState(() {
             widget.tasks.remove(task);
             _filterTasks();
-            if (widget.tasks.isEmpty) {
-              widget.onTaskListUpdated();  // Notify the TaskPage to reload tasks
-            }
           });
         }
       });
@@ -191,7 +227,6 @@ class _TaskListState extends State<TaskList> {
           setState(() {
             task.name = newTaskName;
             _filterTasks();
-            widget.onTaskListUpdated();  // Notify the TaskPage to reload tasks
           });
         }
       });
