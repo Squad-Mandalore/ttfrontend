@@ -20,10 +20,10 @@ class DayviewContent extends StatefulWidget {
   });
 
   @override
-  _DayviewContentState createState() => _DayviewContentState();
+  DayviewContentState createState() => DayviewContentState();
 }
 
-class _DayviewContentState extends State<DayviewContent> {
+class DayviewContentState extends State<DayviewContent> {
   Future<List<TimeEntry>> _fetchTimers() async {
     final dailyLogic = DailyLogic();
     if (widget.selectedYear == null ||

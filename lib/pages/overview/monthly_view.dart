@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 import 'package:ttfrontend/pages/overview/utils/monthly_stats.dart';
+import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
 import 'package:ttfrontend/pages/overview/utils/pdf_generation.dart';
 import 'package:ttfrontend/pages/theme_selection/theme_provider/theme_provider.dart';
 
@@ -68,154 +69,166 @@ class MonthviewContentState extends State<MonthviewContent> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final customColors = theme.extension<CustomThemeExtension>();
+@override
+Widget build(BuildContext context) {
+  final theme = Theme.of(context);
+  final customColors = theme.extension<CustomThemeExtension>();
 
-    return Column(
-      children: [
-        const SizedBox(height: 30),
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          color: customColors?.backgroundAccent3 ?? theme.colorScheme.surface,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Aufgaben-Bearbeitungszeit'),
-                    Text(
-                      arbeitszeit ?? 'Lade...',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      textAlign: TextAlign.end,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Fahrtzeit'),
-                    Text(
-                      fahrtzeit ?? 'Lade...',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      textAlign: TextAlign.end,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Gesamt',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      totalTime ?? 'Lade...',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      textAlign: TextAlign.end,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+  return Column(
+    children: [
+      const SizedBox(height: 30),
+      Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0),
         ),
-        const SizedBox(height: 30),
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          color: customColors?.backgroundAccent3 ?? theme.colorScheme.surface,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.self_improvement, color: Colors.white),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'zuletzt ausgestellt:',
-                        style: TextStyle(
-                          color: theme.colorScheme.onSurface,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Nie',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 30),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: isGeneratingPdf ? null : _generatePdf,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: theme.colorScheme.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-            ),
-            child: isGeneratingPdf
-                ? const SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
-                : Text(
-                    'PDF generieren',
+        color: customColors?.backgroundAccent3 ?? theme.colorScheme.surface,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Aufgaben-Bearbeitungszeit'),
+                  Text(
+                    arbeitszeit ?? 'Lade...',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Fahrtzeit'),
+                  Text(
+                    fahrtzeit ?? 'Lade...',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Gesamt',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Text(
+                    totalTime ?? 'Lade...',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-      ],
-    );
-  }
+      ),
+      const SizedBox(height: 30),
+      Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        color: customColors?.backgroundAccent3 ?? theme.colorScheme.surface,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.self_improvement, color: Colors.white),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'zuletzt ausgestellt:',
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    FutureBuilder<String>(
+                      future: OverviewLogic.getLastPdfRequest(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Text('Lade...');
+                        } else if (snapshot.hasError) {
+                          return const Text('Fehler beim Laden');
+                        } else {
+                          return Text(
+                            snapshot.data ?? 'Keine Daten',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.onSurface,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      const SizedBox(height: 30),
+      SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: isGeneratingPdf ? null : _generatePdf,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: theme.colorScheme.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+          ),
+          child: isGeneratingPdf
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
+                )
+              : Text(
+                  'PDF generieren',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+        ),
+      ),
+    ],
+  );
+}
+
 }

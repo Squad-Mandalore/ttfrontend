@@ -1,5 +1,6 @@
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ttfrontend/service/models/task.dart';
 
 class TimeEntry {
@@ -20,22 +21,23 @@ class TimeEntry {
 
 class OverviewLogic {
   static List<String> allMonths = [
-      'Januar',
-      'Februar',
-      'März',
-      'April',
-      'Mai',
-      'Juni',
-      'Juli',
-      'August',
-      'September',
-      'Oktober',
-      'November',
-      'Dezember',
-    ];
+    'Januar',
+    'Februar',
+    'März',
+    'April',
+    'Mai',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Dezember',
+  ];
   // Helper function to manually format DateTime strings
-  static String formatDateTimeString(String year, String month, String day, String time) {
-    return '$year-${month.padLeft(2, '0')}-${day.padLeft(2, '0')}T$time''Z';
+  static String formatDateTimeString(
+      String year, String month, String day, String time) {
+    return '$year-${month.padLeft(2, '0')}-${day.padLeft(2, '0')}T$time' 'Z';
   }
 
   static String formatDateTime(DateTime dateTime) {
@@ -43,7 +45,6 @@ class OverviewLogic {
   }
 
   static List<String> getMonthsInGerman({bool forCurrentYear = false}) {
-
     if (forCurrentYear) {
       int currentMonth = DateTime.now().month;
       return allMonths.sublist(0, currentMonth);
@@ -54,7 +55,8 @@ class OverviewLogic {
 
   static List<String> getYears() {
     int currentYear = DateTime.now().year;
-    List<String> years = List<String>.generate(currentYear - 2019, (index) => (2020 + index).toString());
+    List<String> years = List<String>.generate(
+        currentYear - 2019, (index) => (2020 + index).toString());
     years = years.reversed.toList();
     return years;
   }
@@ -94,14 +96,14 @@ class OverviewLogic {
     }
     return '';
   }
- 
+
   static String translateTypeToGerman(String type) {
     switch (type) {
       case 'BREAK':
         return 'Pause';
       case 'WORK':
         return 'Arbeitszeit';
-      case 'RIDE': 
+      case 'RIDE':
         return 'Fahrtzeit';
       default:
         return 'Nicht mein typ';
@@ -114,7 +116,7 @@ class OverviewLogic {
         return 'BREAK';
       case 'Arbeitszeit':
         return 'WORK';
-      case 'Fahrtzeit': 
+      case 'Fahrtzeit':
         return 'RIDE';
       default:
         return 'Not my type';
@@ -125,5 +127,10 @@ class OverviewLogic {
     int hours = entry.endTime.difference(entry.startTime).inHours;
     int minutes = entry.endTime.difference(entry.startTime).inMinutes % 60;
     return '$hours:${minutes.toString().padLeft(2, '0')} h';
+  }
+
+  static Future<String> getLastPdfRequest() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('lastPdfRequest') ?? 'Nie';
   }
 }

@@ -1,13 +1,15 @@
-import 'dart:convert';  // Import for base64 decoding
+import 'dart:convert'; // Import for base64 decoding
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';  // Import the PDF viewer
+import 'package:flutter_pdfview/flutter_pdfview.dart'; // Import the PDF viewer
 import 'package:path_provider/path_provider.dart';
 import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 import 'package:ttfrontend/service/api_service.dart';
 import 'package:ttfrontend/service/models/graphql_query.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> fetchAndSavePdf(String month, String headerColor, BuildContext context) async {
+Future<void> fetchAndSavePdf(
+    String month, String headerColor, BuildContext context) async {
   const String query = r'''
     query GeneratePdf($month: String!, $header_color: HeaderColor!) {
       generatePdf(month: $month, headerColor: $header_color)
@@ -15,7 +17,9 @@ Future<void> fetchAndSavePdf(String month, String headerColor, BuildContext cont
   ''';
 
   // Format headerColor from baumarktRot to BAUMARKT_ROT to match the enum value
-  String formattedHeaderColor = headerColor.replaceAllMapped(RegExp(r'[A-Z]'), (match) => '_${match.group(0)}').toUpperCase();
+  String formattedHeaderColor = headerColor
+      .replaceAllMapped(RegExp(r'[A-Z]'), (match) => '_${match.group(0)}')
+      .toUpperCase();
   formattedHeaderColor = formattedHeaderColor.replaceFirst('_', '');
 
   try {
@@ -24,13 +28,14 @@ Future<void> fetchAndSavePdf(String month, String headerColor, BuildContext cont
       query: query,
       variables: {
         'month': month,
-        'header_color': formattedHeaderColor,  // Pass enum value correctly
+        'header_color': formattedHeaderColor, // Pass enum value correctly
       },
     );
 
     final response = await apiService.graphQLRequest(graphQLQuery);
 
-    final base64Pdf = response.data?['data']?['generatePdf'];  // Access the correct path in the response
+    final base64Pdf = response
+        .data?['generatePdf']; // Access the correct path in the response
 
     if (base64Pdf != null) {
       // Decode the Base64 string to get the binary data
@@ -50,6 +55,12 @@ Future<void> fetchAndSavePdf(String month, String headerColor, BuildContext cont
 
       print('PDF saved to $filePath');
 
+      final prefs = await SharedPreferences.getInstance();
+      final now = DateTime.now();
+      final formattedDateTime =
+          '${now.day.toString().padLeft(2, '0')}.${now.month.toString().padLeft(2, '0')}.${now.year} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+      await prefs.setString('lastPdfRequest', formattedDateTime);
+
       // Show the PDF file using a PDF viewer
       if (context.mounted) {
         Navigator.push(
@@ -65,7 +76,8 @@ Future<void> fetchAndSavePdf(String month, String headerColor, BuildContext cont
   } catch (e) {
     print('Failed to fetch PDF: $e');
     if (context.mounted) {
-      GenericPopup.showErrorPopup(context, 'Es gab ein Problem beim Herunterladen der PDF-Datei.');
+      GenericPopup.showErrorPopup(
+          context, 'Es gab ein Problem beim Herunterladen der PDF-Datei.');
     }
   }
 }

@@ -45,7 +45,7 @@ class DailyLogic {
 
       final List<TimeEntry> entries = [];
       if (response.data != null) {
-        final timers = response.data?['data']?['timersInBoundary'];
+        final timers = response.data?['timersInBoundary'];
         if (timers != null) {
           for (var timer in timers) {
             final DateTime startTime = DateTime.parse(timer['startTime']);
@@ -63,7 +63,6 @@ class DailyLogic {
           }
         }
       }
-
       return entries;
     } catch (e) {
       throw Exception('Failed to fetch timers for the day: $e');
