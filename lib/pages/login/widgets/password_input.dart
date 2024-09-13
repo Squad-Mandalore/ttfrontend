@@ -5,7 +5,8 @@ class PasswordInput extends StatelessWidget {
   final FocusNode focusNode;
   final TextEditingController controller;
 
-  const PasswordInput({super.key, required this.focusNode, required this.controller});
+  const PasswordInput(
+      {super.key, required this.focusNode, required this.controller});
 
   @override
   Widget build(BuildContext context) {

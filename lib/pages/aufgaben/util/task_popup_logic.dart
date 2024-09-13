@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/modules/widgets/custom_popup.dart';
-import 'package:ttfrontend/pages/aufgaben/tasks.dart'; // Assuming Task is defined here
+import 'package:ttfrontend/service/models/task.dart'; // Assuming Task is defined here
 
 class TaskPopupLogic {
-  static void showDeleteConfirmation(BuildContext context, Task task, VoidCallback onDelete) {
+  static void showDeleteConfirmation(
+      BuildContext context, Task task, VoidCallback onDelete) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -30,8 +31,10 @@ class TaskPopupLogic {
     );
   }
 
-  static void showEditTaskPopup(BuildContext context, Task task, Function(String) onEdit) {
-    final TextEditingController controller = TextEditingController(text: task.name);
+  static void showEditTaskPopup(
+      BuildContext context, Task task, Function(String) onEdit) {
+    final TextEditingController controller =
+        TextEditingController(text: task.name);
 
     showDialog(
       context: context,

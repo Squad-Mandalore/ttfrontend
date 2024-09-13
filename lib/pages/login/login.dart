@@ -71,8 +71,8 @@ class LoginPageState extends State<LoginPage> {
           decoration: BoxDecoration(
             color: customColors?.backgroundColor,
             image: DecorationImage(
-              image: const AssetImage(
-                  'lib/assets/images/loginPage_logo_grey.png'),
+              image:
+                  const AssetImage('lib/assets/images/loginPage_logo_grey.png'),
               fit: BoxFit.contain,
               alignment: Alignment.bottomRight,
               opacity: 0.2,
@@ -104,23 +104,26 @@ class LoginPageState extends State<LoginPage> {
               const SizedBox(height: 50),
               LoginButton(
                 onPressed: () async {
-                  apiService.login(_emailController.text, _passwordController.text)
-                  .then((response) => {
-                    // Token will be saved internally in api_service.dart
-                    log("Login has been successful"),
-                    // Login on Success
-                    Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute
-                    (builder: (context) => const HomePage()),
-                    )
-                  }).catchError((error) =>
-                  {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('E-Mail-Adresse oder Passwort ungültig')),
-                    ),
-                    print("Login invalid: $error")
-                  });
+                  apiService
+                      .login(_emailController.text, _passwordController.text)
+                      .then((response) => {
+                            // Token will be saved internally in api_service.dart
+                            log("Login has been successful"),
+                            // Login on Success
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomePage()),
+                            )
+                          })
+                      .catchError((error) => {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'E-Mail-Adresse oder Passwort ungültig')),
+                            ),
+                            print("Login invalid: $error")
+                          });
                 },
               ),
               // const SizedBox(height: 25),

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/pages/timer/widgets/task_selection_popup.dart';
+import 'package:ttfrontend/service/models/task.dart';
+import 'package:ttfrontend/service/task_service.dart';
 
 class TasksButton extends StatefulWidget {
-  final Function(String) onTaskSelected;
-  final String? initialTask;
-  final List<String> tasks;
+  final Function(Task) onTaskSelected;
+  final Task? initialTask;
 
   const TasksButton({
     super.key,
     required this.onTaskSelected,
-    required this.tasks,
     this.initialTask,
   });
 
@@ -18,12 +18,14 @@ class TasksButton extends StatefulWidget {
 }
 
 class TasksButtonState extends State<TasksButton> {
-  String _selectedTask = "Aufgabe auswählen";
+  Task? _selectedTask;
   bool _isPopupOpen = false;
+  late Future<List<Task>> tasksFuture;
 
   @override
   void initState() {
     super.initState();
+    tasksFuture = fetchTasks();
     if (widget.initialTask != null) {
       _selectedTask = widget.initialTask!;
     }
@@ -48,16 +50,31 @@ class TasksButtonState extends State<TasksButton> {
     showDialog(
       context: context,
       builder: (context) {
-        return TaskSelectionPopup(
-          tasks: widget.tasks,
-          onTaskSelected: (task) {
-            // Call the task selected callback and close the popup.
-            setState(() {
-              _selectedTask = task;
-              widget.onTaskSelected(task);
-              _isPopupOpen = false;
-            });
-            Navigator.of(context).pop(); // Close the popup manually.
+        return FutureBuilder<List<Task>>(
+          future: tasksFuture,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text('An error has occurred!'),
+              );
+            } else if (snapshot.hasData) {
+              return TaskSelectionPopup(
+                tasks: snapshot.data!,
+                onTaskSelected: (task) {
+                  // Call the task selected callback and close the popup.
+                  setState(() {
+                    _selectedTask = task;
+                    widget.onTaskSelected(task);
+                    _isPopupOpen = false;
+                  });
+                  Navigator.of(context).pop(); // Close the popup manually.
+                },
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
           },
         );
       },
@@ -96,7 +113,9 @@ class TasksButtonState extends State<TasksButton> {
                 builder: (context, constraints) {
                   final availableWidth =
                       constraints.maxWidth - 40; // Reserve space for the icon
-                  String displayText = _selectedTask;
+                  String displayText = _selectedTask == null
+                      ? "Aufgabe auswählen"
+                      : _selectedTask!.name;
 
                   final TextPainter textPainter = TextPainter(
                     text: TextSpan(
@@ -116,7 +135,8 @@ class TasksButtonState extends State<TasksButton> {
                     final int cutoff = textPainter
                         .getPositionForOffset(Offset(availableWidth, 0))
                         .offset;
-                    displayText = '${_selectedTask.substring(0, cutoff)}...';
+                    displayText =
+                        '${_selectedTask!.name.substring(0, cutoff)}...';
                   }
 
                   return Text(

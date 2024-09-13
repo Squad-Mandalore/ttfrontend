@@ -20,7 +20,7 @@ class TimerPage extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Momentane Aufgabe Section
@@ -39,8 +39,6 @@ class TimerPage extends StatelessWidget {
                     ),
                   ),
                   TasksButton(
-                    // TODO: Implement Tasks
-                    tasks: logic.dummyTasks,
                     onTaskSelected: logic.onTaskSelected,
                     initialTask: logic.currentTask,
                   ),
@@ -109,7 +107,6 @@ class TimerPage extends StatelessWidget {
                     onPressed: logic.handleDrivingTimePress,
                     onStopPressed: logic.handleDrivingTimePress,
                   ),
-                  const Spacer(),
                 ],
               ),
             ),

@@ -51,9 +51,8 @@ class WorkTimeButton extends StatelessWidget {
                           theme.colorScheme.primary, // Button color from theme
                 ),
                 child: MaterialButton(
-                  onPressed: mode == WorkTimeButtonMode.deactivated
-                      ? null
-                      : onPressed,
+                  onPressed:
+                      mode == WorkTimeButtonMode.deactivated ? null : onPressed,
                   height: 144,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(

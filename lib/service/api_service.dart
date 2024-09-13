@@ -7,7 +7,7 @@ import 'models/token.dart';
 
 class ApiService {
   /* For testing purpose -> localhost unknown for emulator use local ip */
-  var baseurl = Uri.parse('http://10.0.2.2:3000');
+  var baseurl = Uri.parse('https://magenta.jetzt/ttapi');
 
   /* static saved token */
   static Token? token;
@@ -19,7 +19,7 @@ class ApiService {
     'Accept': 'application/json',
     'Connection': 'keep-alive',
     'DNT': '1',
-    'Origin': 'http://localhost:3000',
+    'Origin': 'https://magenta.jetzt',
   };
 
   /// Request access and refresh token with [email] and [password]
@@ -61,7 +61,7 @@ class ApiService {
   /// and Query's / Mutations need to be tested
   Future<GraphQLResponse> graphQLRequest(GraphQLQuery query) async {
     try {
-      headers.addAll({""'Authorization': 'Bearer ${token!.accessToken}'});
+      headers.addAll({'Authorization': 'Bearer ${token!.accessToken}'});
       var response = await http.post(
         Uri.parse('$baseurl/graphql'),
         headers: headers,
@@ -71,13 +71,12 @@ class ApiService {
 
       if (response.statusCode == 200) {
         print('Response body: ${response.body}');
-        return GraphQLResponse(data: jsonDecode(response.body));
+        return GraphQLResponse.fromJson(json.decode(response.body));
       } else {
         throw Exception('Request Error ${response.statusCode}');
       }
     } catch (e) {
-      throw('An error occurred: $e');
+      throw ('An error occurred: $e');
     }
   }
-
 }
