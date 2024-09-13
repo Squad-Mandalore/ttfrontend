@@ -1,23 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ttfrontend/pages/tasks/tasks.dart';
 import 'dart:async';
 
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
+import 'package:ttfrontend/service/models/task.dart';
 
 class TimerLogic extends ChangeNotifier {
   WorkTimeButtonMode workTimeMode = WorkTimeButtonMode.deactivated;
   WorkTimeButtonMode drivingTimeMode = WorkTimeButtonMode.deactivated;
   Task? currentTask;
-
-  final List<Task> dummyTasks = [
-    Task(name: 'Haus bauen', id: 1),
-    Task(name: 'Haus bauen', id: 1),
-    Task(name: 'Haus bauen', id: 1),
-    Task(name: 'Haus bauen', id: 1),
-    Task(name: 'Haus bauen', id: 1),
-    Task(name: 'Haus bauen', id: 1),
-  ]; // Dummy tasks
 
   Timer? timer;
   DateTime? workTimeStartTime;
@@ -39,12 +33,20 @@ class TimerLogic extends ChangeNotifier {
   }
 
   TimerLogic() {
+    loadTask();
     loadTimers();
     startTimer();
   }
 
-  List<Task> get tasks => dummyTasks;
-  Task? get selectedTask => currentTask;
+  Future<void> loadTask() async {
+    final prefs = await SharedPreferences.getInstance();
+    final currentTaskJson = prefs.getString('currentTask');
+
+    if (currentTaskJson != null) {
+      currentTask =
+          Task.fromJson(json.decode(currentTaskJson) as Map<String, dynamic>);
+    }
+  }
 
   Future<void> loadTimers() async {
     final prefs = await SharedPreferences.getInstance();
@@ -174,7 +176,7 @@ class TimerLogic extends ChangeNotifier {
 
   Future<void> saveCurrentTask(Task task) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('currentTask', task.id);
+    await prefs.setString('currentTask', jsonEncode(task));
   }
 
   void handleWorkTimeStart() {

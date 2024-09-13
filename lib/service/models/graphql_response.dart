@@ -5,8 +5,9 @@ part 'graphql_response.g.dart';
 @JsonSerializable()
 class GraphQLResponse {
   final Map<String, dynamic>? data;
+  final List<Map<String, dynamic>>? errors;
 
-  GraphQLResponse({this.data});
+  GraphQLResponse({this.data, this.errors});
 
   factory GraphQLResponse.fromJson(Map<String, dynamic> json) =>
       _$GraphQLResponseFromJson(json);

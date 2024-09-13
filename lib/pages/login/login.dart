@@ -71,8 +71,8 @@ class LoginPageState extends State<LoginPage> {
           decoration: BoxDecoration(
             color: customColors?.backgroundColor,
             image: DecorationImage(
-              image: const AssetImage(
-                  'lib/assets/images/loginPage_logo_grey.png'),
+              image:
+                  const AssetImage('lib/assets/images/loginPage_logo_grey.png'),
               fit: BoxFit.contain,
               alignment: Alignment.bottomRight,
               opacity: 0.2,

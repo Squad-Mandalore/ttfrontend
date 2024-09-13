@@ -1,7 +1,6 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
-import 'package:ttfrontend/pages/tasks/tasks.dart';
+import 'package:ttfrontend/service/models/task.dart';
 
 class TaskSelectionPopup extends StatelessWidget {
   final Function(Task) onTaskSelected;
@@ -75,119 +74,128 @@ class TaskSelectionPopup extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(globalPadding),
-                      child: ListView.builder(
-                        itemCount:
-                            tasks.length + 1, // Add one for the new task button
-                        itemBuilder: (context, index) {
-                          if (index == tasks.length) {
-                            // "New Task" Button
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  // New task logic
-                                },
-                                child: DottedBorder(
-                                  color: theme.colorScheme.onSurface,
-                                  strokeWidth: 2,
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(8),
-                                  dashPattern: const [20, 15],
-                                  child: Container(
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Colors.transparent,
+                      child: tasks.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.assignment,
+                                    size: 64,
+                                    color: theme.colorScheme.primary
+                                        .withOpacity(0.7),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'Keine Aufgaben gefunden',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: theme.colorScheme.onSurface
+                                          .withOpacity(0.7),
                                     ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.add,
-                                        color: theme.colorScheme.onSurface,
-                                        size: 40,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Aufgaben können in der Aufgabenansicht angelegt werden',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: theme.colorScheme.onSurface
+                                          .withOpacity(0.5),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: tasks.length,
+                              itemBuilder: (context, index) {
+                                // Task items with shadow, padding, and truncation
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      onTaskSelected(tasks[index]);
+                                    },
+                                    child: Container(
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            customColors?.backgroundAccent1 ??
+                                                theme.colorScheme.primary,
+                                        borderRadius: BorderRadius.circular(8),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.2),
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: globalPadding),
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                              final availableWidth =
+                                                  constraints.maxWidth;
+                                              String displayText =
+                                                  tasks[index].name;
+
+                                              final TextPainter textPainter =
+                                                  TextPainter(
+                                                text: TextSpan(
+                                                  text: displayText,
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: theme
+                                                        .colorScheme.onSurface,
+                                                  ),
+                                                ),
+                                                maxLines: 1,
+                                                textDirection:
+                                                    TextDirection.ltr,
+                                              )..layout(
+                                                      maxWidth: availableWidth);
+
+                                              if (textPainter
+                                                  .didExceedMaxLines) {
+                                                // Truncate text based on available width
+                                                final int cutoff = textPainter
+                                                    .getPositionForOffset(
+                                                        Offset(
+                                                            availableWidth - 20,
+                                                            0))
+                                                    .offset;
+                                                displayText =
+                                                    '${tasks[index].name.substring(0, cutoff)}...';
+                                              }
+
+                                              return Text(
+                                                displayText,
+                                                style: TextStyle(
+                                                  color: theme
+                                                      .colorScheme.onSurface,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              );
+                                            },
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            );
-                          }
-
-                          // Task items with shadow, padding, and truncation
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                onTaskSelected(tasks[index]);
+                                );
                               },
-                              child: Container(
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: customColors?.backgroundAccent1 ??
-                                      theme.colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: globalPadding),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: LayoutBuilder(
-                                      builder: (context, constraints) {
-                                        final availableWidth =
-                                            constraints.maxWidth;
-                                        String displayText = tasks[index].name;
-
-                                        final TextPainter textPainter =
-                                            TextPainter(
-                                          text: TextSpan(
-                                            text: displayText,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color:
-                                                  theme.colorScheme.onSurface,
-                                            ),
-                                          ),
-                                          maxLines: 1,
-                                          textDirection: TextDirection.ltr,
-                                        )..layout(maxWidth: availableWidth);
-
-                                        if (textPainter.didExceedMaxLines) {
-                                          // Truncate text based on available width
-                                          final int cutoff = textPainter
-                                              .getPositionForOffset(Offset(
-                                                  availableWidth - 20, 0))
-                                              .offset;
-                                          displayText =
-                                              '${tasks[index].name.substring(0, cutoff)}...';
-                                        }
-
-                                        return Text(
-                                          displayText,
-                                          style: TextStyle(
-                                            color: theme.colorScheme.onSurface,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ),
                   Padding(
