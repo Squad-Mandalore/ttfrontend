@@ -7,7 +7,7 @@ import 'models/token.dart';
 
 class ApiService {
   /* For testing purpose -> localhost unknown for emulator use local ip */
-  var baseurl = Uri.parse('http://localhost:3000');
+  var baseurl = Uri.parse('http://10.0.2.2:3000');
 
   /* static saved token */
   static Token? token;

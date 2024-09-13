@@ -234,7 +234,7 @@ class _TaskListState extends State<TaskList> {
             ),
           ),
           child: _textButton(
-              theme, task, Icons.edit, 'Bearbeite', _onPressedEdit(task)),
+              theme, task, Icons.edit, 'Bearbeiten', _onPressedEdit(task)),
         )),
       ],
     );

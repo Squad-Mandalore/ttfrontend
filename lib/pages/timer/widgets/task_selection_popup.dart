@@ -76,43 +76,8 @@ class TaskSelectionPopup extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(globalPadding),
                       child: ListView.builder(
-                        itemCount:
-                            tasks.length + 1, // Add one for the new task button
+                        itemCount: tasks.length,
                         itemBuilder: (context, index) {
-                          if (index == tasks.length) {
-                            // "New Task" Button
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  // New task logic
-                                },
-                                child: DottedBorder(
-                                  color: theme.colorScheme.onSurface,
-                                  strokeWidth: 2,
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(8),
-                                  dashPattern: const [20, 15],
-                                  child: Container(
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Colors.transparent,
-                                    ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.add,
-                                        color: theme.colorScheme.onSurface,
-                                        size: 40,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-
                           // Task items with shadow, padding, and truncation
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
