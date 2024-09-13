@@ -7,7 +7,7 @@ import 'models/token.dart';
 
 class ApiService {
   /* For testing purpose -> localhost unknown for emulator use local ip */
-  var baseurl = Uri.parse('http://10.0.2.2:3000');
+  var baseurl = Uri.parse('https://magenta.jetzt/ttapi');
 
   /* static saved token */
   static Token? token;
@@ -19,7 +19,7 @@ class ApiService {
     'Accept': 'application/json',
     'Connection': 'keep-alive',
     'DNT': '1',
-    'Origin': 'http://localhost:3000',
+    'Origin': 'https://magenta.jetzt',
   };
 
   /// Request access and refresh token with [email] and [password]

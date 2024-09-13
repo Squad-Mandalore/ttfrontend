@@ -75,84 +75,126 @@ class TaskSelectionPopup extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(globalPadding),
-                      child: ListView.builder(
-                        itemCount: tasks.length,
-                        itemBuilder: (context, index) {
-                          // Task items with shadow, padding, and truncation
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                onTaskSelected(tasks[index]);
-                              },
-                              child: Container(
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: customColors?.backgroundAccent1 ??
-                                      theme.colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 4),
+                      child: tasks.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.assignment,
+                                    size: 64,
+                                    color: theme.colorScheme.primary
+                                        .withOpacity(0.7),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'Keine Aufgaben gefunden',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: theme.colorScheme.onSurface
+                                          .withOpacity(0.7),
                                     ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: globalPadding),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: LayoutBuilder(
-                                      builder: (context, constraints) {
-                                        final availableWidth =
-                                            constraints.maxWidth;
-                                        String displayText = tasks[index].name;
-
-                                        final TextPainter textPainter =
-                                            TextPainter(
-                                          text: TextSpan(
-                                            text: displayText,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color:
-                                                  theme.colorScheme.onSurface,
-                                            ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Aufgaben können in der Aufgabenansicht angelegt werden',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: theme.colorScheme.onSurface
+                                          .withOpacity(0.5),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: tasks.length,
+                              itemBuilder: (context, index) {
+                                // Task items with shadow, padding, and truncation
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      onTaskSelected(tasks[index]);
+                                    },
+                                    child: Container(
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        color: customColors?.backgroundAccent1 ??
+                                            theme.colorScheme.primary,
+                                        borderRadius: BorderRadius.circular(8),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.2),
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 4),
                                           ),
-                                          maxLines: 1,
-                                          textDirection: TextDirection.ltr,
-                                        )..layout(maxWidth: availableWidth);
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: globalPadding),
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                              final availableWidth =
+                                                  constraints.maxWidth;
+                                              String displayText =
+                                                  tasks[index].name;
 
-                                        if (textPainter.didExceedMaxLines) {
-                                          // Truncate text based on available width
-                                          final int cutoff = textPainter
-                                              .getPositionForOffset(Offset(
-                                                  availableWidth - 20, 0))
-                                              .offset;
-                                          displayText =
-                                              '${tasks[index].name.substring(0, cutoff)}...';
-                                        }
+                                              final TextPainter textPainter =
+                                                  TextPainter(
+                                                text: TextSpan(
+                                                  text: displayText,
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: theme
+                                                        .colorScheme.onSurface,
+                                                  ),
+                                                ),
+                                                maxLines: 1,
+                                                textDirection:
+                                                    TextDirection.ltr,
+                                              )..layout(
+                                                  maxWidth: availableWidth);
 
-                                        return Text(
-                                          displayText,
-                                          style: TextStyle(
-                                            color: theme.colorScheme.onSurface,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
+                                              if (textPainter
+                                                  .didExceedMaxLines) {
+                                                // Truncate text based on available width
+                                                final int cutoff = textPainter
+                                                    .getPositionForOffset(Offset(
+                                                        availableWidth - 20, 0))
+                                                    .offset;
+                                                displayText =
+                                                    '${tasks[index].name.substring(0, cutoff)}...';
+                                              }
+
+                                              return Text(
+                                                displayText,
+                                                style: TextStyle(
+                                                  color: theme
+                                                      .colorScheme.onSurface,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                overflow:
+                                                    TextOverflow.ellipsis,
+                                              );
+                                            },
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                        );
-                                      },
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ),
                   Padding(
