@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
   final Color headerColor;
+  final Color appBarColor;
   final Color primaryAccent1;
   final Color primaryAccent2;
   final Color primaryAccent3;
@@ -36,6 +37,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
 
   CustomThemeExtension({
     required this.headerColor,
+    required this.appBarColor,
     required this.primaryAccent1,
     required this.primaryAccent2,
     required this.primaryAccent3,
@@ -69,6 +71,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
   @override
   CustomThemeExtension copyWith({
     Color? headerColor,
+    Color? appBarColor,
     Color? primaryAccent1,
     Color? primaryAccent2,
     Color? primaryAccent3,
@@ -100,6 +103,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
   }) {
     return CustomThemeExtension(
       headerColor: headerColor ?? this.headerColor,
+      appBarColor: appBarColor ?? this.appBarColor,
       primaryAccent1: primaryAccent1 ?? this.primaryAccent1,
       primaryAccent2: primaryAccent2 ?? this.primaryAccent2,
       primaryAccent3: primaryAccent3 ?? this.primaryAccent3,
@@ -138,6 +142,7 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     if (other is! CustomThemeExtension) return this;
     return CustomThemeExtension(
       headerColor: Color.lerp(headerColor, other.headerColor, t)!,
+      appBarColor: Color.lerp(appBarColor, other.appBarColor, t)!,
       primaryAccent1: Color.lerp(primaryAccent1, other.primaryAccent1, t)!,
       primaryAccent2: Color.lerp(primaryAccent2, other.primaryAccent2, t)!,
       primaryAccent3: Color.lerp(primaryAccent3, other.primaryAccent3, t)!,

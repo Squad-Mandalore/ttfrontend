@@ -1,8 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
-import 'package:ttfrontend/pages/aufgaben/util/task_filter.dart';
-import 'package:ttfrontend/pages/aufgaben/util/task_popup_logic.dart';
+import 'package:ttfrontend/pages/tasks/util/task_filter.dart';
+import 'package:ttfrontend/pages/tasks/util/task_popup_logic.dart';
 import 'package:ttfrontend/service/models/task.dart';
 import 'package:ttfrontend/service/task_service.dart';
 

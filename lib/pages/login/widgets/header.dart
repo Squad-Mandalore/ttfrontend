@@ -4,7 +4,7 @@ import '../../../modules/utilities/custom_painter_login.dart';
 import 'package:ttfrontend/pages/theme_selection/theme_selection_page.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key? key}) : super(key: key);
+  const Header({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class Header extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             height: 230,
             child: CustomPaint(
