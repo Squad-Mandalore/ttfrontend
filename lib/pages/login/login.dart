@@ -2,13 +2,17 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:ttfrontend/pages/home_page.dart';
+
 // import 'package:ttfrontend/pages/login/widgets/divider.dart';
 import 'package:ttfrontend/pages/login/widgets/email_input.dart';
 import 'package:ttfrontend/pages/login/widgets/login_button.dart';
 import 'package:ttfrontend/pages/login/widgets/password_input.dart';
+import 'package:ttfrontend/service/models/graphql_query.dart';
+
 // import 'package:ttfrontend/pages/login/widgets/register_button.dart';
 import '../../service/api_service.dart';
 import '../../service/log_service.dart';
+import '../password_change/password_change.dart';
 import 'widgets/header.dart';
 
 class LoginPage extends StatefulWidget {
@@ -109,12 +113,35 @@ class LoginPageState extends State<LoginPage> {
                       .then((response) => {
                             // Token will be saved internally in api_service.dart
                             log("Login has been successful"),
+
                             // Login on Success
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()),
-                            )
+
+                            apiService
+                                .graphQLRequest(GraphQLQuery(
+                                    query:
+                                        "query needPasswordChange {getEmployee {initialPassword}}"))
+                                .then((response) => {
+                                      if (response.data?["getEmployee"]
+                                          ["initialPassword"])
+                                        {
+                                          // neue passwort page
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const PasswordChangePage()),
+                                          )
+                                        }
+                                      else
+                                        {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const HomePage()),
+                                          )
+                                        }
+                                    }),
                           })
                       .catchError((error) => {
                             ScaffoldMessenger.of(context).showSnackBar(
