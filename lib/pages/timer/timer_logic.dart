@@ -7,6 +7,10 @@ import 'dart:async';
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
 import 'package:ttfrontend/service/models/task.dart';
 
+import 'package:ttfrontend/service/api_service.dart';
+import 'package:ttfrontend/service/models/graphql_query.dart';
+import 'package:ttfrontend/service/task_service.dart';
+
 class TimerLogic extends ChangeNotifier {
   WorkTimeButtonMode workTimeMode = WorkTimeButtonMode.deactivated;
   WorkTimeButtonMode drivingTimeMode = WorkTimeButtonMode.deactivated;
@@ -24,6 +28,9 @@ class TimerLogic extends ChangeNotifier {
   bool isWorkTimeRunning = false;
   bool isPauseRunning = false;
   bool isDrivingTimeRunning = false;
+
+  final ApiService apiService = ApiService();
+  int? currentWorktimeId;
 
   @override
   void dispose() {
@@ -178,7 +185,7 @@ class TimerLogic extends ChangeNotifier {
     await prefs.setString('currentTask', jsonEncode(task));
   }
 
-  void handleWorkTimeStart() {
+  void handleWorkTimeStart() async {
     workTimeMode = WorkTimeButtonMode.split;
     handleDrivingTimeStop();
 
@@ -186,14 +193,59 @@ class TimerLogic extends ChangeNotifier {
     workTimeStartTime = DateTime.now();
     saveTimers();
     notifyListeners();
+
+    var workTimeStartMutation = r"""
+    mutation ($taskId: Int!, $worktype: String!, $startTime: Int!) {
+      startTimer (taskId: $taskId, worktype: $worktype, startTime: $startTime) {
+        startTime
+        worktimeId
+      }
+    }
+    """;
+
+    final result = await apiService.graphQLRequest(GraphQLQuery(query: workTimeStartMutation, variables: {
+      'taskId': currentTask?.id,
+      'worktype': 'work',
+    }));
+
+    currentWorktimeId = result.data?['startTimer']['worktimeId'];
   }
 
-  void handleWorkTimePauseStart() {
+  void handleWorkTimePauseStart() async {
     workTimeMode = WorkTimeButtonMode.stop;
     isPauseRunning = true;
     pauseStartTime = DateTime.now();
     saveTimers();
     notifyListeners();
+
+    var workTimePauseStartMutation = r"""
+      mutation ($taskId: Int!, $worktype: String!, $startTime: Int!) {
+        startTimer (taskId: $taskId, worktype: $worktype, startTime: $startTime) {
+          startTime
+          worktimeId
+      }
+    }
+    """;
+
+    final result = await apiService.graphQLRequest(GraphQLQuery(query: workTimePauseStartMutation, variables: {
+      'taskId': currentTask?.id,
+      'worktype': 'break',
+    }));
+
+    currentWorktimeId = result.data?['startTimer']['worktimeId'];
+
+    var workTimePauseStopMutation = r"""
+      mutation ($worktimeId: Int!) {
+        stopTimer (worktimeId: $worktimeId) {
+          startTime
+          endTime
+        }
+      }
+    """;
+
+    apiService.graphQLRequest(GraphQLQuery(query: workTimePauseStopMutation, variables: {
+      'worktimeId': currentWorktimeId,
+    }));
   }
 
   void handleWorkTimeStop() {
@@ -209,6 +261,19 @@ class TimerLogic extends ChangeNotifier {
     workTimeStartTime = null;
     saveTimers();
     notifyListeners();
+
+    var workTimeStopMutation = r"""
+      mutation ($worktimeId: Int!) {
+        stopTimer (worktimeId: $worktimeId) {
+          startTime
+          endTime
+        }
+      }
+    """;
+
+    apiService.graphQLRequest(GraphQLQuery(query: workTimeStopMutation, variables: {
+      'worktimeId': currentWorktimeId,
+    }));
   }
 
   void handlePauseStop() {
@@ -223,6 +288,19 @@ class TimerLogic extends ChangeNotifier {
     pauseStartTime = null;
     saveTimers();
     notifyListeners();
+
+    var pauseStopMutation = r"""
+      mutation ($worktimeId: Int!) {
+        stopTimer (worktimeId: $worktimeId) {
+          startTime
+          endTime
+        }
+      }
+    """;
+
+    apiService.graphQLRequest(GraphQLQuery(query: pauseStopMutation, variables: {
+      'worktimeId': currentWorktimeId,
+    }));
   }
 
   // --------------------------------------------
