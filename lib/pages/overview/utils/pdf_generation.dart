@@ -17,32 +17,35 @@ Future<bool> requestStoragePermission(BuildContext context) async {
     if (await Permission.manageExternalStorage.isGranted) {
       return true;
     } else if (context.mounted) {
-      Permission.manageExternalStorage.request();
       if (await Permission.manageExternalStorage.isGranted) {
+      Permission.manageExternalStorage.request();
         return true;
       }
-      bool shouldOpenSettings = await showDialog(
+      await showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Storage Permission Needed'),
-          content: const Text(
-              'This app requires access to your storage to save PDF files. Please grant the permission in app settings.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Open Settings'),
+        builder: (BuildContext context) {
+          return GenericPopup(
+            title: 'Rechte zum Dateizugriff benötigt',
+            agreeText: 'Einstellungen Öffnen',
+            content: const Column(
+              children: [
+          SizedBox(height: 16.0),
+          Text(
+              'Diese App benötigt die Erlaubnis um die angeforderte PDF abzuspeichern. Bitte erlaube den Zugriff auf die Dateien in den Einstellungen.'),
+          SizedBox(height: 16.0),
+              ],
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
-            ),
-          ],
-        ),
+            mode: PopUpMode.warning,
+            onAgree: () {
+              Navigator.of(context).pop(true);
+              openAppSettings();
+            },
+            onDisagree: () {
+              Navigator.of(context).pop(false);
+            },
+          );
+        },
       );
-
-      if (shouldOpenSettings == true) {
-        openAppSettings();
-      }
 
       return await Permission.manageExternalStorage.isGranted;
     }
@@ -65,7 +68,7 @@ Future<bool> requestStoragePermission(BuildContext context) async {
 Future<Directory?> getAppropriateDirectory(BuildContext context) async {
   bool hasPermission = await requestStoragePermission(context);
   if (!hasPermission) {
-    throw Exception("Storage permission not granted.");
+    throw Exception("Fehlende Berechtigungen um auf den Speicher zuzugreifen");
   }
   if (kIsWeb) {
     // Web doesn't support file system access in the same way
@@ -119,10 +122,10 @@ Future<void> fetchAndSavePdf(
       // Get the directory to save the file in the Downloads folder
       final directory = await getAppropriateDirectory(context);
       if (directory == null) {
-        throw Exception("Could not access the Downloads directory.");
+        throw Exception("Downloads-Ordner konnte nicht geöffnet werden.");
       }
 
-      final filePath = '${directory.path}/downloaded_file.pdf';
+      final filePath = '${directory.path}/monatsbericht_$month.pdf';
 
       // Save the PDF file
       final file = File(filePath);
