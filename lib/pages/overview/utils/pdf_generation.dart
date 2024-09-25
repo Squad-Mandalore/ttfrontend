@@ -187,7 +187,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
 
                 await Printing.layoutPdf(
                   onLayout: (PdfPageFormat format) async => bytes,
-                  name: 'My Document',
+                  name: 'Monatsbericht${DateTime.now().toIso8601String()}.pdf',
                   format: PdfPageFormat.a4,
                   // You can add more options here
                 );
