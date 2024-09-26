@@ -4,6 +4,7 @@ import 'timer_logic.dart'; // Importing the logic file
 
 import 'package:ttfrontend/pages/timer/widgets/tasks_button.dart';
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
+import 'package:ttfrontend/pages/overview/utils/daily_logic.dart';
 
 class TimerPage extends StatelessWidget {
   const TimerPage({super.key});
@@ -73,9 +74,9 @@ class TimerPage extends StatelessWidget {
                                 ? "Pause: ${logic.formatDuration(logic.pauseDuration)}"
                                 : "Arbeitszeit: ${logic.formatDuration(logic.workTimeDuration)}",
                     mode: logic.workTimeMode,
-                    onPressed: () => logic.handleWorkTimePress('stop'),
-                    onPausePressed: () => logic.handleWorkTimePress('pause'),
-                    onStopPressed: () => logic.handleWorkTimePress('stop'),
+                    onPressed: () => logic.handleWorkTimePress(context, 'stop'),
+                    onPausePressed: () => logic.handleWorkTimePress(context, 'pause'),
+                    onStopPressed: () => logic.handleWorkTimePress(context, 'stop'),
                   ),
 
                   // DrivingTime Section
@@ -104,8 +105,8 @@ class TimerPage extends StatelessWidget {
                             ? "Starte deine Fahrtzeit"
                             : "Fahrt ${logic.formatDuration(logic.drivingTimeDuration)}",
                     mode: logic.drivingTimeMode,
-                    onPressed: logic.handleDrivingTimePress,
-                    onStopPressed: logic.handleDrivingTimePress,
+                    onPressed: logic.handleDrivingTimePress(context),
+                    onStopPressed: logic.handleDrivingTimePress(context),
                   ),
                 ],
               ),

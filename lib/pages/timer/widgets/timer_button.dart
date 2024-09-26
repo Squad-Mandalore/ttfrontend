@@ -122,7 +122,9 @@ class WorkTimeButton extends StatelessWidget {
                         Colors.redAccent // Color for pause button
                     ),
                 child: MaterialButton(
-                  onPressed: onPausePressed,
+                  onPressed: () {
+                      onPausePressed;
+                    },
                   height: 144, // Fixed height of 144px
                   child: const Text(
                     'Pause',

@@ -6,6 +6,9 @@ import 'dart:async';
 
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
 import 'package:ttfrontend/service/models/task.dart';
+import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
+import 'package:ttfrontend/pages/overview/utils/daily_logic.dart';
+import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 
 class TimerLogic extends ChangeNotifier {
   WorkTimeButtonMode workTimeMode = WorkTimeButtonMode.deactivated;
@@ -151,7 +154,7 @@ class TimerLogic extends ChangeNotifier {
   }
 
   // --------------------------------------------
-  void handleWorkTimePress(String action) {
+  void handleWorkTimePress(BuildContext context, String action) {
     if (workTimeMode == WorkTimeButtonMode.start) {
       handleWorkTimeStart();
     } else if (workTimeMode == WorkTimeButtonMode.split) {
@@ -161,7 +164,7 @@ class TimerLogic extends ChangeNotifier {
         handleWorkTimePauseStart();
       }
     } else if (workTimeMode == WorkTimeButtonMode.stop) {
-      handlePauseStop();
+      handlePauseStop(context);
     }
   }
 
@@ -211,13 +214,31 @@ class TimerLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  void handlePauseStop() {
+   void handlePauseStop(BuildContext context) async {
     workTimeMode = WorkTimeButtonMode.split;
     isPauseRunning = false;
 
-    // Add the final pause time before stopping the pause
-    if (pauseStartTime != null) {
-      pauseDuration += DateTime.now().difference(pauseStartTime!);
+    String month = await OverviewLogic.getCurrentMonthInGerman();
+    String year = await OverviewLogic.getCurrentYear();
+    String day =  DateTime.now().day.toString();
+    List<TimeEntry> entries = getTimersForDay(year, month, day);
+
+    List<TimeEntry> pauseEntries = entries.where((e) => e.type == "Pause").toList();
+    int pauseCounter = 0;
+
+    for (final e in pauseEntries) {
+
+      int minutes = e.endTime.difference(e.startTime).inMinutes;
+      pauseCounter += minutes;
+      if (pauseCounter >= 30) {
+        break;
+      }
+    }
+
+    if (pauseCounter < 30 && context.mounted) {
+
+      String pauseWarning = "Sicher das du deine Pause beenden möchtest? \nDu hast heute erst $pauseCounter Minuten Pause gemacht.";
+      GenericPopup.showWarningPopup(context, pauseWarning, "Pausen Warnung" );
     }
 
     pauseStartTime = null;
@@ -226,18 +247,18 @@ class TimerLogic extends ChangeNotifier {
   }
 
   // --------------------------------------------
-  void handleDrivingTimePress() {
+  void handleDrivingTimePress(BuildContext context) {
     if (drivingTimeMode == WorkTimeButtonMode.start) {
-      handleDrivingTimeStart();
+      handleDrivingTimeStart(context);
     } else {
       handleDrivingTimeStop();
     }
   }
 
-  void handleDrivingTimeStart() {
+  void handleDrivingTimeStart(BuildContext context) {
     drivingTimeMode = WorkTimeButtonMode.stop;
     if (isPauseRunning) {
-      handlePauseStop();
+      handlePauseStop(context);
     }
     handleWorkTimeStop();
 
