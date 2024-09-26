@@ -75,8 +75,10 @@ class TimerPage extends StatelessWidget {
                                 : "Arbeitszeit: ${logic.formatDuration(logic.workTimeDuration)}",
                     mode: logic.workTimeMode,
                     onPressed: () => logic.handleWorkTimePress(context, 'stop'),
-                    onPausePressed: () => logic.handleWorkTimePress(context, 'pause'),
-                    onStopPressed: () => logic.handleWorkTimePress(context, 'stop'),
+                    onPausePressed: () =>
+                        logic.handleWorkTimePress(context, 'pause'),
+                    onStopPressed: () =>
+                        logic.handleWorkTimePress(context, 'stop'),
                   ),
 
                   // DrivingTime Section
@@ -105,8 +107,8 @@ class TimerPage extends StatelessWidget {
                             ? "Starte deine Fahrtzeit"
                             : "Fahrt ${logic.formatDuration(logic.drivingTimeDuration)}",
                     mode: logic.drivingTimeMode,
-                    onPressed: logic.handleDrivingTimePress(context),
-                    onStopPressed: logic.handleDrivingTimePress(context),
+                    onPressed: () => logic.handleDrivingTimePress(context),
+                    onStopPressed: () => logic.handleDrivingTimePress(context),
                   ),
                 ],
               ),

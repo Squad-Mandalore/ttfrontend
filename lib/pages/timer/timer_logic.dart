@@ -214,20 +214,22 @@ class TimerLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-   void handlePauseStop(BuildContext context) async {
+  void handlePauseStop(BuildContext context) async {
     workTimeMode = WorkTimeButtonMode.split;
     isPauseRunning = false;
 
     String month = await OverviewLogic.getCurrentMonthInGerman();
     String year = await OverviewLogic.getCurrentYear();
-    String day =  DateTime.now().day.toString();
-    List<TimeEntry> entries = getTimersForDay(year, month, day);
+    String day = DateTime.now().day.toString();
+    DailyLogic dailyLogic = DailyLogic();
+    List<TimeEntry> entries =
+        await dailyLogic.getTimersForDay(year, month, day);
 
-    List<TimeEntry> pauseEntries = entries.where((e) => e.type == "Pause").toList();
+    List<TimeEntry> pauseEntries =
+        entries.where((e) => e.type == "Pause").toList();
     int pauseCounter = 0;
 
     for (final e in pauseEntries) {
-
       int minutes = e.endTime.difference(e.startTime).inMinutes;
       pauseCounter += minutes;
       if (pauseCounter >= 30) {
@@ -236,9 +238,9 @@ class TimerLogic extends ChangeNotifier {
     }
 
     if (pauseCounter < 30 && context.mounted) {
-
-      String pauseWarning = "Sicher das du deine Pause beenden möchtest? \nDu hast heute erst $pauseCounter Minuten Pause gemacht.";
-      GenericPopup.showWarningPopup(context, pauseWarning, "Pausen Warnung" );
+      String pauseWarning =
+          "Sicher das du deine Pause beenden möchtest? \nDu hast heute erst $pauseCounter Minuten Pause gemacht.";
+      GenericPopup.showWarningPopup(context, pauseWarning, "Pausen Warnung");
     }
 
     pauseStartTime = null;
