@@ -2,12 +2,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
 import 'package:ttfrontend/pages/home_page.dart';
+import 'package:ttfrontend/pages/login/widgets/header.dart';
 import 'package:ttfrontend/pages/password_change/widgets/change_password.dart';
 import 'package:ttfrontend/pages/password_change/widgets/new_password_input.dart';
 import 'package:ttfrontend/pages/password_change/widgets/new_password_repeat_input.dart';
 import '../../service/api_service.dart';
 import '../../service/models/graphql_query.dart';
-import 'widgets/header.dart';
 
 class PasswordChangePage extends StatefulWidget {
   const PasswordChangePage({super.key});
