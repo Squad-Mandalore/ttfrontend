@@ -96,41 +96,42 @@ class LoginPageState extends State<PasswordChangePage> {
                 onPressed: () async {
                   if (_newPasswordController.text ==
                       _newPasswordRepeatController.text) {
-                    apiService
-                        .graphQLRequest(GraphQLQuery(
-                            query:
-                                r"mutation updatePassword($newPasswortLol: String!) {updatePassword(newPassword: $newPasswortLol) {initialPassword}}",
-                            variables: {
-                              "newPasswortLol":
-                                  _newPasswordRepeatController.text
-                            }))
-                        .then((response) => {
-                              if (response.data?["updatePassword"]
-                                  ["initialPassword"])
-                                {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            'Backend did do smth wrong. Blame Ben.')),
-                                  ),
-                                }
-                              else
-                                {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const HomePage()),
-                                  )
-                                }
-                            })
-                        .catchError((error) => {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'E-Mail-Adresse oder Passwort ungültig')),
-                              ),
-                              print("Login invalid: $error")
-                            });
+                    try {
+                      final response =
+                          await apiService.graphQLRequest(GraphQLQuery(
+                        query:
+                            r"mutation updatePassword($newPasswortLol: String!) {updatePassword(newPassword: $newPasswortLol) {initialPassword}}",
+                        variables: {
+                          "newPasswortLol": _newPasswordRepeatController.text
+                        },
+                      ));
+
+                      if (context.mounted) {
+                        if (response.data?["updatePassword"]
+                            ["initialPassword"]) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content:
+                                    Text('Backend did smth wrong. Blame Ben.')),
+                          );
+                        } else {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()),
+                          );
+                        }
+                      }
+                    } catch (error) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  'E-Mail-Adresse oder Passwort ungültig')),
+                        );
+                        print("Login invalid: $error");
+                      }
+                    }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
