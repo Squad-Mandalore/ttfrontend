@@ -410,7 +410,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF587504),
-          appBarColor:  const Color(0xFF587504),
+          appBarColor: const Color(0xFF587504),
           primaryAccent1: const Color(0xFF69831d),
           primaryAccent2: const Color(0xFF799136),
           primaryAccent3: const Color(0xFF8a9e4f),
@@ -646,7 +646,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFDE1A1A),
-          appBarColor:const Color(0xFFD78521),
+          appBarColor: const Color(0xFFD78521),
           primaryAccent1: const Color(0xFFD78521),
           primaryAccent2: const Color(0xFFD78521),
           primaryAccent3: const Color(0xFFD78521),
@@ -705,7 +705,7 @@ class AppTheme {
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFDE1A1A),
-          appBarColor:  AppColours.darkAccent7,
+          appBarColor: AppColours.darkAccent7,
           primaryAccent1: const Color(0xFFD78521),
           primaryAccent2: const Color(0xFFD78521),
           primaryAccent3: const Color(0xFFD78521),

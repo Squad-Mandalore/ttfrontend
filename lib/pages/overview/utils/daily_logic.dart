@@ -4,7 +4,6 @@ import 'package:ttfrontend/service/models/graphql_response.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
 import 'package:ttfrontend/service/models/task.dart';
 
-
 class DailyLogic {
   final ApiService _apiService = ApiService();
 

@@ -5,7 +5,6 @@ import 'package:ttfrontend/service/models/task.dart';
 import 'package:ttfrontend/service/models/graphql_response.dart';
 
 class MonthlyStats {
-  
   final ApiService _apiService = ApiService();
 
   // Helper function to calculate time difference
