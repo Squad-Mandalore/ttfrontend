@@ -84,6 +84,9 @@ class ApiService {
 
   static logout(BuildContext context) {
     token = null;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Erfolgreich Ausgeloggt!')),
+    );
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const LoginPage()),
