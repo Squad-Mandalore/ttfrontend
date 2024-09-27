@@ -34,11 +34,13 @@ class _NavigationPageState extends State<NavigationPage> {
           indicatorColor: Colors.transparent, // No background indicator color
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           iconTheme: WidgetStateProperty.resolveWith<IconThemeData>(
-                (Set<WidgetState> states) {
+            (Set<WidgetState> states) {
               if (states.contains(WidgetState.selected)) {
-                return const IconThemeData(color: Colors.blue); // Selected icon color
+                return const IconThemeData(
+                    color: Colors.blue); // Selected icon color
               }
-              return const IconThemeData(color: Colors.grey); // Unselected icon color
+              return const IconThemeData(
+                  color: Colors.grey); // Unselected icon color
             },
           ),
         ),

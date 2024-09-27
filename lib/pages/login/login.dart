@@ -115,41 +115,46 @@ class LoginPageState extends State<LoginPage> {
                             log("Login has been successful"),
 
                             // Login on Success
-
                             apiService
                                 .graphQLRequest(GraphQLQuery(
                                     query:
                                         "query needPasswordChange {getEmployee {initialPassword}}"))
                                 .then((response) => {
-                                      if (response.data?["getEmployee"]
-                                          ["initialPassword"])
+                                      if (context.mounted)
                                         {
-                                          // neue passwort page
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const PasswordChangePage()),
-                                          )
-                                        }
-                                      else
-                                        {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const HomePage()),
-                                          )
+                                          if (response.data?["getEmployee"]
+                                              ["initialPassword"])
+                                            {
+                                              // neue passwort page
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const PasswordChangePage()),
+                                              )
+                                            }
+                                          else
+                                            {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const HomePage()),
+                                              )
+                                            }
                                         }
                                     }),
                           })
                       .catchError((error) => {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text(
-                                      'E-Mail-Adresse oder Passwort ungültig')),
-                            ),
-                            print("Login invalid: $error")
+                            if (context.mounted)
+                              {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'E-Mail-Adresse oder Passwort ungültig')),
+                                ),
+                                print("Login invalid: $error")
+                              }
                           });
                 },
               ),

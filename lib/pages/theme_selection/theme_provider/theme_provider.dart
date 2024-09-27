@@ -53,6 +53,10 @@ class ThemeProvider extends ChangeNotifier {
     }
   }
 
+  String getCurrentThemeKey() {
+    return selectedTheme;
+  }
+
   void setThemeMode(ThemeMode mode) {
     _themeMode = mode;
     notifyListeners();
