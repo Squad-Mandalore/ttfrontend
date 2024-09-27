@@ -115,6 +115,11 @@ class LoginPageState extends State<PasswordChangePage> {
                                     Text('Backend did smth wrong. Blame Ben.')),
                           );
                         } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content:
+                                    Text('Passwort erfolgreich geändert')),
+                          );
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
