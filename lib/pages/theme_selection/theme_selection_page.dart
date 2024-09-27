@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ttfrontend/modules/widgets/custom_button.dart';
 import 'package:ttfrontend/pages/theme_selection/theme_provider/theme_provider.dart';
+import 'package:ttfrontend/service/api_service.dart';
 
 class ThemeSelectionPage extends StatelessWidget {
   const ThemeSelectionPage({super.key});
@@ -149,6 +150,16 @@ class ThemeSelectionPage extends StatelessWidget {
                 themeProvider,
               ),
               onTap: () => themeProvider.setTheme('SchmidtBrand'),
+            ),
+            const Spacer(),
+            CustomButton(
+              buttonText: "Ausloggen",
+              buttonColour: Theme.of(context).colorScheme.primaryContainer,
+              iconData: Icons.logout_sharp,
+              buttonHeight: 60,
+              buttonWidth: double.infinity,
+              textSize: 18,
+              onTap: () => ApiService.logout(context),
             ),
           ],
         ),

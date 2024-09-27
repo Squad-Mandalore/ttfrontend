@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ttfrontend/pages/login/login.dart';
 import 'package:ttfrontend/service/models/graphql_query.dart';
 import 'package:ttfrontend/service/models/graphql_response.dart';
 import 'models/login.dart';
@@ -78,5 +80,13 @@ class ApiService {
     } catch (e) {
       throw ('An error occurred: $e');
     }
+  }
+
+  static logout(BuildContext context) {
+    token = null;
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
   }
 }
