@@ -70,12 +70,12 @@ Future<Directory?> getAppropriateDirectory(BuildContext context) async {
   if (!hasPermission) {
     throw Exception("Fehlende Berechtigungen um auf den Speicher zuzugreifen");
   }
-  if (kIsWeb) {
-    // Web doesn't support file system access in the same way
+  if (kIsWeb || Platform.isIOS) {
+    // Web doesn't support file system access in the same way, IOS sucks
     return null;
   }
 
-  if (Platform.isAndroid || Platform.isIOS) {
+  if (Platform.isAndroid) {
     // For mobile platforms, use external storage or documents directory
     return await getExternalStorageDirectory();
   } else if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
