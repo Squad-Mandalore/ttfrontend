@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:ttfrontend/pages/timer/widgets/task_selection_popup.dart';
 import 'package:ttfrontend/service/models/task.dart';
-import 'package:ttfrontend/service/task_service.dart';
 
 class TasksButton extends StatefulWidget {
   final Function(Task) onTaskSelected;
   final Task? initialTask;
+  final List<Task> availableTasks;
 
   const TasksButton({
-    super.key,
+    Key? key,
     required this.onTaskSelected,
     this.initialTask,
-  });
+    required this.availableTasks,
+  }) : super(key: key);
 
   @override
   TasksButtonState createState() => TasksButtonState();
@@ -19,16 +19,11 @@ class TasksButton extends StatefulWidget {
 
 class TasksButtonState extends State<TasksButton> {
   Task? _selectedTask;
-  bool _isPopupOpen = false;
-  late Future<List<Task>> tasksFuture;
 
   @override
   void initState() {
     super.initState();
-    tasksFuture = fetchTasks();
-    if (widget.initialTask != null) {
-      _selectedTask = widget.initialTask!;
-    }
+    _selectedTask = widget.initialTask;
   }
 
   @override
@@ -42,128 +37,38 @@ class TasksButtonState extends State<TasksButton> {
     }
   }
 
-  void _openTaskSelectionPopup(BuildContext context) {
-    setState(() {
-      _isPopupOpen = true;
-    });
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return FutureBuilder<List<Task>>(
-          future: tasksFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text('An error has occurred!'),
-              );
-            } else if (snapshot.hasData) {
-              return TaskSelectionPopup(
-                tasks: snapshot.data!,
-                onTaskSelected: (task) {
-                  // Call the task selected callback and close the popup.
-                  setState(() {
-                    _selectedTask = task;
-                    widget.onTaskSelected(task);
-                    _isPopupOpen = false;
-                  });
-                  Navigator.of(context).pop(); // Close the popup manually.
-                },
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: theme.colorScheme.primary,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.20),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 4),
-          ),
-        ],
+    return DropdownButtonFormField<Task>(
+      value: _selectedTask,
+      decoration: const InputDecoration(
+        labelText: 'Aufgabe auswählen',
+        border: OutlineInputBorder(),
       ),
-      child: MaterialButton(
-        onPressed: () => _openTaskSelectionPopup(context),
-        height: 60,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final availableWidth =
-                      constraints.maxWidth - 40; // Reserve space for the icon
-                  String displayText = _selectedTask == null
-                      ? "Aufgabe auswählen"
-                      : _selectedTask!.name;
-
-                  final TextPainter textPainter = TextPainter(
-                    text: TextSpan(
-                      text: displayText,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    maxLines: 1,
-                    textDirection: TextDirection.ltr,
-                  )..layout(maxWidth: availableWidth);
-
-                  if (textPainter.didExceedMaxLines) {
-                    // Truncate text based on available width
-                    final int cutoff = textPainter
-                        .getPositionForOffset(Offset(availableWidth, 0))
-                        .offset;
-                    displayText =
-                        '${_selectedTask!.name.substring(0, cutoff)}...';
-                  }
-
-                  return Text(
-                    displayText,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  );
-                },
-              ),
+      items: widget.availableTasks
+          .map(
+            (task) => DropdownMenuItem<Task>(
+              value: task,
+              child: Text(task.name),
             ),
-            AnimatedRotation(
-              turns: _isPopupOpen ? 0.5 : 0.0,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              child: const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.white,
-                size: 28,
-              ),
-            ),
-          ],
-        ),
+          )
+          .toList(),
+      onChanged: (Task? newTask) {
+        if (newTask != null) {
+          setState(() {
+            _selectedTask = newTask;
+          });
+          widget.onTaskSelected(newTask);
+        }
+      },
+      isExpanded: true,
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 18,
       ),
+      dropdownColor: theme.colorScheme.surface,
     );
   }
 }

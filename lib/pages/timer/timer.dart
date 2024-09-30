@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ttfrontend/service/models/task.dart';
+import 'package:ttfrontend/service/task_service.dart';
 import 'timer_logic.dart'; // Importing the logic file
 
 import 'package:ttfrontend/pages/timer/widgets/tasks_button.dart';
@@ -38,10 +40,34 @@ class TimerPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  TasksButton(
-                    onTaskSelected: logic.onTaskSelected,
-                    initialTask: logic.currentTask,
-                  ),
+                    FutureBuilder<List<Task>>(
+                    future: fetchTasks(),
+                    builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Row(
+                          children: [
+                          TasksButton(
+                            onTaskSelected: (task) => {},
+                            initialTask: Task(id: 4001, name: 'Loading...'),
+                            availableTasks: [Task(id: 4001, name: 'Loading...')],
+                          ),
+                          const SizedBox(width: 10),
+                          const CircularProgressIndicator(),
+                          ],
+                        );
+                        } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Text('Keine Aufgaben gefunden');
+                        } else {
+                        return TasksButton(
+                          onTaskSelected: logic.onTaskSelected,
+                          initialTask: logic.currentTask,
+                          availableTasks: snapshot.data!,
+                        );
+                        }
+                    },
+                    ),
 
                   // WorkTime Section
                   Padding(

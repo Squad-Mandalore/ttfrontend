@@ -110,9 +110,6 @@ class OverviewPopupLogic {
                     onChanged: (String? newValue) {
                       setState(() {
                         selectedType = newValue!;
-                        if (selectedType == 'Pause') {
-                          selectedTask = Task(id: -1, name: 'Neue Aufgabe zuweisen');
-                        }
                       });
                     },
                   ),
@@ -125,6 +122,7 @@ class OverviewPopupLogic {
                           selectedTask = task;
                         });
                       },
+                      availableTasks: availableTasks,
                     ),
                 ],
               );
