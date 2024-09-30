@@ -42,7 +42,6 @@ class GenericPopup extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: mediaQuery.size.width - 40,
           maxHeight: availableHeight,
-          minHeight: 200,
         ),
         child: Material(
           color: Colors.transparent,
