@@ -40,7 +40,6 @@ class TimerLogic extends ChangeNotifier {
 
   TimerLogic() {
     loadTask();
-    loadTimers();
     startTimer();
   }
 
@@ -52,75 +51,6 @@ class TimerLogic extends ChangeNotifier {
       currentTask =
           Task.fromJson(json.decode(currentTaskJson) as Map<String, dynamic>);
     }
-  }
-
-  Future<void> loadTimers() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    final workTimeStartTimeMillis = prefs.getInt('workTimeStartTime');
-    final pauseStartTimeMillis = prefs.getInt('pauseStartTime');
-    final drivingTimeStartTimeMillis = prefs.getInt('drivingTimeStartTime');
-
-    final workTimeDurationMillis = prefs.getInt('workTimeDuration');
-    final pauseDurationMillis = prefs.getInt('pauseDuration');
-    final drivingTimeDurationMillis = prefs.getInt('drivingTimeDuration');
-
-    if (workTimeStartTimeMillis != null) {
-      workTimeStartTime =
-          DateTime.fromMillisecondsSinceEpoch(workTimeStartTimeMillis);
-      isWorkTimeRunning = true;
-      workTimeMode = WorkTimeButtonMode.split;
-    }
-
-    if (pauseStartTimeMillis != null) {
-      pauseStartTime =
-          DateTime.fromMillisecondsSinceEpoch(pauseStartTimeMillis);
-      isPauseRunning = true;
-      workTimeMode = WorkTimeButtonMode.stop;
-    }
-
-    if (drivingTimeStartTimeMillis != null) {
-      drivingTimeStartTime =
-          DateTime.fromMillisecondsSinceEpoch(drivingTimeStartTimeMillis);
-      isDrivingTimeRunning = true;
-      drivingTimeMode = WorkTimeButtonMode.stop;
-    }
-
-    if (workTimeDurationMillis != null) {
-      workTimeDuration = Duration(milliseconds: workTimeDurationMillis);
-    }
-
-    if (pauseDurationMillis != null) {
-      pauseDuration = Duration(milliseconds: pauseDurationMillis);
-    }
-
-    if (drivingTimeDurationMillis != null) {
-      drivingTimeDuration = Duration(milliseconds: drivingTimeDurationMillis);
-    }
-
-    notifyListeners();
-  }
-
-  Future<void> saveTimers() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    if (workTimeStartTime != null) {
-      prefs.setInt(
-          'workTimeStartTime', workTimeStartTime!.millisecondsSinceEpoch);
-    }
-
-    if (pauseStartTime != null) {
-      prefs.setInt('pauseStartTime', pauseStartTime!.millisecondsSinceEpoch);
-    }
-
-    if (drivingTimeStartTime != null) {
-      prefs.setInt(
-          'drivingTimeStartTime', drivingTimeStartTime!.millisecondsSinceEpoch);
-    }
-
-    prefs.setInt('workTimeDuration', workTimeDuration.inMilliseconds);
-    prefs.setInt('pauseDuration', pauseDuration.inMilliseconds);
-    prefs.setInt('drivingTimeDuration', drivingTimeDuration.inMilliseconds);
   }
 
   void startTimer() {
@@ -168,16 +98,32 @@ class TimerLogic extends ChangeNotifier {
         handleWorkTimePauseStart();
       }
     } else if (workTimeMode == WorkTimeButtonMode.stop) {
-      handlePauseStop();
+      if (isPauseRunning) {
+        handlePauseStop();
+      }
+      else {
+        handleWorkTimeStop();
+      }
     }
   }
 
   void onTaskSelected(Task task) {
+    if (isDrivingTimeRunning) {
+      handleDrivingTimeStop();
+    }
+    if (isWorkTimeRunning) {
+      handleWorkTimeStop();
+    }
     currentTask = task;
-    workTimeMode = WorkTimeButtonMode.start;
-    drivingTimeMode = WorkTimeButtonMode.start;
+    if (workTimeMode == WorkTimeButtonMode.deactivated) {
+      workTimeMode = WorkTimeButtonMode.start;
+    }
+    if (drivingTimeMode == WorkTimeButtonMode.deactivated) {
+      drivingTimeMode = WorkTimeButtonMode.start;
+    }
     saveCurrentTask(task);
     notifyListeners();
+
   }
 
   Future<void> saveCurrentTask(Task task) async {
@@ -187,16 +133,16 @@ class TimerLogic extends ChangeNotifier {
 
   void handleWorkTimeStart() async {
     workTimeMode = WorkTimeButtonMode.split;
-    handleDrivingTimeStop();
+    if (isDrivingTimeRunning) {
+      handleDrivingTimeStop();
+    }
 
     isWorkTimeRunning = true;
-    workTimeStartTime = DateTime.now();
-    saveTimers();
     notifyListeners();
 
     var workTimeStartMutation = r"""
-    mutation ($taskId: Int!, $worktype: String!, $startTime: Int!) {
-      startTimer (taskId: $taskId, worktype: $worktype, startTime: $startTime) {
+    mutation ($taskId: Int!, $worktype: String!) {
+      startTimer (taskId: $taskId, worktype: $worktype) {
         startTime
         worktimeId
       }
@@ -205,22 +151,19 @@ class TimerLogic extends ChangeNotifier {
 
     final result = await apiService.graphQLRequest(GraphQLQuery(query: workTimeStartMutation, variables: {
       'taskId': currentTask?.id,
-      'worktype': 'work',
+      'worktype': 'WORK',
     }));
-
     currentWorktimeId = result.data?['startTimer']['worktimeId'];
   }
 
   void handleWorkTimePauseStart() async {
     workTimeMode = WorkTimeButtonMode.stop;
     isPauseRunning = true;
-    pauseStartTime = DateTime.now();
-    saveTimers();
     notifyListeners();
 
     var workTimePauseStartMutation = r"""
-      mutation ($taskId: Int!, $worktype: String!, $startTime: Int!) {
-        startTimer (taskId: $taskId, worktype: $worktype, startTime: $startTime) {
+      mutation ($taskId: Int!, $worktype: String!) {
+        startTimer (taskId: $taskId, worktype: $worktype) {
           startTime
           worktimeId
       }
@@ -229,10 +172,8 @@ class TimerLogic extends ChangeNotifier {
 
     final result = await apiService.graphQLRequest(GraphQLQuery(query: workTimePauseStartMutation, variables: {
       'taskId': currentTask?.id,
-      'worktype': 'break',
+      'worktype': 'BREAK',
     }));
-
-    currentWorktimeId = result.data?['startTimer']['worktimeId'];
 
     var workTimePauseStopMutation = r"""
       mutation ($worktimeId: Int!) {
@@ -246,52 +187,40 @@ class TimerLogic extends ChangeNotifier {
     apiService.graphQLRequest(GraphQLQuery(query: workTimePauseStopMutation, variables: {
       'worktimeId': currentWorktimeId,
     }));
+
+    currentWorktimeId = result.data?['startTimer']['worktimeId'];
   }
 
   void handleWorkTimeStop() {
     workTimeMode = WorkTimeButtonMode.start;
     isWorkTimeRunning = false;
 
-    // Add the final difference before stopping the timer to the accumulated duration
-    if (workTimeStartTime != null) {
-      workTimeDuration +=
-          DateTime.now().difference(workTimeStartTime!) - pauseDuration;
-    }
-
-    workTimeStartTime = null;
-    saveTimers();
     notifyListeners();
 
     var workTimeStopMutation = r"""
       mutation ($worktimeId: Int!) {
         stopTimer (worktimeId: $worktimeId) {
+          worktimeId
           startTime
           endTime
         }
       }
     """;
-
-    apiService.graphQLRequest(GraphQLQuery(query: workTimeStopMutation, variables: {
-      'worktimeId': currentWorktimeId,
-    }));
+    if (currentWorktimeId != null) {
+      apiService.graphQLRequest(GraphQLQuery(query: workTimeStopMutation, variables: {
+        'worktimeId': currentWorktimeId,
+      }));
+    }
   }
 
   void handlePauseStop() {
     workTimeMode = WorkTimeButtonMode.split;
     isPauseRunning = false;
 
-    // Add the final pause time before stopping the pause
-    if (pauseStartTime != null) {
-      pauseDuration += DateTime.now().difference(pauseStartTime!);
-    }
-
-    pauseStartTime = null;
-    saveTimers();
-    notifyListeners();
-
     var pauseStopMutation = r"""
       mutation ($worktimeId: Int!) {
         stopTimer (worktimeId: $worktimeId) {
+          worktimeId
           startTime
           endTime
         }
@@ -301,6 +230,10 @@ class TimerLogic extends ChangeNotifier {
     apiService.graphQLRequest(GraphQLQuery(query: pauseStopMutation, variables: {
       'worktimeId': currentWorktimeId,
     }));
+
+    handleWorkTimeStart();
+    isPauseRunning = false;
+    notifyListeners();
   }
 
   // --------------------------------------------
@@ -312,7 +245,7 @@ class TimerLogic extends ChangeNotifier {
     }
   }
 
-  void handleDrivingTimeStart() {
+  void handleDrivingTimeStart() async {
     drivingTimeMode = WorkTimeButtonMode.stop;
     if (isPauseRunning) {
       handlePauseStop();
@@ -320,22 +253,45 @@ class TimerLogic extends ChangeNotifier {
     handleWorkTimeStop();
 
     isDrivingTimeRunning = true;
-    drivingTimeStartTime = DateTime.now();
-    saveTimers();
     notifyListeners();
+
+    var drivingTimeStartMutation = r"""
+      mutation ($taskId: Int!, $worktype: String!) {
+        startTimer (taskId: $taskId, worktype: $worktype) {
+          startTime
+          worktimeId
+        }
+      }
+    """;
+
+    final result = await apiService.graphQLRequest(GraphQLQuery(query: drivingTimeStartMutation, variables: {
+      'taskId': currentTask?.id,
+      'worktype': 'RIDE',
+    }));
+
+    currentWorktimeId = result.data?['startTimer']['worktimeId'];
   }
 
   void handleDrivingTimeStop() {
     drivingTimeMode = WorkTimeButtonMode.start;
     isDrivingTimeRunning = false;
 
-    // Add the final driving time before stopping
-    if (drivingTimeStartTime != null) {
-      drivingTimeDuration += DateTime.now().difference(drivingTimeStartTime!);
+    notifyListeners();
+
+    var drivingTimeStopMutation = r"""
+      mutation ($worktimeId: Int!) {
+        stopTimer (worktimeId: $worktimeId) {
+          worktimeId
+          startTime
+          endTime
+        }
+      }
+    """;
+    if (currentWorktimeId != null) {
+      apiService.graphQLRequest(GraphQLQuery(query: drivingTimeStopMutation, variables: {
+      'worktimeId': currentWorktimeId,
+      }));
     }
 
-    drivingTimeStartTime = null;
-    saveTimers();
-    notifyListeners();
   }
 }
