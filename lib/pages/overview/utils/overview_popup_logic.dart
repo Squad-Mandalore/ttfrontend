@@ -122,7 +122,6 @@ class OverviewPopupLogic {
                           selectedTask = task;
                         });
                       },
-                      availableTasks: availableTasks,
                     ),
                 ],
               );
