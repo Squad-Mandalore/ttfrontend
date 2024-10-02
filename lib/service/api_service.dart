@@ -7,6 +7,9 @@ import 'models/token.dart';
 
 class ApiService {
   /* For testing purpose -> localhost unknown for emulator use local ip */
+  // Prod: https://magenta.jetzt/ttapi
+  // IOS IP: http://127.0.0.1:3000
+  // Android IP:
   var baseurl = Uri.parse('https://magenta.jetzt/ttapi');
 
   /* static saved token */
