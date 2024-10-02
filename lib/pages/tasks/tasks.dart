@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ttfrontend/pages/aufgaben/task_list.dart';
-import 'package:ttfrontend/pages/aufgaben/util/task_popup_logic.dart';
+import 'package:ttfrontend/pages/tasks/task_list.dart';
 import 'package:ttfrontend/service/models/task.dart';
 import 'package:ttfrontend/service/task_service.dart';
 

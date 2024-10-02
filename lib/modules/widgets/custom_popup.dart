@@ -139,4 +139,26 @@ class GenericPopup extends StatelessWidget {
       ),
     );
   }
+  static void showErrorPopup(BuildContext context, String errorMessage) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return GenericPopup(
+            title: 'Error',
+            agreeText: 'ok',
+            content: Column(
+              children: [
+                const SizedBox(height: 16.0),
+                Text(errorMessage),
+                const SizedBox(height: 16.0),
+              ],
+            ),
+            mode: PopUpMode.error,
+            onAgree: () {
+              Navigator.of(context).pop();
+            },
+          );
+        },
+      );
+    }
 }
