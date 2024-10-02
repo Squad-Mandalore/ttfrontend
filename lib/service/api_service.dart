@@ -10,7 +10,7 @@ class ApiService {
   // Prod: https://magenta.jetzt/ttapi
   // IOS IP: http://127.0.0.1:3000
   // Android IP:
-  var baseurl = Uri.parse('http://127.0.0.1:3000');
+  var baseurl = Uri.parse('https://magenta.jetzt/ttapi');
 
   /* static saved token */
   static Token? token;

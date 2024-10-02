@@ -4,7 +4,6 @@ import 'package:ttfrontend/service/models/graphql_response.dart';
 import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
 import 'package:ttfrontend/service/models/task.dart';
 
-
 class DailyLogic {
   final ApiService _apiService = ApiService();
 
@@ -48,21 +47,36 @@ class DailyLogic {
         final timers = response.data?['timersInBoundary'];
         if (timers != null) {
           for (var timer in timers) {
-            final DateTime startTime = DateTime.parse(timer['startTime']);
-            final DateTime endTime = DateTime.parse(timer['endTime']);
+            if (timer is! Map ||
+                timer['task'] == null ||
+                timer['task'] is! Map ||
+                timer['task'].isEmpty ||
+                timer['startTime'] == null ||
+                timer['endTime'] == null) {
+              continue;
+            }
+            try {
+              final DateTime startTime = DateTime.parse(timer['startTime']);
+              final DateTime endTime = DateTime.parse(timer['endTime']);
 
-            entries.add(TimeEntry(
-              startTime: startTime,
-              endTime: endTime,
-              type: OverviewLogic.translateTypeToGerman(timer['workType']),
-              activity: Task(
-                  id: timer['task']['taskId'],
-                  name: timer['task']['taskDescription']),
-              worktimeId: timer['worktimeId'],
-            ));
+              entries.add(TimeEntry(
+                startTime: startTime,
+                endTime: endTime,
+                type: OverviewLogic.translateTypeToGerman(
+                    timer['workType'].toString()),
+                activity: Task(
+                    id: timer['task']['taskId'],
+                    name: timer['task']['taskDescription']),
+                worktimeId: timer['worktimeId'],
+              ));
+            } catch (e) {
+              // Skip this timer if parsing fails
+              continue;
+            }
           }
         }
       }
+      entries.sort((a, b) => b.endTime.compareTo(a.endTime)); // Sort by endTime
       return entries;
     } catch (e) {
       throw Exception('Failed to fetch timers for the day: $e');
