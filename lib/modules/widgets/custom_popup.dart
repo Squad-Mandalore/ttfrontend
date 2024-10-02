@@ -161,4 +161,27 @@ class GenericPopup extends StatelessWidget {
         },
       );
     }
+
+  static void showWarningPopup(BuildContext context, String warningMessage, String title) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return GenericPopup(
+            title: title,
+            agreeText: 'ok',
+            content: Column(
+              children: [
+                const SizedBox(height: 16.0),
+                Text(warningMessage),
+                const SizedBox(height: 16.0),
+              ],
+            ),
+            mode: PopUpMode.warning,
+            onAgree: () {
+              Navigator.of(context).pop();
+            },
+          );
+        },
+      );
+    }
 }

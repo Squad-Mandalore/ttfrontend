@@ -7,6 +7,9 @@ import 'dart:async';
 
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
 import 'package:ttfrontend/service/models/task.dart';
+import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
+import 'package:ttfrontend/pages/overview/utils/daily_logic.dart';
+import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 
 import 'package:ttfrontend/service/api_service.dart';
 import 'package:ttfrontend/service/models/graphql_query.dart';
@@ -47,6 +50,7 @@ class TimerLogic extends ChangeNotifier {
   TimerLogic() {
   loadTask();
   loadTimesFromPrefs();
+  _updateDurations();
   timer = Timer.periodic(const Duration(seconds: 5), (timer) {
     _updateDurations();
   });
@@ -207,7 +211,8 @@ void _updateDurations() {
   }
 
   // --------------------------------------------
-  void handleWorkTimePress(String action) {
+  void handleWorkTimePress(BuildContext context, String action) {
+    print(action);
     if (workTimeMode == WorkTimeButtonMode.start) {
       handleWorkTimeStart();
     } else if (workTimeMode == WorkTimeButtonMode.split) {
@@ -218,7 +223,7 @@ void _updateDurations() {
         handlePauseStart();
       }
     } else if (workTimeMode == WorkTimeButtonMode.stop) {
-      handlePauseStop();
+      handlePauseStop(context);
     }
     saveTimesToPrefs();
   }
@@ -348,7 +353,7 @@ void _updateDurations() {
     }
   }
 
-  void handlePauseStop() async {
+  void handlePauseStop(BuildContext context) async {
     workTimeMode = WorkTimeButtonMode.split;
 
     var pauseStopMutation = r"""
@@ -369,6 +374,14 @@ void _updateDurations() {
       saveCurrentTask(nextTask!);
       nextTask = null; 
     }
+
+    if (pauseDuration < const Duration(minutes: 30) && context.mounted) {
+      // format to show only minutes
+      final formattedPauseDuration = pauseDuration.inMinutes;
+      String pauseWarning =
+          "Du hast heute erst $formattedPauseDuration Minuten Pause gemacht. Stelle sicher, dass du die 30 Minuten noch erreichst.";
+      GenericPopup.showWarningPopup(context, pauseWarning, "Pausen Warnung");
+    }
     notifyListeners();
     final endTime = result.data?['stopTimer']['endTime'];
     final startTime = result.data?['stopTimer']['startTime'];
@@ -386,19 +399,19 @@ void _updateDurations() {
   }
 
   // --------------------------------------------
-  void handleDrivingTimePress() {
-    _updateDurations();
+  void handleDrivingTimePress(BuildContext context) {
+      _updateDurations();
     if (drivingTimeMode == WorkTimeButtonMode.start) {
-      handleDrivingTimeStart();
+      handleDrivingTimeStart(context);
     } else {
       handleDrivingTimeStop();
     }
   }
 
-  void handleDrivingTimeStart() async {
+  void handleDrivingTimeStart(BuildContext context) async {
     drivingTimeMode = WorkTimeButtonMode.stop;
     if (isPauseRunning) {
-      handlePauseStop();
+      handlePauseStop(context);
     }
     handleWorkTimeStop();
 
