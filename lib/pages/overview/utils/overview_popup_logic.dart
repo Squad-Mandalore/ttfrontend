@@ -4,7 +4,6 @@ import 'package:ttfrontend/pages/overview/utils/overview_logic.dart';
 import 'package:ttfrontend/pages/timer/widgets/tasks_button.dart';
 import 'package:ttfrontend/service/models/task.dart';
 
-
 class OverviewPopupLogic {
   static void showEditPopup(
     BuildContext context,
@@ -111,7 +110,8 @@ class OverviewPopupLogic {
                       setState(() {
                         selectedType = newValue!;
                         if (selectedType == 'Pause') {
-                          selectedTask = Task(id: -1, name: 'Neue Aufgabe zuweisen');
+                          selectedTask =
+                              Task(id: -1, name: 'Neue Aufgabe zuweisen');
                         }
                       });
                     },

@@ -67,7 +67,8 @@ class CustomInputState extends State<CustomInput> {
             color: theme.colorScheme.onSurface.withOpacity(0.3),
             fontWeight: FontWeight.w300,
           ),
-          prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
+          prefixIcon:
+              widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
           suffixIcon: widget.obscureText
               ? IconButton(
                   icon: Icon(
