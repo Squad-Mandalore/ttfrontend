@@ -1,8 +1,10 @@
+// main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:ttfrontend/pages/login/login.dart';
 import 'package:ttfrontend/pages/theme_selection/theme_provider/theme_provider.dart';
+import 'package:ttfrontend/pages/timer/timer_logic.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,8 +20,15 @@ void main() async {
   await themeProvider.initialize();
 
   runApp(
-    ChangeNotifierProvider<ThemeProvider>(
-      create: (_) => themeProvider,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (context) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider<TimerLogic>(
+          create: (context) => TimerLogic(), // Timer is now available everywhere
+        ),
+      ],
       child: const MyApp(),
     ),
   );
