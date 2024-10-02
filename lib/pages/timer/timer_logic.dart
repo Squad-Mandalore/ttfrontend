@@ -195,13 +195,6 @@ void _updateDurations() {
   if (finishedDrivingTimes.isNotEmpty) {
     drivingTimeDuration += finishedDrivingTimes.fold(Duration.zero, (a, b) => a + b);
   }
-  print('workTimeDuration: $workTimeDuration');
-  print('pauseDuration: $pauseDuration');
-  print('drivingTimeDuration: $drivingTimeDuration');
-  print('-------------------');
-  print('finishedWorkTimes: $finishedWorkTimes');
-  print('finishedPauseTimes: $finishedPauseTimes');
-  print('finishedDrivingTimes: $finishedDrivingTimes');
   notifyListeners();
 }
 
