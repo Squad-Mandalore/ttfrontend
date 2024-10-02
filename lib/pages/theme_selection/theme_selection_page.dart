@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ttfrontend/modules/widgets/custom_button.dart';
+import 'package:ttfrontend/modules/widgets/custom_popup.dart';
 import 'package:ttfrontend/pages/theme_selection/theme_provider/theme_provider.dart';
+import 'package:ttfrontend/service/api_service.dart';
 
 class ThemeSelectionPage extends StatelessWidget {
   const ThemeSelectionPage({super.key});
@@ -149,6 +151,33 @@ class ThemeSelectionPage extends StatelessWidget {
                 themeProvider,
               ),
               onTap: () => themeProvider.setTheme('SchmidtBrand'),
+            ),
+            const Spacer(),
+            CustomButton(
+              buttonText: "Ausloggen",
+              buttonColour: const Color(0xFFDE1A1A),
+              iconData: Icons.logout_sharp,
+              buttonHeight: 60,
+              buttonWidth: double.infinity,
+              textSize: 18,
+              onTap: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return GenericPopup(
+                      title: 'Ausloggen',
+                      agreeText: 'Ausloggen',
+                      content:
+                          const Text("Möchten Sie sich wirklich Ausloggen?"),
+                      mode: PopUpMode.warning,
+                      onAgree: () {
+                        Navigator.of(context).pop();
+                        ApiService.logout(context);
+                      },
+                      onDisagree: () {
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  }),
             ),
           ],
         ),
