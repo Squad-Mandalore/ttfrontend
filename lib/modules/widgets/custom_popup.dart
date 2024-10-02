@@ -42,7 +42,6 @@ class GenericPopup extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: mediaQuery.size.width - 40,
           maxHeight: availableHeight,
-          minHeight: 200,
         ),
         child: Material(
           color: Colors.transparent,
@@ -139,6 +138,7 @@ class GenericPopup extends StatelessWidget {
       ),
     );
   }
+
   static void showErrorPopup(BuildContext context, String errorMessage) {
       showDialog(
         context: context,
@@ -154,6 +154,29 @@ class GenericPopup extends StatelessWidget {
               ],
             ),
             mode: PopUpMode.error,
+            onAgree: () {
+              Navigator.of(context).pop();
+            },
+          );
+        },
+      );
+    }
+
+  static void showWarningPopup(BuildContext context, String warningMessage, String title) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return GenericPopup(
+            title: title,
+            agreeText: 'ok',
+            content: Column(
+              children: [
+                const SizedBox(height: 16.0),
+                Text(warningMessage),
+                const SizedBox(height: 16.0),
+              ],
+            ),
+            mode: PopUpMode.warning,
             onAgree: () {
               Navigator.of(context).pop();
             },

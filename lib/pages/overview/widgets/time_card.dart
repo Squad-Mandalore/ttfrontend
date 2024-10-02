@@ -50,9 +50,12 @@ class TimeCard extends StatelessWidget {
                       entry,
                       (editedEntry) async {
                         await DailyLogic().editTimer(editedEntry);
-                        onUpdate();  // Call the callback to update the list
+                        onUpdate(); // Call the callback to update the list
                       },
-                      [Task(name: "Task 1", id: 1), Task(name: "Task 2", id: 2)],
+                      [
+                        Task(name: "Task 1", id: 1),
+                        Task(name: "Task 2", id: 2)
+                      ],
                     );
                   },
                   icon: const Icon(Icons.edit_outlined),
