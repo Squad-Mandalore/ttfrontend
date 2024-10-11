@@ -69,7 +69,6 @@ class TimerLogic extends ChangeNotifier {
 
   Future<void> saveTimesToPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-
     // Save finished times
     prefs.setString('finishedWorkTimes',
         jsonEncode(finishedWorkTimes.map((d) => d.inMilliseconds).toList()));
