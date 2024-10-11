@@ -107,7 +107,8 @@ class DayviewContentState extends State<DayviewContent> {
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('Es wurden keine Timer gefunden'));
+                return const Center(
+                    child: Text('Es wurden keine Timer gefunden'));
               }
 
               final timers = snapshot.data!;
@@ -120,7 +121,7 @@ class DayviewContentState extends State<DayviewContent> {
                     child: TimeCard(
                       entry: timers[index],
                       id: '$index',
-                      onUpdate: _reloadTimers,  // Pass the callback
+                      onUpdate: _reloadTimers,
                     ),
                   );
                 },

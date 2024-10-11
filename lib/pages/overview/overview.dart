@@ -38,7 +38,8 @@ class OverviewPageState extends State<OverviewPage>
       curve: Curves.easeInOut,
     );
 
-    _animationController.value = 0.0; // Ensure it starts aligned with Tagesansicht
+    _animationController.value =
+        0.0; // Ensure it starts aligned with Tagesansicht
   }
 
   Future<void> _initializeDefaults() async {
@@ -51,9 +52,9 @@ class OverviewPageState extends State<OverviewPage>
       _updateDaysDropdown();
     });
     setState(() {
-        _animationController.reset();
-        _animationController.forward();
-      });
+      _animationController.reset();
+      _animationController.forward();
+    });
   }
 
   void _updateDaysDropdown() {
@@ -67,7 +68,6 @@ class OverviewPageState extends State<OverviewPage>
       });
     }
   }
-
 
   void _onViewSelected(bool isDayView) {
     if (isDayViewSelected != isDayView) {
@@ -126,7 +126,10 @@ class OverviewPageState extends State<OverviewPage>
                       },
                     )
                   : MonthviewContent(
-                      formattedMonthYear: OverviewLogic.formatMonthYearForBackend(selectedMonth ?? 'November', selectedYear ?? '2024'),
+                      formattedMonthYear:
+                          OverviewLogic.formatMonthYearForBackend(
+                              selectedMonth ?? 'November',
+                              selectedYear ?? '2024'),
                     ),
             ),
           ],

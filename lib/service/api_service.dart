@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ttfrontend/pages/login/login.dart';
 import 'package:ttfrontend/service/models/graphql_query.dart';
 import 'package:ttfrontend/service/models/graphql_response.dart';
 import 'models/login.dart';
@@ -7,6 +9,9 @@ import 'models/token.dart';
 
 class ApiService {
   /* For testing purpose -> localhost unknown for emulator use local ip */
+  // Prod: https://magenta.jetzt/ttapi
+  // IOS IP: http://127.0.0.1:3000
+  // Android IP:
   var baseurl = Uri.parse('https://magenta.jetzt/ttapi');
 
   /* static saved token */
@@ -78,5 +83,16 @@ class ApiService {
     } catch (e) {
       throw ('An error occurred: $e');
     }
+  }
+
+  static logout(BuildContext context) {
+    token = null;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Erfolgreich Ausgeloggt!')),
+    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
   }
 }

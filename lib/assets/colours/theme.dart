@@ -53,6 +53,28 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: AppColours.greenPrimary,
@@ -112,6 +134,28 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: AppColours.greenPrimary,
@@ -171,6 +215,28 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF723a11),
@@ -230,6 +296,28 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF723a11),
@@ -289,6 +377,28 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF247cbc),
@@ -348,6 +458,28 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF247cbc),
@@ -407,10 +539,32 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF587504),
-          appBarColor:  const Color(0xFF587504),
+          appBarColor: const Color(0xFF587504),
           primaryAccent1: const Color(0xFF69831d),
           primaryAccent2: const Color(0xFF799136),
           primaryAccent3: const Color(0xFF8a9e4f),
@@ -466,6 +620,28 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFF587504),
@@ -525,6 +701,28 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFA50D0D),
@@ -584,6 +782,28 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFA50D0D),
@@ -643,10 +863,32 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgLight,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFDE1A1A),
-          appBarColor:const Color(0xFFD78521),
+          appBarColor: const Color(0xFFD78521),
           primaryAccent1: const Color(0xFFD78521),
           primaryAccent2: const Color(0xFFD78521),
           primaryAccent3: const Color(0xFFD78521),
@@ -702,10 +944,32 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: AppColours.bgDark,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colorScheme.primary, // Set to primary color
+        selectedItemColor: colorScheme.onPrimary, // Typically white
+        unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
+        selectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+          size: 30,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colorScheme.onPrimary.withOpacity(0.6),
+          size: 30,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        type: BottomNavigationBarType.fixed,
+      ),
       extensions: [
         CustomThemeExtension(
           headerColor: const Color(0xFFDE1A1A),
-          appBarColor:  AppColours.darkAccent7,
+          appBarColor: AppColours.darkAccent7,
           primaryAccent1: const Color(0xFFD78521),
           primaryAccent2: const Color(0xFFD78521),
           primaryAccent3: const Color(0xFFD78521),

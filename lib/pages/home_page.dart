@@ -145,7 +145,7 @@ class HomePageState extends State<HomePage> {
         centerTitle: _selectedIndex == 2,
         actions: [
           IconButton(
-            icon: const Icon(Icons.palette),
+            icon: const Icon(Icons.settings),
             color: theme.colorScheme.onPrimary,
             onPressed: () {
               Navigator.push(
@@ -171,9 +171,6 @@ class HomePageState extends State<HomePage> {
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
-          backgroundColor: customColors?.appBarColor ?? customBackgroundColor,
-          selectedItemColor: customIconColor,
-          unselectedItemColor: unselectedIconColor,
           showSelectedLabels: true,
           showUnselectedLabels: false,
           items: const <BottomNavigationBarItem>[
