@@ -76,7 +76,7 @@ class ApiService {
 
       if (response.statusCode == 200) {
         print('Response body: ${response.body}');
-        return GraphQLResponse.fromJson(json.decode(response.body));
+        return GraphQLResponse.fromJson(json.decode(utf8.decode(response.bodyBytes)));
       } else {
         throw Exception('Request Error ${response.statusCode}');
       }
