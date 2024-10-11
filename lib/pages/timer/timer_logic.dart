@@ -50,48 +50,55 @@ class TimerLogic extends ChangeNotifier {
   Future<void> loadTimers() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final workTimeStartTimeMillis = prefs.getInt('workTimeStartTime');
-    final pauseStartTimeMillis = prefs.getInt('pauseStartTime');
-    final drivingTimeStartTimeMillis = prefs.getInt('drivingTimeStartTime');
+    try {
+      final workTimeStartTimeMillis = prefs.getInt('workTimeStartTime');
+      final pauseStartTimeMillis = prefs.getInt('pauseStartTime');
+      final drivingTimeStartTimeMillis = prefs.getInt('drivingTimeStartTime');
 
-    final workTimeDurationMillis = prefs.getInt('workTimeDuration');
-    final pauseDurationMillis = prefs.getInt('pauseDuration');
-    final drivingTimeDurationMillis = prefs.getInt('drivingTimeDuration');
+      final workTimeDurationMillis = prefs.getInt('workTimeDuration');
+      final pauseDurationMillis = prefs.getInt('pauseDuration');
+      final drivingTimeDurationMillis = prefs.getInt('drivingTimeDuration');
 
-    if (workTimeStartTimeMillis != null) {
-      workTimeStartTime =
-          DateTime.fromMillisecondsSinceEpoch(workTimeStartTimeMillis);
-      isWorkTimeRunning = true;
-      workTimeMode = WorkTimeButtonMode.split;
+      if (workTimeStartTimeMillis != null) {
+        workTimeStartTime =
+            DateTime.fromMillisecondsSinceEpoch(workTimeStartTimeMillis);
+        isWorkTimeRunning = true;
+        workTimeMode = WorkTimeButtonMode.split;
+      }
+
+      if (pauseStartTimeMillis != null) {
+        pauseStartTime =
+            DateTime.fromMillisecondsSinceEpoch(pauseStartTimeMillis);
+        isPauseRunning = true;
+        workTimeMode = WorkTimeButtonMode.stop;
+      }
+
+      if (drivingTimeStartTimeMillis != null) {
+        drivingTimeStartTime =
+            DateTime.fromMillisecondsSinceEpoch(drivingTimeStartTimeMillis);
+        isDrivingTimeRunning = true;
+        drivingTimeMode = WorkTimeButtonMode.stop;
+      }
+
+      if (workTimeDurationMillis != null) {
+        workTimeDuration = Duration(milliseconds: workTimeDurationMillis);
+      }
+
+      if (pauseDurationMillis != null) {
+        pauseDuration = Duration(milliseconds: pauseDurationMillis);
+      }
+
+      if (drivingTimeDurationMillis != null) {
+        drivingTimeDuration = Duration(milliseconds: drivingTimeDurationMillis);
+      }
+
+      notifyListeners();
+    } catch (e) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      // Retry loading timers after clearing preferences
+      await loadTimers();
     }
-
-    if (pauseStartTimeMillis != null) {
-      pauseStartTime =
-          DateTime.fromMillisecondsSinceEpoch(pauseStartTimeMillis);
-      isPauseRunning = true;
-      workTimeMode = WorkTimeButtonMode.stop;
-    }
-
-    if (drivingTimeStartTimeMillis != null) {
-      drivingTimeStartTime =
-          DateTime.fromMillisecondsSinceEpoch(drivingTimeStartTimeMillis);
-      isDrivingTimeRunning = true;
-      drivingTimeMode = WorkTimeButtonMode.stop;
-    }
-
-    if (workTimeDurationMillis != null) {
-      workTimeDuration = Duration(milliseconds: workTimeDurationMillis);
-    }
-
-    if (pauseDurationMillis != null) {
-      pauseDuration = Duration(milliseconds: pauseDurationMillis);
-    }
-
-    if (drivingTimeDurationMillis != null) {
-      drivingTimeDuration = Duration(milliseconds: drivingTimeDurationMillis);
-    }
-
-    notifyListeners();
   }
 
   Future<void> saveTimers() async {
