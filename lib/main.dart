@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:ttfrontend/pages/login/login.dart';
 import 'package:ttfrontend/pages/theme_selection/theme_provider/theme_provider.dart';
 import 'package:ttfrontend/pages/timer/timer_logic.dart';
+import 'package:ttfrontend/service/navigation_service.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
       theme: themeProvider.lightTheme,
       darkTheme: themeProvider.darkTheme,
       themeMode: themeProvider.themeMode,
+      navigatorKey: NavigationService.navigatorKey,
       home: const LoginPage(),
     );
   }
