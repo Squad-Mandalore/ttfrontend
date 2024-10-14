@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'timer_logic.dart'; // Importing the logic file
 import 'package:ttfrontend/pages/timer/widgets/tasks_button.dart';
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
-import 'package:ttfrontend/pages/overview/utils/daily_logic.dart';
 
 class TimerPage extends StatelessWidget {
   const TimerPage({super.key});

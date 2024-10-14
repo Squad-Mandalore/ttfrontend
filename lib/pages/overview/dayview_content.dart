@@ -121,7 +121,7 @@ class DayviewContentState extends State<DayviewContent> {
                     child: TimeCard(
                       entry: timers[index],
                       id: '$index',
-                      onUpdate: _reloadTimers, // Pass the callback
+                      onUpdate: _reloadTimers,
                     ),
                   );
                 },

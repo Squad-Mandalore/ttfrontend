@@ -7,17 +7,24 @@ import 'package:ttfrontend/pages/theme_selection/theme_provider/theme_provider.d
 import 'package:ttfrontend/pages/timer/timer_logic.dart';
 import 'package:ttfrontend/service/navigation_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
+
+  // Lock the app orientation to portrait modes
+  await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  // Initialize ThemeProvider and load saved preferences
+  ThemeProvider themeProvider = ThemeProvider();
+  await themeProvider.initialize();
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeProvider>(
-          create: (context) => ThemeProvider(),
+          create: (_) => themeProvider,
         ),
         ChangeNotifierProvider<TimerLogic>(
           create: (context) => TimerLogic(), // Timer is now available everywhere
@@ -33,6 +40,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Listen to ThemeProvider for theme changes
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp(
@@ -42,6 +50,7 @@ class MyApp extends StatelessWidget {
       themeMode: themeProvider.themeMode,
       navigatorKey: NavigationService.navigatorKey,
       home: const LoginPage(),
+      debugShowCheckedModeBanner: false, // Optional: Remove debug banner
     );
   }
 }

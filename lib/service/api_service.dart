@@ -97,7 +97,7 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         print('Response body: ${response.body}');
-        return GraphQLResponse.fromJson(json.decode(response.body));
+        return GraphQLResponse.fromJson(json.decode(utf8.decode(response.bodyBytes)));
       } else if (response.statusCode == 401) {
         // Return null to indicate a need for token refresh
         return null;
