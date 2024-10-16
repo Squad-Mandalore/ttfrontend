@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:ttfrontend/pages/login/login.dart';
 import 'package:ttfrontend/service/models/graphql_query.dart';
 import 'package:ttfrontend/service/models/graphql_response.dart';
+import 'package:ttfrontend/service/navigation_service.dart';
 import 'models/login.dart';
 import 'models/token.dart';
 
@@ -65,34 +66,61 @@ class ApiService {
   /// Do know, that there are no hardcoded models (e.g. worktime, employee ...)
   /// and Query's / Mutations need to be tested
   Future<GraphQLResponse> graphQLRequest(GraphQLQuery query) async {
+    if (token == null) {
+      logout();
+      throw Exception('Unauthorized after normal usage, how did this even happen?');
+    }
+    var response = await sendRequest(query);
+    if (response == null) {
+      token = await refresh(token!.refreshToken);
+      if (token != null) {
+        response = await sendRequest(query);
+        if (response == null) {
+          logout();
+          throw Exception('Unauthorized after token refresh, logging out');
+        }
+      } else {
+        throw Exception('Token refresh failed');
+      }
+    }
+    return response;
+  }
+
+  Future<GraphQLResponse?> sendRequest(GraphQLQuery query) async {
     try {
       headers.addAll({'Authorization': 'Bearer ${token!.accessToken}'});
       var response = await http.post(
         Uri.parse('$baseurl/graphql'),
         headers: headers,
         body: json.encode(query),
-        encoding: Encoding.getByName('utf-8'), // Ensure proper encoding
+        encoding: Encoding.getByName('utf-8'),
       );
-
       if (response.statusCode == 200) {
         print('Response body: ${response.body}');
         return GraphQLResponse.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      } else if (response.statusCode == 401) {
+        // Return null to indicate a need for token refresh
+        return null;
       } else {
         throw Exception('Request Error ${response.statusCode}');
       }
     } catch (e) {
-      throw ('An error occurred: $e');
+      throw Exception('An error occurred: $e');
     }
   }
 
-  static logout(BuildContext context) {
-    token = null;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Erfolgreich Ausgeloggt!')),
-    );
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-    );
+  static logout() {
+    BuildContext context = NavigationService.navigatorKey.currentContext!;
+    if (Navigator.of(context).mounted) {
+      token = null;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erfolgreich Ausgeloggt!')),
+      );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+        ModalRoute.withName('/'),
+      );
+    }
   }
 }

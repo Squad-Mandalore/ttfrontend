@@ -171,7 +171,7 @@ class ThemeSelectionPage extends StatelessWidget {
                       mode: PopUpMode.warning,
                       onAgree: () {
                         Navigator.of(context).pop();
-                        ApiService.logout(context);
+                        ApiService.logout();
                       },
                       onDisagree: () {
                         Navigator.of(context).pop();
