@@ -31,6 +31,7 @@ class NewPasswortInput extends StatelessWidget {
         CustomInput(
           controller: controller,
           focusNode: focusNode,
+          obscureText: true,
           hintText: 'Neues Passwort',
           width: 313,
           height: 60,
