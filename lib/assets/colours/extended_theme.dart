@@ -33,6 +33,10 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
   final Color bigButtonPauseColor;
   final Color bigButtonHighlightBoxColor;
 
+  final Color edit;
+  final Color delete;
+  final Color taskHeader;
+
   final Color popupBackgroundColor;
 
   CustomThemeExtension({
@@ -66,6 +70,9 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     required this.bigButtonPauseColor,
     required this.bigButtonStopColor,
     required this.popupBackgroundColor,
+    required this.delete,
+    required this.edit,
+    required this.taskHeader,
   });
 
   @override
@@ -100,6 +107,9 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
     Color? bigButtonPauseColor,
     Color? bigButtonHighlightBoxColor,
     Color? popupBackgroundColor,
+    Color? delete,
+    Color? edit,
+    Color? taskHeader,
   }) {
     return CustomThemeExtension(
       headerColor: headerColor ?? this.headerColor,
@@ -133,6 +143,9 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
       bigButtonHighlightBoxColor:
           bigButtonHighlightBoxColor ?? this.bigButtonHighlightBoxColor,
       popupBackgroundColor: popupBackgroundColor ?? this.popupBackgroundColor,
+      taskHeader: taskHeader ?? this.taskHeader,
+      edit: edit ?? this.edit,
+      delete: delete ?? this.delete,
     );
   }
 
@@ -185,6 +198,12 @@ class CustomThemeExtension extends ThemeExtension<CustomThemeExtension> {
           bigButtonHighlightBoxColor, other.bigButtonHighlightBoxColor, t)!,
       popupBackgroundColor:
           Color.lerp(popupBackgroundColor, other.popupBackgroundColor, t)!,
+      edit:
+          Color.lerp(edit, other.edit, t)!,
+      delete:
+          Color.lerp(delete, other.delete, t)!,
+      taskHeader:
+          Color.lerp(taskHeader, other.taskHeader, t)!,
     );
   }
 }

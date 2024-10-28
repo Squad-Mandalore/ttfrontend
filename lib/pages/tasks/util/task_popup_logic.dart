@@ -71,6 +71,8 @@ class TaskPopupLogic {
 
   static void showAddTaskPopup(BuildContext context, Function(String) onAdd) {
     final TextEditingController controller = TextEditingController();
+    final theme = Theme.of(context);
+
 
     showDialog(
       context: context,
@@ -88,8 +90,11 @@ class TaskPopupLogic {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                  "Die neue Aufgabe wird global hinzugefügt und ist für alle Benutzer sichtbar."),
+              Text(
+                  "Die neue Aufgabe wird global hinzugefügt und ist für alle Benutzer sichtbar.",
+                  style: TextStyle(
+                    color: theme.colorScheme.onSurface,
+                  ),),
             ],
           ),
           mode: PopUpMode.agree,

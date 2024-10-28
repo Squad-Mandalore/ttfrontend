@@ -103,10 +103,13 @@ class AppTheme {
           inputBoxColor: AppColours.inputBoxLight,
           borderColor: AppColours.borderColourLight,
           bigButtonColor: AppColours.greenPrimary,
-          bigButtonHighlightBoxColor: AppColours.greenAccent3,
+          bigButtonHighlightBoxColor: AppColours.greenAccent7,
           bigButtonPauseColor: AppColours.greenAccent9,
-          bigButtonStopColor: AppColours.magenta,
+          bigButtonStopColor: const Color(0xFFAE2525),
           popupBackgroundColor: AppColours.bgLight,
+          edit: AppColours.greenPrimary,
+          delete: AppColours.magenta,
+          taskHeader: AppColours.greenAccent7,
         ),
       ],
     );
@@ -135,11 +138,11 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgDark,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: colorScheme.primary, // Set to primary color
-        selectedItemColor: colorScheme.onPrimary, // Typically white
+        backgroundColor: Colors.grey.shade900, // Set to primary color
+        selectedItemColor: colorScheme.primary, // Typically white
         unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
         selectedIconTheme: IconThemeData(
-          color: colorScheme.onPrimary,
+          color: colorScheme.primary,
           size: 30,
         ),
         unselectedIconTheme: IconThemeData(
@@ -184,10 +187,13 @@ class AppTheme {
           inputBoxColor: AppColours.inputBoxDark,
           borderColor: AppColours.borderColourDark,
           bigButtonColor: AppColours.greenPrimary,
-          bigButtonHighlightBoxColor: AppColours.greenAccent5,
+          bigButtonHighlightBoxColor: AppColours.greenAccent7,
           bigButtonPauseColor: AppColours.greenAccent9,
-          bigButtonStopColor: AppColours.magenta,
+          bigButtonStopColor: const Color(0xFFAE2525),
           popupBackgroundColor: const Color(0xFF242424),
+          edit: AppColours.greenPrimary,
+          delete: AppColours.magenta,
+          taskHeader: AppColours.greenAccent7,
         ),
       ],
     );
@@ -265,10 +271,13 @@ class AppTheme {
           inputBoxColor: AppColours.inputBoxLight,
           borderColor: AppColours.borderColourLight,
           bigButtonColor: const Color(0xFF723a11),
-          bigButtonHighlightBoxColor: const Color(0xFFaa8970),
+          bigButtonHighlightBoxColor: const Color(0xFF9c7558),
           bigButtonPauseColor: const Color(0xFF804e29),
           bigButtonStopColor: const Color.fromARGB(255, 114, 17, 17),
           popupBackgroundColor: const Color(0xFFe3d8cf),
+          edit: const Color(0xFF804e29),
+          delete: const Color.fromARGB(255, 114, 17, 17),
+          taskHeader: const Color(0xFF9c7558),
         ),
       ],
     );
@@ -350,6 +359,9 @@ class AppTheme {
           bigButtonPauseColor: const Color(0xFF67340f),
           bigButtonStopColor: const Color.fromARGB(255, 114, 17, 17),
           popupBackgroundColor: const Color(0xFF242424),
+          edit: const Color(0xFF67340f),
+          delete: const Color.fromARGB(255, 114, 17, 17),
+          taskHeader: const Color(0xFF2e1707),
         ),
       ],
     );
@@ -431,6 +443,9 @@ class AppTheme {
           bigButtonPauseColor: const Color(0xFF3a89c3),
           bigButtonStopColor: const Color.fromARGB(255, 188, 36, 36),
           popupBackgroundColor: const Color(0xFFd3e5f2),
+          edit: const Color(0xFF3a89c3),
+          delete: const Color.fromARGB(255, 188, 36, 36),
+          taskHeader: const Color(0xFF7cb0d7),
         ),
       ],
     );
@@ -512,6 +527,9 @@ class AppTheme {
           bigButtonPauseColor: const Color(0xFF2070a9),
           bigButtonStopColor: const Color.fromARGB(255, 188, 36, 36),
           popupBackgroundColor: const Color(0xFF242424),
+          edit: const Color(0xFF2070a9),
+          delete: const Color.fromARGB(255, 188, 36, 36),
+          taskHeader: const Color(0xFF0e324b),
         ),
       ],
     );
@@ -589,10 +607,13 @@ class AppTheme {
           inputBoxColor: AppColours.inputBoxLight,
           borderColor: AppColours.borderColourLight,
           bigButtonColor: const Color(0xFF587504),
-          bigButtonHighlightBoxColor: const Color(0xFF9bac68),
+          bigButtonHighlightBoxColor: const Color.fromARGB(255, 135, 150, 91),
           bigButtonPauseColor: const Color(0xFF69831d),
           bigButtonStopColor: const Color.fromARGB(255, 117, 4, 4),
           popupBackgroundColor: const Color(0xFFdee3cd),
+          edit: const Color(0xFF587504),
+          delete: const Color(0xFFAE2525),
+          taskHeader: const Color(0xFF799136),
         ),
       ],
     );
@@ -674,6 +695,9 @@ class AppTheme {
           bigButtonPauseColor: const Color(0xFF4f6904),
           bigButtonStopColor: const Color.fromARGB(255, 117, 4, 4),
           popupBackgroundColor: const Color(0xFF242424),
+          edit: const Color(0xFF587504),
+          delete: const Color(0xFFAE2525),
+          taskHeader: const Color(0xFF2c3b02),
         ),
       ],
     );
@@ -754,7 +778,10 @@ class AppTheme {
           bigButtonHighlightBoxColor: const Color(0xFFDB9E9E),
           bigButtonPauseColor: const Color(0xFFC05656),
           bigButtonStopColor: const Color(0xFFAE2525),
-          popupBackgroundColor: const Color(0xFFEDCFCF),
+          popupBackgroundColor: const Color(0xFFFFEFEF),
+          edit: const Color(0xFFC05656),
+          delete: const Color(0xFFAE2525),
+          taskHeader:   const Color(0xFFDB9E9E),
         ),
       ],
     );
@@ -836,6 +863,9 @@ class AppTheme {
           bigButtonPauseColor: const Color(0xFF730909),
           bigButtonStopColor: const Color(0xFFAE2525),
           popupBackgroundColor: const Color(0xFF242424),
+          edit: const Color(0xFF730909),
+          delete: const Color(0xFFAE2525),
+          taskHeader: const Color(0xFF420505),
         ),
       ],
     );
@@ -913,10 +943,13 @@ class AppTheme {
           inputBoxColor: AppColours.inputBoxLight,
           borderColor: AppColours.borderColourLight,
           bigButtonColor: const Color(0xFFD78521),
-          bigButtonHighlightBoxColor: const Color.fromARGB(255, 148, 163, 185),
+          bigButtonHighlightBoxColor: const Color.fromARGB(255, 139, 94, 38),
           bigButtonPauseColor: const Color(0xFFD78521),
-          bigButtonStopColor: const Color(0xFFDE1A1A),
-          popupBackgroundColor: const Color(0xFFACBDD9),
+          bigButtonStopColor: const Color.fromARGB(255, 160, 17, 17),
+          popupBackgroundColor: const Color(0xFF242424),
+          edit: const Color.fromARGB(255, 214, 126, 18),
+          delete: const Color.fromARGB(255, 160, 17, 17),
+          taskHeader: const Color.fromARGB(255, 139, 94, 38),
         ),
       ],
     );
@@ -945,11 +978,11 @@ class AppTheme {
       scaffoldBackgroundColor: AppColours.bgDark,
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: colorScheme.primary, // Set to primary color
-        selectedItemColor: colorScheme.onPrimary, // Typically white
+        backgroundColor: AppColours.darkAccent7, // Set to primary color
+        selectedItemColor: const Color(0xFFD78521), // Typically white
         unselectedItemColor: colorScheme.onPrimary.withOpacity(0.6), // Slightly transparent
-        selectedIconTheme: IconThemeData(
-          color: colorScheme.onPrimary,
+        selectedIconTheme: const IconThemeData(
+          color: Color(0xFFD78521),
           size: 30,
         ),
         unselectedIconTheme: IconThemeData(
@@ -994,10 +1027,13 @@ class AppTheme {
           inputBoxColor: AppColours.inputBoxDark,
           borderColor: AppColours.borderColourDark,
           bigButtonColor: const Color(0xFFD78521),
-          bigButtonHighlightBoxColor: const Color.fromARGB(255, 90, 99, 112),
+          bigButtonHighlightBoxColor: const Color.fromARGB(255, 97, 55, 3),
           bigButtonPauseColor: const Color(0xFFD78521),
-          bigButtonStopColor: const Color(0xFFDE1A1A),
+          bigButtonStopColor: const Color.fromARGB(255, 160, 17, 17),
           popupBackgroundColor: const Color(0xFF242424),
+          edit: const Color.fromARGB(255, 97, 55, 3),
+          delete: const Color.fromARGB(255, 160, 17, 17),
+          taskHeader: const Color(0xFFD78521),
         ),
       ],
     );

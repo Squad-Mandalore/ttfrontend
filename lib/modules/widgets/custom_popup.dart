@@ -98,8 +98,8 @@ class GenericPopup extends StatelessWidget {
                           child: Text(
                             cancleText ?? 'Abbrechen',
                             style: TextStyle(
-                              color: theme.colorScheme.secondary,
-                              fontSize: 16,
+                              color: theme.colorScheme.primary,
+                              fontSize: 18,
                             ),
                           ),
                         ),
