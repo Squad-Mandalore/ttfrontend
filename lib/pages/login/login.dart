@@ -11,7 +11,6 @@ import 'package:ttfrontend/service/models/graphql_query.dart';
 
 // import 'package:ttfrontend/pages/login/widgets/register_button.dart';
 import '../../service/api_service.dart';
-import '../../service/log_service.dart';
 import '../password_change/password_change.dart';
 import 'widgets/header.dart';
 
@@ -148,12 +147,26 @@ class LoginPageState extends State<LoginPage> {
                       .catchError((error) => {
                             if (context.mounted)
                               {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          'E-Mail-Adresse oder Passwort ungültig')),
-                                ),
-                                print("Login invalid: $error")
+                                if (error.toString().contains('NetworkError') ||
+                                    error
+                                        .toString()
+                                        .contains('SocketException'))
+                                  {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              'Fehler mit der Internetverbindung')),
+                                    ),
+                                  }
+                                else
+                                  {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              'E-Mail-Adresse oder Passwort ungültig')),
+                                    ),
+                                  },
+                                log(error.toString())
                               }
                           });
                 },

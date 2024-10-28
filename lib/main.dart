@@ -23,7 +23,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeProvider>(
-          create: (context) => ThemeProvider(),
+          create: (_) => themeProvider,
         ),
         ChangeNotifierProvider<TimerLogic>(
           create: (context) => TimerLogic(), // Timer is now available everywhere

@@ -214,6 +214,12 @@ class _TaskListState extends State<TaskList> {
             widget.tasks.remove(task);
             _filterTasks();
           });
+        } else {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Aufgabe wird schon bearbeitet')),
+            );
+          }
         }
       });
     };
