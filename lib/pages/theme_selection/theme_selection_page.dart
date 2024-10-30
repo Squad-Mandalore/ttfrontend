@@ -166,8 +166,9 @@ class ThemeSelectionPage extends StatelessWidget {
                     return GenericPopup(
                       title: 'Ausloggen',
                       agreeText: 'Ausloggen',
-                      content:
-                          const Text("Möchten Sie sich wirklich Ausloggen?"),
+                      content: Text("Möchten Sie sich wirklich Ausloggen?",
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface)),
                       mode: PopUpMode.warning,
                       onAgree: () {
                         Navigator.of(context).pop();

@@ -5,6 +5,7 @@ import 'package:ttfrontend/service/models/task.dart'; // Assuming Task is define
 class TaskPopupLogic {
   static void showDeleteConfirmation(
       BuildContext context, Task task, VoidCallback onDelete) {
+    final theme = Theme.of(context);
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -13,9 +14,10 @@ class TaskPopupLogic {
           agreeText: 'Löschen',
           content: Column(
             children: [
-              Text("Möchten Sie die Aufgabe ${task.name} wirklich löschen?"),
-              const Text(
-                  "Änderungen sind global und betreffen somit alle Benutzer."),
+              Text("Möchten Sie die Aufgabe ${task.name} wirklich löschen?",
+                  style: TextStyle(color: theme.colorScheme.onSurface)),
+              Text("Änderungen sind global und betreffen somit alle Benutzer.",
+                  style: TextStyle(color: theme.colorScheme.onSurface)),
             ],
           ),
           mode: PopUpMode.warning,
@@ -52,8 +54,9 @@ class TaskPopupLogic {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                  "Änderungen sind global und für alle Benutzer sichtbar."),
+              Text("Änderungen sind global und für alle Benutzer sichtbar.",
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface)),
             ],
           ),
           mode: PopUpMode.agree,
@@ -73,7 +76,6 @@ class TaskPopupLogic {
     final TextEditingController controller = TextEditingController();
     final theme = Theme.of(context);
 
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -91,10 +93,11 @@ class TaskPopupLogic {
               ),
               const SizedBox(height: 8),
               Text(
-                  "Die neue Aufgabe wird global hinzugefügt und ist für alle Benutzer sichtbar.",
-                  style: TextStyle(
-                    color: theme.colorScheme.onSurface,
-                  ),),
+                "Die neue Aufgabe wird global hinzugefügt und ist für alle Benutzer sichtbar.",
+                style: TextStyle(
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
             ],
           ),
           mode: PopUpMode.agree,

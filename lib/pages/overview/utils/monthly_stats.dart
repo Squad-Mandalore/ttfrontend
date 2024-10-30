@@ -60,6 +60,14 @@ class MonthlyStats {
         final timers = response.data?['timersInBoundary'];
         if (timers != null) {
           for (var timer in timers) {
+            if (timer is! Map ||
+                timer['task'] == null ||
+                timer['task'] is! Map ||
+                timer['task'].isEmpty ||
+                timer['startTime'] == null ||
+                timer['endTime'] == null) {
+              continue;
+            }
             final DateTime startTime = DateTime.parse(timer['startTime']);
             final DateTime endTime = DateTime.parse(timer['endTime']);
 

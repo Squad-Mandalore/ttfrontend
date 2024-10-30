@@ -1,16 +1,13 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
-
 import 'package:ttfrontend/pages/timer/widgets/timer_button.dart';
+import 'package:ttfrontend/service/models/graphql_response.dart';
 import 'package:ttfrontend/service/models/task.dart';
 import 'package:ttfrontend/modules/widgets/custom_popup.dart';
-
 import 'package:ttfrontend/service/api_service.dart';
 import 'package:ttfrontend/service/models/graphql_query.dart';
+import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TimerLogic extends ChangeNotifier {
   WorkTimeButtonMode workTimeMode = WorkTimeButtonMode.deactivated;
@@ -40,15 +37,13 @@ class TimerLogic extends ChangeNotifier {
 
   @override
   void dispose() {
-    saveTimesToPrefs();
     timer?.cancel();
     super.dispose();
   }
 
   TimerLogic() {
     loadTask();
-    loadTimesFromPrefs();
-    _updateDurations();
+    fetchTimersForToday();
     timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       _updateDurations();
     });
@@ -67,117 +62,125 @@ class TimerLogic extends ChangeNotifier {
     }
   }
 
-  Future<void> saveTimesToPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    // Save finished times
-    prefs.setString('finishedWorkTimes',
-        jsonEncode(finishedWorkTimes.map((d) => d.inMilliseconds).toList()));
-    prefs.setString('finishedPauseTimes',
-        jsonEncode(finishedPauseTimes.map((d) => d.inMilliseconds).toList()));
-    prefs.setString('finishedDrivingTimes',
-        jsonEncode(finishedDrivingTimes.map((d) => d.inMilliseconds).toList()));
+  Future<void> fetchTimersForToday() async {
+    const String query = r'''
+      query TimersInBoundary($lowerBound: DateTime!, $upperBound: DateTime!) {
+        timersInBoundary(lowerBound: $lowerBound, upperBound: $upperBound) {
+          startTime
+          endTime
+          workType
+          worktimeId
+          task {
+            taskDescription
+            taskId
+          }
+        }
+      }
+    ''';
 
-    // Save start times
-    prefs.setString(
-        'workTimeStartTime', workTimeStartTime?.toIso8601String() ?? '');
-    prefs.setString('pauseStartTime', pauseStartTime?.toIso8601String() ?? '');
-    prefs.setString(
-        'drivingTimeStartTime', drivingTimeStartTime?.toIso8601String() ?? '');
+    DateTime now = DateTime.now();
+    String year = now.year.toString();
+    String month = now.month.toString();
+    String day = now.day.toString();
 
-    // Save today's date
-    prefs.setString(
-        'savedDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
-  }
+    String formatDateTimeString(
+        String year, String month, String day, String time) {
+      return '$year-${month.padLeft(2, '0')}-${day.padLeft(2, '0')}T$time' 'Z';
+    }
 
-  Future<void> loadTimesFromPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    String? savedDate = prefs.getString('savedDate');
+    String lowerBound = formatDateTimeString(year, month, day, '00:00:00');
+    String upperBound = formatDateTimeString(year, month, day, '23:59:59');
 
-    if (savedDate != null && savedDate == todayDate) {
-      // Load finished times
-      String? finishedWorkTimesJson = prefs.getString('finishedWorkTimes');
-      if (finishedWorkTimesJson != null && finishedWorkTimesJson.isNotEmpty) {
-        List<dynamic> millisList = jsonDecode(finishedWorkTimesJson);
-        finishedWorkTimes =
-            millisList.map((ms) => Duration(milliseconds: ms)).toList();
+    try {
+      GraphQLQuery graphQLQuery = GraphQLQuery(
+        query: query,
+        variables: {
+          'lowerBound': lowerBound,
+          'upperBound': upperBound,
+        },
+      );
+
+      GraphQLResponse response = await apiService.graphQLRequest(graphQLQuery);
+
+      final timers = response.data?['timersInBoundary'];
+      if (timers != null) {
+        for (var timer in timers) {
+          if (timer is! Map ||
+              timer['task'] == null ||
+              timer['task'] is! Map ||
+              timer['task'].isEmpty ||
+              timer['startTime'] == null) {
+            continue;
+          }
+          try {
+            final DateTime startTime = DateTime.parse(timer['startTime']);
+            final String workType = timer['workType'];
+            final DateTime? endTime = timer['endTime'] != null
+                ? DateTime.parse(timer['endTime'])
+                : null;
+
+            // Set currentTask if not already set
+            if (currentTask == null) {
+              currentTask = Task(
+                id: timer['task']['taskId'],
+                name: timer['task']['taskDescription'],
+              );
+              activateButtons();
+              saveCurrentTask(currentTask!);
+            }
+
+            // Process the timer
+            if (endTime != null) {
+              // Finished timers
+              Duration duration = endTime.difference(startTime);
+              if (workType == 'WORK') {
+                finishedWorkTimes.add(duration);
+              } else if (workType == 'BREAK') {
+                finishedPauseTimes.add(duration);
+              } else if (workType == 'RIDE') {
+                finishedDrivingTimes.add(duration);
+              }
+            } else {
+              // Ongoing timers
+              if (workType == 'WORK') {
+                isWorkTimeRunning = true;
+                workTimeStartTime = startTime;
+                currentWorktimeId = timer['worktimeId'];
+                workTimeMode = WorkTimeButtonMode.split;
+                print("Found ongoing worktime, continueing.");
+              } else if (workType == 'BREAK') {
+                isPauseRunning = true;
+                pauseStartTime = startTime;
+                currentWorktimeId = timer['worktimeId'];
+                workTimeMode = WorkTimeButtonMode.stop;
+                print("Found ongoing pause, continueing.");
+              } else if (workType == 'RIDE') {
+                isDrivingTimeRunning = true;
+                drivingTimeStartTime = startTime;
+                currentWorktimeId = timer['worktimeId'];
+                drivingTimeMode = WorkTimeButtonMode.stop;
+                print("Found ongoing ride, continueing.");
+              }
+            }
+          } catch (e) {
+            print(e);
+            continue;
+          }
+        }
       }
 
-      String? finishedPauseTimesJson = prefs.getString('finishedPauseTimes');
-      if (finishedPauseTimesJson != null && finishedPauseTimesJson.isNotEmpty) {
-        List<dynamic> millisList = jsonDecode(finishedPauseTimesJson);
-        finishedPauseTimes =
-            millisList.map((ms) => Duration(milliseconds: ms)).toList();
-      }
-
-      String? finishedDrivingTimesJson =
-          prefs.getString('finishedDrivingTimes');
-      if (finishedDrivingTimesJson != null &&
-          finishedDrivingTimesJson.isNotEmpty) {
-        List<dynamic> millisList = jsonDecode(finishedDrivingTimesJson);
-        finishedDrivingTimes =
-            millisList.map((ms) => Duration(milliseconds: ms)).toList();
-      }
-
-      // Load start times
-      String? workTimeStartTimeString = prefs.getString('workTimeStartTime');
-      if (workTimeStartTimeString != null &&
-          workTimeStartTimeString.isNotEmpty) {
-        workTimeStartTime = DateTime.parse(workTimeStartTimeString);
-      }
-
-      String? pauseStartTimeString = prefs.getString('pauseStartTime');
-      if (pauseStartTimeString != null && pauseStartTimeString.isNotEmpty) {
-        pauseStartTime = DateTime.parse(pauseStartTimeString);
-      }
-
-      String? drivingTimeStartTimeString =
-          prefs.getString('drivingTimeStartTime');
-      if (drivingTimeStartTimeString != null &&
-          drivingTimeStartTimeString.isNotEmpty) {
-        drivingTimeStartTime = DateTime.parse(drivingTimeStartTimeString);
-      }
-
-      // Set running states
-      isWorkTimeRunning = workTimeStartTime != null;
-      isPauseRunning = pauseStartTime != null;
-      isDrivingTimeRunning = drivingTimeStartTime != null;
-
-      // Set button modes
-      if (currentTask != null) {
-        activateButtons();
-      }
-
-      if (isWorkTimeRunning) {
-        workTimeMode = WorkTimeButtonMode.split;
-      } else if (isPauseRunning) {
-        workTimeMode = WorkTimeButtonMode.stop;
-      } else {
+      // Set default button modes if not already set
+      if (workTimeMode == WorkTimeButtonMode.deactivated) {
         workTimeMode = WorkTimeButtonMode.start;
       }
-
-      if (isDrivingTimeRunning) {
-        drivingTimeMode = WorkTimeButtonMode.stop;
-      } else {
+      if (drivingTimeMode == WorkTimeButtonMode.deactivated) {
         drivingTimeMode = WorkTimeButtonMode.start;
       }
 
+      _updateDurations();
       notifyListeners();
-    } else {
-      // Data is not from today, clear it
-      finishedWorkTimes = [];
-      finishedPauseTimes = [];
-      finishedDrivingTimes = [];
-      workTimeStartTime = null;
-      pauseStartTime = null;
-      drivingTimeStartTime = null;
-      isWorkTimeRunning = false;
-      isPauseRunning = false;
-      isDrivingTimeRunning = false;
-      workTimeMode = WorkTimeButtonMode.deactivated;
-      drivingTimeMode = WorkTimeButtonMode.deactivated;
-      saveTimesToPrefs();
-      notifyListeners();
+    } catch (e) {
+      throw Exception('Failed to fetch timers for today: $e');
     }
   }
 
@@ -232,7 +235,6 @@ class TimerLogic extends ChangeNotifier {
     } else if (workTimeMode == WorkTimeButtonMode.stop) {
       handlePauseStop(context);
     }
-    saveTimesToPrefs();
   }
 
   void onTaskSelected(Task task) {
@@ -353,7 +355,8 @@ class TimerLogic extends ChangeNotifier {
       final endTime = result.data?['stopTimer']['endTime'];
       final startTime = result.data?['stopTimer']['startTime'];
       try {
-        finishedWorkTimes.add(DateTime.parse(endTime).difference(DateTime.parse(startTime)));
+        finishedWorkTimes
+            .add(DateTime.parse(endTime).difference(DateTime.parse(startTime)));
       } catch (e) {
         finishedWorkTimes.add(workTimeDuration);
       }
@@ -398,7 +401,8 @@ class TimerLogic extends ChangeNotifier {
     final startTime = result.data?['stopTimer']['startTime'];
 
     try {
-      finishedPauseTimes.add(DateTime.parse(endTime).difference(DateTime.parse(startTime)));
+      finishedPauseTimes
+          .add(DateTime.parse(endTime).difference(DateTime.parse(startTime)));
     } catch (e) {
       finishedPauseTimes.add(pauseDuration);
     }
@@ -476,7 +480,8 @@ class TimerLogic extends ChangeNotifier {
       final endTime = result.data?['stopTimer']['endTime'];
       final startTime = result.data?['stopTimer']['startTime'];
       try {
-        finishedDrivingTimes.add(DateTime.parse(endTime).difference(DateTime.parse(startTime)));
+        finishedDrivingTimes
+            .add(DateTime.parse(endTime).difference(DateTime.parse(startTime)));
       } catch (e) {
         finishedDrivingTimes.add(drivingTimeDuration);
       }
