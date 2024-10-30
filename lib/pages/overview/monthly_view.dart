@@ -91,7 +91,13 @@ class MonthviewContentState extends State<MonthviewContent> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Aufgaben-Bearbeitungszeit'),
+                    Text(
+                      'Aufgaben-Bearbeitungszeit',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
                     Text(
                       arbeitszeit ?? 'Lade...',
                       style: TextStyle(
@@ -106,7 +112,13 @@ class MonthviewContentState extends State<MonthviewContent> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Fahrtzeit'),
+                    Text(
+                      'Fahrtzeit',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
                     Text(
                       fahrtzeit ?? 'Lade...',
                       style: TextStyle(
@@ -121,9 +133,10 @@ class MonthviewContentState extends State<MonthviewContent> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Gesamt',
                       style: TextStyle(
+                        color: theme.colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
