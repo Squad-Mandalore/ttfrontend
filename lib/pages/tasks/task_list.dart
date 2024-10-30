@@ -261,7 +261,7 @@ class _TaskListState extends State<TaskList> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: customColors?.primaryAccent8 ?? theme.colorScheme.primary,
+          color: customColors?.taskHeader ?? theme.colorScheme.primary,
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
@@ -276,25 +276,25 @@ class _TaskListState extends State<TaskList> {
             title: Text(
               task.name,
               style: TextStyle(
-                color: theme.colorScheme.onSurface,
+                color: theme.colorScheme.onSecondary,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
-          _taskButtons(theme, task)
+          _taskButtons(theme, customColors, task)
         ]),
       ),
     );
   }
 
-  Row _taskButtons(ThemeData theme, Task task) {
+  Row _taskButtons(ThemeData theme, CustomThemeExtension? customColors, Task task) {
     return Row(
       children: [
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color: theme.colorScheme.error,
+              color: customColors?.delete ?? theme.colorScheme.error,
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(8),
               ),
@@ -306,7 +306,7 @@ class _TaskListState extends State<TaskList> {
         Expanded(
             child: Container(
           decoration: BoxDecoration(
-            color: theme.colorScheme.secondary,
+            color: customColors?.edit ?? theme.colorScheme.secondary,
             borderRadius: const BorderRadius.only(
               bottomRight: Radius.circular(8),
             ),
