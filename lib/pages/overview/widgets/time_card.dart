@@ -90,20 +90,20 @@ class TimeCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(
+                    width: 8.0), // Add a small space between the widgets
                 if (entry.type != 'Pause')
-                  Flexible(
-                    flex: 0,
+                  Expanded(
                     child: Text(
                       entry.activity.name,
-                      textAlign: TextAlign.end,
+                      textAlign: TextAlign.end, // Keep or adjust as needed
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
                   ),
-                const Padding(padding: EdgeInsets.only(right: 8.0))
+                const Padding(padding: EdgeInsets.only(right: 8.0)),
               ],
             ),
           ],

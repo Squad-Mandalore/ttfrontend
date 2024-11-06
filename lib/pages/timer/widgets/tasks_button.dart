@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
-import 'package:ttfrontend/pages/timer/widgets/task_selection_popup.dart';
 import 'package:ttfrontend/service/models/task.dart';
 import 'package:ttfrontend/service/task_service.dart';
 
@@ -63,6 +62,8 @@ class TasksButtonState extends State<TasksButton> {
               child: Text(
                 task.name,
                 style: const TextStyle(fontSize: 14),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             );
           }).toList();
@@ -98,6 +99,7 @@ class TasksButtonState extends State<TasksButton> {
                         ? theme.colorScheme.error // Highlighted color when no task is selected
                         : Colors.white,
                   ),
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 items: dropdownItems,

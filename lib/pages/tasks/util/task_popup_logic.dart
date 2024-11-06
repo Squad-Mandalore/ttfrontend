@@ -86,6 +86,7 @@ class TaskPopupLogic {
             children: [
               TextField(
                 controller: controller,
+                maxLength: 100,
                 decoration: const InputDecoration(
                   labelText: "Neue Aufgabe",
                   border: OutlineInputBorder(),

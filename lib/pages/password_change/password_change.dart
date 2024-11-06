@@ -132,7 +132,6 @@ class LoginPageState extends State<PasswordChangePage> {
                               content: Text(
                                   'E-Mail-Adresse oder Passwort ungültig')),
                         );
-                        print("Login invalid: $error");
                       }
                     }
                   } else {

@@ -22,31 +22,33 @@ Future<bool> requestStoragePermission(BuildContext context) async {
       Permission.manageExternalStorage.request();
         return true;
       }
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return GenericPopup(
-            title: 'Rechte zum Dateizugriff benötigt',
-            agreeText: 'Einstellungen Öffnen',
-            content: const Column(
-              children: [
-          SizedBox(height: 16.0),
-          Text(
-              'Diese App benötigt die Erlaubnis um die angeforderte PDF abzuspeichern. Bitte erlaube den Zugriff auf die Dateien in den Einstellungen.'),
-          SizedBox(height: 16.0),
-              ],
-            ),
-            mode: PopUpMode.warning,
-            onAgree: () {
-              Navigator.of(context).pop(true);
-              openAppSettings();
-            },
-            onDisagree: () {
-              Navigator.of(context).pop(false);
-            },
-          );
-        },
-      );
+      if (context.mounted) {
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return GenericPopup(
+              title: 'Rechte zum Dateizugriff benötigt',
+              agreeText: 'Einstellungen Öffnen',
+              content: const Column(
+                children: [
+            SizedBox(height: 16.0),
+            Text(
+                'Diese App benötigt die Erlaubnis um die angeforderte PDF abzuspeichern. Bitte erlaube den Zugriff auf die Dateien in den Einstellungen.'),
+            SizedBox(height: 16.0),
+                ],
+              ),
+              mode: PopUpMode.warning,
+              onAgree: () {
+                Navigator.of(context).pop(true);
+                openAppSettings();
+              },
+              onDisagree: () {
+                Navigator.of(context).pop(false);
+              },
+            );
+          },
+        );
+      }
 
       return await Permission.manageExternalStorage.isGranted;
     }
@@ -126,8 +128,11 @@ Future<void> fetchAndSavePdf(
       String? filePath;
 
       try {
+        Directory? directory;
         // Try to get the directory to save the file
-        final directory = await getAppropriateDirectory(context);
+        if (context.mounted) {
+           directory = await getAppropriateDirectory(context);
+        }
         if (directory == null) {
           throw Exception("Downloads-Ordner konnte nicht geöffnet werden.");
         }
@@ -170,7 +175,6 @@ Future<void> fetchAndSavePdf(
       throw Exception('No PDF data returned from GraphQL query.');
     }
   } catch (e) {
-    print('Failed to fetch and save PDF: $e');
     if (context.mounted) {
       GenericPopup.showErrorPopup(
           context, 'Es gab ein Problem beim Herunterladen der PDF-Datei.');
@@ -214,6 +218,7 @@ class PdfViewerPageState extends State<PdfViewerPage> {
       );
     } catch (e) {
       if (context.mounted) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Fehler beim Drucken der PDF.')),
         );

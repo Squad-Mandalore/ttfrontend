@@ -216,6 +216,7 @@ class _TaskListState extends State<TaskList> {
           });
         } else {
           if (context.mounted) {
+            // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Aufgabe wird schon bearbeitet')),
             );
