@@ -38,10 +38,11 @@ class HomePageState extends State<HomePage> {
 
   Widget _buildAppBarTitle(int index, Color textColor) {
     if (index == 2) {
-      if (_isSearching) {
-        return Stack(
-          children: [
-            TextField(
+    if (_isSearching) {
+      return Row(
+        children: [
+          Expanded(
+            child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Suche Aufgaben',
@@ -60,48 +61,44 @@ class HomePageState extends State<HomePage> {
               },
               autofocus: true,
             ),
-            Positioned(
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: IconButton(
-                icon: const Icon(Icons.clear, size: 20),
-                color: Colors.black,
-                onPressed: () {
-                  setState(() {
-                    _isSearching = false;
-                    _searchController.clear();
-                    _searchQuery = '';
-                  });
-                },
-              ),
-            ),
-          ],
-        );
-      } else {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Aufgaben',
-              style: TextStyle(
-                color: textColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.search),
+          ),
+          IconButton(
+            icon: const Icon(Icons.clear, size: 20),
+            color: Colors.black,
+            onPressed: () {
+              setState(() {
+                _isSearching = false;
+                _searchController.clear();
+                _searchQuery = '';
+              });
+            },
+          ),
+        ],
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Aufgaben',
+            style: TextStyle(
               color: textColor,
-              onPressed: () {
-                setState(() {
-                  _isSearching = true;
-                });
-              },
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        );
-      }
+          ),
+          IconButton(
+            icon: const Icon(Icons.search),
+            color: textColor,
+            onPressed: () {
+              setState(() {
+                _isSearching = true;
+              });
+            },
+          ),
+        ],
+      );
     }
+  }
 
     switch (index) {
       case 0:
@@ -124,9 +121,6 @@ class HomePageState extends State<HomePage> {
     final theme = Theme.of(context);
     final customColors = theme.extension<CustomThemeExtension>();
     final customBackgroundColor = theme.colorScheme.primary;
-    final customIconColor = theme.colorScheme.onPrimary;
-    final unselectedIconColor =
-        customColors?.primaryAccent6 ?? theme.colorScheme.onPrimary;
 
     return Scaffold(
       appBar: AppBar(

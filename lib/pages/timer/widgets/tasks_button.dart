@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:ttfrontend/assets/colours/extended_theme.dart';
-import 'package:ttfrontend/pages/timer/widgets/task_selection_popup.dart';
 import 'package:ttfrontend/service/models/task.dart';
 import 'package:ttfrontend/service/task_service.dart';
 

@@ -147,23 +147,20 @@ class TimerLogic extends ChangeNotifier {
                 workTimeStartTime = startTime;
                 currentWorktimeId = timer['worktimeId'];
                 workTimeMode = WorkTimeButtonMode.split;
-                print("Found ongoing worktime, continueing.");
               } else if (workType == 'BREAK') {
                 isPauseRunning = true;
                 pauseStartTime = startTime;
                 currentWorktimeId = timer['worktimeId'];
                 workTimeMode = WorkTimeButtonMode.stop;
-                print("Found ongoing pause, continueing.");
               } else if (workType == 'RIDE') {
                 isDrivingTimeRunning = true;
                 drivingTimeStartTime = startTime;
                 currentWorktimeId = timer['worktimeId'];
                 drivingTimeMode = WorkTimeButtonMode.stop;
-                print("Found ongoing ride, continueing.");
               }
             }
           } catch (e) {
-            print(e);
+            // Hehehehehe
             continue;
           }
         }
